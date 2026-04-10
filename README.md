@@ -1,84 +1,187 @@
-# academic-homepage
+# 郑国华｜中文个人网站
 
-[![Preview](assets/images/etc/preview.png)](https://luost26.github.io/academic-homepage/)
+一个基于 Next.js App Router、TypeScript、Tailwind CSS 和 Framer Motion 构建的中文个人品牌站。整体风格偏向克制的深色未来感，适合用于展示 AI 产品、Agent、AIGC 与研究背景。
 
-[![pages-build-deployment](https://github.com/luost26/academic-homepage/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/luost26/academic-homepage/actions/workflows/pages/pages-build-deployment)
-[![Hits](https://hits.sh/github.com/luost26/academic-homepage.svg?view=today-total)](https://hits.sh/github.com/luost26/academic-homepage/)
-[![GitHub stars](https://img.shields.io/github/stars/luost26/academic-homepage)](https://github.com/luost26/academic-homepage)
-[![GitHub forks](https://img.shields.io/github/forks/luost26/academic-homepage)](https://github.com/luost26/academic-homepage/forks)
-<!--[![W3C Validation](https://img.shields.io/w3c-validation/html?targetUrl=https%3A%2F%2Fluost26.github.io%2Facademic-homepage)](https://validator.nu/?doc=https%3A%2F%2Fluost26.github.io%2Facademic-homepage)-->
+## 技术栈
 
-A GitHub Pages (Jekyll) template for personal academic website. Click [here](https://luost26.github.io/academic-homepage/) to see the demo.
+- Next.js 15（App Router）
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- lucide-react
 
-## User Community
+## 本地运行
 
-[🏡](https://luost.me/)
-[:star:](https://cch1999.github.io/)
-[:star:](https://kyrrego.github.io/)
-[:star:](https://ced3-han.github.io/)
-[:star:](https://lihengchen.com/)
-[:star:](https://hpwang-whu.github.io/)
-[:star:](https://zhang-yingyi.github.io/)
-[:star:](https://wby24.github.io/)
-[:star:](https://pengfeixu.com/)
-[:star:](https://boqiuphd.github.io/)
-[:star:](https://www.huabing.li/)
-[:star:](https://xiecuiying.github.io/)
-[:star:](https://hannyang.github.io/)
-[:star:](https://king-play.github.io/)
-[🤖](https://andrewcwlee.github.io)
-[:star:](https://laiyao1.github.io)
-[🌜](https://tmsultan.github.io)
-[🚀](https://zaxguo.github.io)
-[:gemini:](https://hongyang-du.github.io)
-[:star:](https://thuanz123.github.io)
-[🧬](https://gdalba.github.io/)
-[:star:](https://yhhan.com/)
-[🌔](https://chen-huaneng.github.io/academic)
-[:star:](https://jwklee.github.io/)
-[😺](https://onethousandwu.com/)
-[🔬](https://kwen-chen.github.io/)
+```bash
+npm install
+npm run dev
+```
 
-:hugs: Feel free to tell us if you are using this template for your website by creating an issue [here](https://github.com/luost26/academic-homepage/issues/new?assignees=&labels=&projects=&template=user-report.md&title=I+am+using+this+template%21).
+默认访问：
 
-### Acknowledgements
+```bash
+http://localhost:3000
+```
 
-The improvements of this template have been inspired by the customizations and feedbacks from the following users:
-- 😺 [onethousandwu.com](https://onethousandwu.com/): increased corner radius [[Repo]](https://github.com/oneThousand1000/oneThousand1000.github.io)
-- :star: [shiwonkim.github.io](https://shiwonkim.github.io/): two-column main page layout [[Repo]](https://github.com/shiwonkim/shiwonkim.github.io)
-- :star: [yqxie99.github.io](https://yqxie99.github.io/): blog feature [[Repo]](https://github.com/YQXie99/YQXie99.github.io/tree/feat/add_blog_page)
+## 常用命令
 
-## Need Help?
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
 
-If you run into **any** issues while using this template, or have suggestions for improvements, please don't hesitate to create an issue [here](https://github.com/luost26/academic-homepage/issues/new).
+## 项目结构
 
-### FAQs
+```bash
+.
+├── app
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── api
+│   │   └── agent
+│   │       └── route.ts
+│   ├── page.tsx
+│   └── projects
+│       └── page.tsx
+├── components
+│   ├── agent
+│   │   ├── AgentAvatar.tsx
+│   │   ├── AgentDialog.tsx
+│   │   ├── AgentLauncher.tsx
+│   │   ├── ChatMessage.tsx
+│   │   ├── SuggestedQuestions.tsx
+│   │   └── cn.ts
+│   ├── about-section.tsx
+│   ├── back-to-top.tsx
+│   ├── contact-section.tsx
+│   ├── education-section.tsx
+│   ├── expandable-experience-card.tsx
+│   ├── experience-section.tsx
+│   ├── footer.tsx
+│   ├── hero-section.tsx
+│   ├── navbar.tsx
+│   ├── profile-visual.tsx
+│   ├── projects-empty-state.tsx
+│   ├── research-section.tsx
+│   ├── reveal.tsx
+│   ├── section-shell.tsx
+│   └── skills-section.tsx
+├── data
+│   ├── knowledge-base
+│   │   ├── chunks.ts
+│   │   ├── faqs.ts
+│   │   ├── profile.ts
+│   │   └── raw-docs.ts
+│   └── profile.ts
+├── lib
+│   └── agent
+│       ├── retrieve.ts
+│       └── systemPrompt.ts
+├── public
+│   └── images
+│       └── profile.jpg
+├── .env.example
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+└── tsconfig.json
+```
 
-- [Need blogging feature?](https://github.com/luost26/academic-homepage/issues/13#issuecomment-2646371324)
-- [How to show citation count for papers?](https://github.com/luost26/academic-homepage/issues/29#issuecomment-3222496187)
+## 如何修改内容
 
+网站文案与结构化数据统一放在 [data/profile.ts](/Users/guohuaz/My_Website/data/profile.ts)。
 
-## Getting Started
+个人资料问答 Agent 的数据与检索逻辑放在：
 
-1. First, click the "Use this template" button to create a new repository. The name of the repository should be `<your-github-username>.github.io` (click [here](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites) to learn more about naming a GitHub Pages repository).
+- [data/knowledge-base/profile.ts](/Users/guohuaz/My_Website/data/knowledge-base/profile.ts)
+- [data/knowledge-base/chunks.ts](/Users/guohuaz/My_Website/data/knowledge-base/chunks.ts)
+- [data/knowledge-base/faqs.ts](/Users/guohuaz/My_Website/data/knowledge-base/faqs.ts)
+- [data/knowledge-base/raw-docs.ts](/Users/guohuaz/My_Website/data/knowledge-base/raw-docs.ts)
+- [lib/agent/retrieve.ts](/Users/guohuaz/My_Website/lib/agent/retrieve.ts)
+- [lib/agent/systemPrompt.ts](/Users/guohuaz/My_Website/lib/agent/systemPrompt.ts)
 
-### Running Locally (Debug & Preview)
+你可以在这里修改：
 
-2. Follow the **step 1** and **step 2** of the instruction [here](https://jekyllrb.com/docs/) to install prerequisites and jekyll.
+- 姓名、标题、简介
+- 教育背景
+- 实习经历
+- 科研与竞赛信息
+- 技能分组
+- 联系方式
+- Projects 页面预留项目数据
 
-3. Clone your forked repository to your local machine.
+## 如何替换头像
 
-4. Run the following command in the root directory of the repository:
+默认头像路径是：
 
-   ```bash
-   bundle exec jekyll serve
-   ```
+`public/images/profile.jpg`
 
-5. Browse to the displayed URL to see the website.
+直接替换该文件即可。如果头像文件不存在，页面会自动降级为抽象占位头像，不会破坏布局。
 
-### Deploying to GitHub Pages
+## 如何新增 Projects 内容
 
-2. Go to the repository settings and enable GitHub Pages. Detailed instructions can be found [here](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site).
+当前 Projects 页使用的是 `data/profile.ts` 中的 `projectPlaceholders` 数据。后续可以：
 
-3. Navigate to your created website, and follow the instructions displayed on the homepage (if any) to finalize the setup.
+1. 继续在该数组中新增项目字段。
+2. 在 [app/projects/page.tsx](/Users/guohuaz/My_Website/app/projects/page.tsx) 中把占位区替换成正式项目卡片列表。
+3. 如果需要封面图，可将图片放到 `public/projects/` 目录中。
 
+建议每个项目至少包含：
+
+- `title`
+- `description`
+- `stack`
+- `projectUrl`
+- `githubUrl`
+- `cover`
+
+## 配置资料助手
+
+先复制环境变量模板：
+
+```bash
+cp .env.example .env.local
+```
+
+然后填写：
+
+```bash
+DEEPSEEK_API_KEY=你的 DeepSeek API Key
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-chat
+```
+
+Agent 通过 [app/api/agent/route.ts](/Users/guohuaz/My_Website/app/api/agent/route.ts) 在服务端调用 DeepSeek，不会在前端暴露 API Key。
+
+## 部署到 Vercel
+
+1. 将代码推送到 GitHub 仓库。
+2. 打开 [Vercel](https://vercel.com/) 并导入该仓库。
+3. Framework Preset 选择 Next.js。
+4. 在环境变量中配置 `DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL`、`DEEPSEEK_MODEL`。
+5. 直接部署即可。
+
+这个项目默认推荐部署到 Vercel，因为个人资料 Agent 依赖 Next.js 服务端 Route Handler。
+
+## 部署到 GitHub Pages
+
+如果保留当前的个人资料 Agent，GitHub Pages 不是完整可用的部署目标，因为 Pages 不能运行 [app/api/agent/route.ts](/Users/guohuaz/My_Website/app/api/agent/route.ts) 这样的服务端接口。
+
+可以这样理解：
+
+- 完整网站 + 资料问答 Agent：推荐部署到 Vercel
+- 只部署纯静态展示页面：可以改造成 GitHub Pages 版本，但需要移除或外接 Agent 后端
+
+## 设计说明
+
+- 整体采用深色背景、冷白文字、电光蓝与青紫渐变点缀
+- 使用轻度玻璃拟态、微光边框、局部模糊光斑与低调网格纹理
+- 动效以淡入、上移、滚动 reveal、卡片 hover 和顺滑展开为主
+- 文案以“产品思维 + 研究表达 + AI-native 气质”为核心，不做模板化简历铺陈
+
+## 说明
+
+当前仓库中保留了原先旧站点的部分历史文件，这一版已经独立提供完整的 Next.js 项目代码。后续如果你想彻底清理旧文件，可以在确认不再使用后再做精简。
