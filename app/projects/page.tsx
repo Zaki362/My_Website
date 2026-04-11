@@ -13,15 +13,15 @@ export default function ProjectsPage() {
         <div className="mb-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-slate-300/72 transition hover:text-white"
+            className="inline-flex items-center gap-2 text-sm tracking-[0.04em] text-slate-300/70 transition hover:text-white"
           >
             <ChevronLeft className="h-4 w-4" />
             返回主页
           </Link>
         </div>
 
-        <div className="mb-14 max-w-3xl">
-          <p className="section-kicker mb-4">Vibe Coding / Experiments</p>
+        <div className="section-frame mb-14 max-w-3xl">
+          <p className="section-kicker mb-4 pt-5">Vibe Coding / Experiments</p>
           <h1 className="section-title mb-6">{projectsPageData.title}</h1>
           <p className="section-copy">
             {projectsPageData.description}

@@ -17,12 +17,12 @@ export function ProjectsEmptyState() {
   return (
     <Reveal>
       <section className="panel rounded-[2.25rem] p-7 md:p-10">
-        <div className="mb-8 max-w-2xl">
+        <div className="mb-10 max-w-2xl">
           <span className="pill mb-5">Building in public, carefully</span>
           <h2 className="mb-4 font-display text-3xl tracking-display text-white md:text-4xl">
             {projectsPageData.emptyTitle}
           </h2>
-          <p className="text-sm leading-8 text-slate-300/78 md:text-base">
+          <p className="text-sm leading-8 text-slate-300/74 md:text-base">
             {projectsPageData.emptyDescription}
           </p>
         </div>
@@ -33,7 +33,7 @@ export function ProjectsEmptyState() {
               key={project.title}
               type="button"
               onClick={() => setActiveProject(project)}
-              className="interactive-card rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 text-left"
+              className="interactive-card content-card rounded-[1.75rem] p-6 text-left"
             >
               <div className="mb-5 overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.02] p-3">
                 <Image
@@ -46,18 +46,18 @@ export function ProjectsEmptyState() {
               </div>
               <span className="pill mb-4">{project.eyebrow}</span>
               <h3 className="mb-3 font-display text-2xl text-white">{project.title}</h3>
-              <p className="mb-5 text-sm leading-7 text-slate-300/78">{project.shortDescription}</p>
+              <p className="mb-5 text-sm leading-8 text-slate-300/74">{project.shortDescription}</p>
               <div className="mb-5 flex flex-wrap gap-2">
                 {project.metrics.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-sky-200/10 bg-sky-100/[0.03] px-3 py-1 text-xs text-slate-200/82"
+                    className="rounded-full border border-sky-200/10 bg-sky-100/[0.03] px-3 py-1 text-xs text-slate-200/78"
                   >
                     {item}
                   </span>
                 ))}
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-300/76">
+              <div className="flex items-center gap-2 text-sm text-slate-300/74">
                 查看详情
                 <ArrowUpRight className="h-4 w-4" />
               </div>
@@ -93,7 +93,7 @@ export function ProjectsEmptyState() {
                     <h3 className="font-display text-3xl tracking-display text-white md:text-4xl">
                       {activeProject.title}
                     </h3>
-                    <p className="mt-4 text-sm leading-8 text-slate-300/78 md:text-base">
+                    <p className="mt-4 text-sm leading-8 text-slate-300/74 md:text-base">
                       {activeProject.description}
                     </p>
                   </div>
@@ -125,29 +125,29 @@ export function ProjectsEmptyState() {
                           />
                         </button>
                       </div>
-                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
-                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Project Summary</p>
-                        <p className="text-sm leading-8 text-slate-300/82">{activeProject.details}</p>
+                      <div className="content-card rounded-[1.5rem] p-5">
+                        <p className="meta-label mb-3">Project Summary</p>
+                        <p className="text-sm leading-8 text-slate-300/80">{activeProject.details}</p>
                       </div>
                     </div>
 
                     <div className="grid gap-6">
-                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
-                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Project Highlights</p>
+                      <div className="content-card rounded-[1.5rem] p-5">
+                        <p className="meta-label mb-3">Project Highlights</p>
                         <div className="space-y-3">
                           {activeProject.highlights.map((item) => (
-                            <p key={item} className="text-sm leading-7 text-slate-200/82">
+                            <p key={item} className="text-sm leading-8 text-slate-200/80">
                               {item}
                             </p>
                           ))}
                         </div>
                       </div>
 
-                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
-                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Outcomes</p>
+                      <div className="content-card rounded-[1.5rem] p-5">
+                        <p className="meta-label mb-3">Outcomes</p>
                         <div className="space-y-3">
                           {activeProject.outcomes.map((item) => (
-                            <p key={item} className="text-sm leading-7 text-slate-200/82">
+                            <p key={item} className="text-sm leading-8 text-slate-200/80">
                               {item}
                             </p>
                           ))}

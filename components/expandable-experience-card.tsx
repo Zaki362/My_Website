@@ -40,7 +40,7 @@ export function ExpandableExperienceCard({
               <span className="text-xs uppercase tracking-[0.24em] text-slate-400">{period}</span>
             </div>
             <h3 className="font-display text-2xl text-white md:text-[2rem]">{role}</h3>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300/78 md:text-base">
+            <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-300/76 md:text-base">
               {overview}
             </p>
           </div>
@@ -48,12 +48,15 @@ export function ExpandableExperienceCard({
           <div className="flex items-center justify-between gap-5 lg:flex-col lg:items-end">
             <div className="flex flex-wrap justify-end gap-2">
               {skills.slice(0, 3).map((skill) => (
-                <span key={skill} className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300/82">
+                <span
+                  key={skill}
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-slate-300/78"
+                >
                   {skill}
                 </span>
               ))}
             </div>
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white">
               <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.28 }}>
                 <ChevronDown className="h-5 w-5" />
               </motion.span>
@@ -74,12 +77,12 @@ export function ExpandableExperienceCard({
             <div className="mt-8 grid gap-6 border-t border-white/8 pt-8 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="space-y-6">
                 <div>
-                  <p className="mb-3 text-xs uppercase tracking-[0.28em] text-slate-500">关键项目 / 职责</p>
+                  <p className="meta-label mb-3">关键项目 / 职责</p>
                   <div className="space-y-3">
                     {responsibilities.map((item) => (
                       <div
                         key={item}
-                        className="rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-sm leading-7 text-slate-200/78"
+                        className="content-card rounded-2xl px-4 py-3 text-sm leading-7 text-slate-200/78"
                       >
                         {item}
                       </div>
@@ -90,12 +93,12 @@ export function ExpandableExperienceCard({
 
               <div className="space-y-6">
                 <div>
-                  <p className="mb-3 text-xs uppercase tracking-[0.28em] text-slate-500">结果 / 影响</p>
+                  <p className="meta-label mb-3">结果 / 影响</p>
                   <div className="space-y-3">
                     {impact.map((item) => (
                       <div
                         key={item}
-                        className="rounded-2xl border border-sky-200/10 bg-sky-100/[0.03] px-4 py-3 text-sm leading-7 text-slate-100/82"
+                        className="rounded-2xl border border-sky-200/10 bg-sky-100/[0.03] px-4 py-3 text-sm leading-7 text-slate-100/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
                       >
                         {item}
                       </div>
@@ -104,7 +107,7 @@ export function ExpandableExperienceCard({
                 </div>
 
                 <div>
-                  <p className="mb-3 text-xs uppercase tracking-[0.28em] text-slate-500">技能标签</p>
+                  <p className="meta-label mb-3">技能标签</p>
                   <div className="flex flex-wrap gap-2">
                     {skills.map((skill) => (
                       <span key={skill} className="pill">

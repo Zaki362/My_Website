@@ -31,8 +31,8 @@ export function Navbar() {
       <div
         className={`container-shell rounded-full border transition-all duration-300 ${
           scrolled
-            ? "border-white/10 bg-slate-950/70 shadow-panel backdrop-blur-xl"
-            : "border-white/6 bg-slate-950/42 backdrop-blur-md"
+            ? "border-white/10 bg-slate-950/68 shadow-panel backdrop-blur-xl"
+            : "border-white/6 bg-slate-950/38 backdrop-blur-md"
         }`}
       >
         <div className="flex h-16 items-center justify-between gap-4">
@@ -51,8 +51,8 @@ export function Navbar() {
                 <Link
                   key={item.label}
                   href={pathname === "/projects" && item.href.startsWith("#") ? `/${item.href}` : item.href}
-                  className={`text-sm transition ${
-                    isActive ? "text-white" : "text-slate-300/72 hover:text-white"
+                  className={`text-sm tracking-[0.04em] transition ${
+                    isActive ? "text-white" : "text-slate-300/70 hover:text-white"
                   }`}
                 >
                   {item.label}
