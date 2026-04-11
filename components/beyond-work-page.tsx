@@ -224,7 +224,7 @@ export function BeyondWorkPageContent() {
             <div>
               <p className="section-kicker mb-3">Life Gallery / Motion</p>
               <p className="max-w-xl text-sm leading-7 text-slate-300/70">
-                从旅行、下潜、徒步，到滑雪、音乐与微醺时刻。像翻看一组缓慢移动的生活影像。
+                从旅行、下潜、徒步，到滑雪与音乐。像翻看一组缓慢移动的生活影像。
               </p>
             </div>
 
