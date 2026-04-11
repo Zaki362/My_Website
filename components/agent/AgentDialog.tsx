@@ -110,9 +110,9 @@ export function AgentDialog({ open, onClose }: AgentDialogProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 22, scale: 0.98 }}
             transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed right-4 top-20 z-[80] flex h-[min(78vh,720px)] w-[min(460px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.9))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl md:right-6 md:top-24 max-md:inset-x-3 max-md:top-auto max-md:bottom-3 max-md:h-[78vh] max-md:w-auto"
+            className="fixed right-4 top-20 z-[80] flex h-[min(78vh,720px)] w-[min(460px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.9))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl md:right-6 md:top-24 max-md:inset-x-3 max-md:top-auto max-md:bottom-3 max-md:h-[78vh] max-md:w-auto max-md:rounded-[1.6rem]"
           >
-            <div className="border-b border-white/8 px-5 py-4 md:px-6">
+            <div className="border-b border-white/8 px-4 py-4 md:px-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-display text-lg text-white">{agentProfile.agentName}</p>
@@ -128,11 +128,11 @@ export function AgentDialog({ open, onClose }: AgentDialogProps) {
               </div>
             </div>
 
-            <div className="border-b border-white/8 px-5 py-4 md:px-6">
+            <div className="border-b border-white/8 px-4 py-3 md:px-6 md:py-4">
               <SuggestedQuestions questions={emptyTips} onSelect={submitQuestion} disabled={loading} />
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto px-5 py-5 md:px-6">
+            <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 md:px-6 md:py-5">
               {messages.map((message, index) => (
                 <ChatMessage key={`${message.role}-${index}`} role={message.role} content={message.content} />
               ))}
@@ -148,7 +148,7 @@ export function AgentDialog({ open, onClose }: AgentDialogProps) {
             </div>
 
             <form
-              className="border-t border-white/8 px-5 py-4 md:px-6"
+              className="border-t border-white/8 px-4 py-4 md:px-6"
               onSubmit={(event) => {
                 event.preventDefault();
                 void submitQuestion(input);
@@ -158,13 +158,13 @@ export function AgentDialog({ open, onClose }: AgentDialogProps) {
                 <span>仅回答与郑国华个人资料相关的问题</span>
                 <span>{remaining}</span>
               </div>
-              <div className="flex items-end gap-3">
+              <div className="flex items-end gap-2 md:gap-3">
                 <textarea
                   value={input}
                   onChange={(event) => setInput(event.target.value.slice(0, MAX_INPUT_LENGTH))}
                   rows={1}
                   placeholder="例如：他在百度主要做了哪些工作？"
-                  className="min-h-[52px] flex-1 resize-none rounded-[1.4rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-sky-200/28 focus:bg-white/[0.06]"
+                  className="min-h-[52px] flex-1 resize-none rounded-[1.25rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-sky-200/28 focus:bg-white/[0.06] md:rounded-[1.4rem]"
                 />
                 <button
                   type="submit"

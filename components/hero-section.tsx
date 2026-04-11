@@ -17,14 +17,14 @@ const buttonStyles = {
 
 export function HeroSection() {
   return (
-    <section id="home" className="container-shell relative flex min-h-screen items-center pt-28 pb-14 md:pt-32">
-      <div className="grid w-full items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,420px)] lg:gap-16">
+    <section id="home" className="container-shell relative flex min-h-screen items-center pt-24 pb-12 md:pt-32 md:pb-14">
+      <div className="grid w-full items-center gap-10 md:gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,420px)] lg:gap-16">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.82, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-6 flex flex-wrap gap-3">
+          <div className="mb-5 flex flex-wrap gap-2.5 md:mb-6 md:gap-3">
             {heroData.eyebrow.map((item) => (
               <span key={item} className="pill">
                 {item}
@@ -32,29 +32,29 @@ export function HeroSection() {
             ))}
           </div>
 
-          <h1 className="mb-5 max-w-4xl font-display text-5xl font-medium tracking-display text-white md:text-7xl">
+          <h1 className="mb-4 max-w-4xl font-display text-[2.8rem] font-medium tracking-display text-white md:mb-5 md:text-7xl">
             {heroData.name}
           </h1>
-          <p className="mb-4 text-lg text-slate-100/86 md:text-2xl">{heroData.title}</p>
-          <p className="mb-6 max-w-3xl text-xl text-sky-100/78 md:text-2xl">{heroData.tagline}</p>
-          <p className="max-w-3xl text-sm leading-8 text-slate-300/78 md:text-base">
+          <p className="mb-3 text-base leading-7 text-slate-100/86 md:mb-4 md:text-2xl">{heroData.title}</p>
+          <p className="mb-5 max-w-3xl text-lg leading-8 text-sky-100/78 md:mb-6 md:text-2xl">{heroData.tagline}</p>
+          <p className="max-w-3xl text-sm leading-7 text-slate-300/78 md:text-base md:leading-8">
             {heroData.intro}
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-10">
             {heroData.cta.map((action) => (
               <Link
                 key={action.label}
                 href={action.href}
-                className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm transition ${buttonStyles[action.variant]}`}
+                className={`inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm transition sm:w-auto ${buttonStyles[action.variant]}`}
               >
                 {action.label}
               </Link>
             ))}
           </div>
 
-          <div className="mt-12 flex items-center gap-6 text-sm text-slate-400">
-            <span>{contactData.email}</span>
+          <div className="mt-10 flex flex-col gap-2 text-sm text-slate-400 md:mt-12 md:flex-row md:items-center md:gap-6">
+            <span className="break-all">{contactData.email}</span>
             <span className="hidden h-1 w-1 rounded-full bg-slate-600 md:block" />
             <span className="hidden md:block">{contactData.phone}</span>
           </div>
@@ -64,7 +64,7 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.96, y: 24 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto w-full max-w-[420px]"
+          className="relative mx-auto w-full max-w-[280px] md:max-w-[420px]"
         >
           <div className="absolute -inset-4 rounded-[2.5rem] bg-[radial-gradient(circle,_rgba(122,215,255,0.16),_transparent_64%)] blur-2xl" />
           <ProfileVisual src={contactData.photoPath} alt={heroData.name} fallbackText="ZG" />

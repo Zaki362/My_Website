@@ -13,7 +13,8 @@ export const navigation = [
   { label: "科研竞赛", href: "#research" },
   { label: "技能", href: "#skills" },
   { label: "联系我", href: "#contact" },
-  { label: "Projects", href: "/projects" }
+  { label: "Projects", href: "/projects" },
+  { label: "Beyond Work", href: "/beyond-work" }
 ] as const;
 
 export const heroData = {
@@ -26,6 +27,7 @@ export const heroData = {
   cta: [
     { label: "实习经历", href: "#experience", variant: "primary" as const },
     { label: "Vibe Coding 项目", href: "/projects", variant: "secondary" as const },
+    { label: "生活切片", href: "/beyond-work", variant: "secondary" as const },
     { label: "联系我", href: "#contact", variant: "ghost" as const }
   ]
 };
@@ -228,3 +230,138 @@ export const projectPlaceholders = [
     cover: "/projects/meituan-agent-cover.png"
   }
 ];
+
+export const aboutPortalData = {
+  kicker: "About Me / Off the Clock",
+  title: "工作与学习之外的我",
+  description:
+    "专业表达之外，我也在通过旅行、山海、速度、声音与微醺时刻，慢慢扩展自己理解世界的方式。",
+  href: "/beyond-work",
+  linkLabel: "进入生活侧写"
+};
+
+type BeyondWorkImage = {
+  src: string;
+  alt: string;
+} | null;
+
+type BeyondWorkItem = {
+  name: string;
+  label: string;
+  description: string;
+  image: BeyondWorkImage;
+  accent: string;
+};
+
+type BeyondWorkGroup = {
+  key: string;
+  kicker: string;
+  title: string;
+  description: string;
+  items: BeyondWorkItem[];
+};
+
+export const beyondWorkPage = {
+  kicker: "Beyond Work",
+  title: "工作与学习之外的我",
+  intro:
+    "这一页不展示履历，也不追求完整归档。它更像一些被保留下来的生活切片，关于在路上、关于感受世界，也关于我如何在专业之外继续保持好奇。",
+  leadImage: {
+    src: "/images/contact-sky.jpg",
+    alt: "郑国华在星空下"
+  },
+  leadNote:
+    "比起把生活解释清楚，我更喜欢把自己放进真实的场景里，再慢慢理解它。",
+  nextStops: {
+    kicker: "Next Stops",
+    title: "仍在计划中的地图坐标",
+    description: "新西兰与南欧还没有被真正走到，但探索从来不只发生在已经抵达之后。",
+    items: ["新西兰", "南欧"]
+  },
+  closing: "The map stays open."
+};
+
+export const beyondWorkGroups: BeyondWorkGroup[] = [
+  {
+    key: "world",
+    kicker: "World / Movement",
+    title: "在移动中感受世界",
+    description:
+      "比起打卡，我更在意人与环境真正发生关系的瞬间。旅途、下潜和徒步，都是我重新校准感官与节奏的方式。",
+    items: [
+      {
+        name: "旅游",
+        label: "Travel",
+        description:
+          "已经去过日本、马来西亚，也走了国内大部分地区。下一张航线图上，想去的是新西兰和南欧。",
+        image: {
+          src: "/images/beyond-work-travel.jpg",
+          alt: "郑国华在日本旅行"
+        },
+        accent: "Routes / Places"
+      },
+      {
+        name: "潜水",
+        label: "Diving",
+        description:
+          "在仙本那下潜过一次之后，我开始真正理解“安静”可以有多具体。水下的世界会把注意力收得很干净。",
+        image: {
+          src: "/images/beyond-work-diving.jpg",
+          alt: "郑国华在仙本那潜水"
+        },
+        accent: "Semporna"
+      },
+      {
+        name: "徒步",
+        label: "Hiking",
+        description:
+          "虎跳峡的路很长，但也很直接。身体在移动，念头反而慢下来，那种专注感很像一次现实世界里的 reset。",
+        image: {
+          src: "/images/beyond-work-hiking.jpg",
+          alt: "郑国华在虎跳峡徒步"
+        },
+        accent: "Tiger Leaping Gorge"
+      }
+    ]
+  },
+  {
+    key: "adrenaline",
+    kicker: "Adrenaline / Skill",
+    title: "带一点速度，也带一点学习曲线",
+    description:
+      "有些兴趣会把人放回初学者的位置。它们不只是刺激，更像一种非常具体的自我训练。",
+    items: [
+      {
+        name: "滑雪",
+        label: "Snowboarding",
+        description:
+          "从双板转到单板，雪龄两年。喜欢那种速度、控制和失误都被立刻反馈出来的感觉。",
+        image: {
+          src: "/images/beyond-work-ski.jpg",
+          alt: "郑国华滑雪照片"
+        },
+        accent: "2 Seasons"
+      }
+    ]
+  },
+  {
+    key: "mood",
+    kicker: "Mood / Taste",
+    title: "也靠声音和味觉保存情绪",
+    description:
+      "不是所有兴趣都和远方有关，有些只是让日常更有层次。音乐和喝酒，都更像一种氛围选择。",
+    items: [
+      {
+        name: "音乐",
+        label: "Music",
+        description:
+          "喜欢林俊杰、Blackpink，也常听 R&B。比起类型标签，我更在意一首歌能不能把情绪接住。",
+        image: {
+          src: "/images/beyond-work-music.jpg",
+          alt: "郑国华观看音乐现场"
+        },
+        accent: "JJ / Blackpink / R&B"
+      }
+    ]
+  }
+] as const;

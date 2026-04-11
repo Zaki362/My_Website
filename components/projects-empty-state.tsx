@@ -16,7 +16,7 @@ export function ProjectsEmptyState() {
 
   return (
     <Reveal>
-      <section className="panel rounded-[2.25rem] p-7 md:p-10">
+      <section className="panel rounded-[2rem] p-5 md:rounded-[2.25rem] md:p-10">
         <div className="mb-10 max-w-2xl">
           <span className="pill mb-5">Building in public, carefully</span>
           <h2 className="mb-4 font-display text-3xl tracking-display text-white md:text-4xl">
@@ -33,9 +33,9 @@ export function ProjectsEmptyState() {
               key={project.title}
               type="button"
               onClick={() => setActiveProject(project)}
-              className="interactive-card content-card rounded-[1.75rem] p-6 text-left"
+              className="interactive-card content-card rounded-[1.5rem] p-5 text-left md:rounded-[1.75rem] md:p-6"
             >
-              <div className="mb-5 overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.02] p-3">
+              <div className="mb-5 overflow-hidden rounded-[1.25rem] border border-white/10 bg-white/[0.02] p-2.5 md:rounded-[1.4rem] md:p-3">
                 <Image
                   src={project.cover}
                   alt={project.title}
@@ -45,7 +45,7 @@ export function ProjectsEmptyState() {
                 />
               </div>
               <span className="pill mb-4">{project.eyebrow}</span>
-              <h3 className="mb-3 font-display text-2xl text-white">{project.title}</h3>
+              <h3 className="mb-3 font-display text-[1.45rem] text-white md:text-2xl">{project.title}</h3>
               <p className="mb-5 text-sm leading-8 text-slate-300/74">{project.shortDescription}</p>
               <div className="mb-5 flex flex-wrap gap-2">
                 {project.metrics.map((item) => (
@@ -84,13 +84,13 @@ export function ProjectsEmptyState() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.98 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-4 top-[8vh] z-[80] mx-auto max-h-[84vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.94))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl"
+              className="fixed inset-x-3 top-16 bottom-3 z-[80] mx-auto w-auto overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.94))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl md:inset-x-4 md:top-[8vh] md:bottom-auto md:max-h-[84vh] md:w-full md:max-w-5xl md:rounded-[2rem]"
             >
-              <div className="flex max-h-[84vh] flex-col overflow-hidden">
-                <div className="flex items-start justify-between gap-6 border-b border-white/8 px-6 py-5 md:px-8">
+              <div className="flex h-full max-h-full flex-col overflow-hidden md:max-h-[84vh]">
+                <div className="flex items-start justify-between gap-4 border-b border-white/8 px-4 py-4 md:gap-6 md:px-8 md:py-5">
                   <div className="max-w-3xl">
                     <span className="pill mb-4">{activeProject.eyebrow}</span>
-                    <h3 className="font-display text-3xl tracking-display text-white md:text-4xl">
+                    <h3 className="font-display text-[1.9rem] tracking-display text-white md:text-4xl">
                       {activeProject.title}
                     </h3>
                     <p className="mt-4 text-sm leading-8 text-slate-300/74 md:text-base">
@@ -107,10 +107,10 @@ export function ProjectsEmptyState() {
                   </button>
                 </div>
 
-                <div className="overflow-y-auto px-6 py-6 md:px-8 md:py-8">
+                <div className="overflow-y-auto px-4 py-4 md:px-8 md:py-8">
                   <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
                     <div>
-                      <div className="mb-6 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-3">
+                      <div className="mb-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-white/[0.02] p-2.5 md:rounded-[1.6rem] md:p-3">
                         <button
                           type="button"
                           onClick={() => setPreviewImage(activeProject.cover)}
@@ -121,7 +121,7 @@ export function ProjectsEmptyState() {
                             alt={activeProject.title}
                             width={PROJECT_COVER_WIDTH}
                             height={PROJECT_COVER_HEIGHT}
-                            className="h-auto w-full rounded-[1.2rem] transition duration-300 hover:opacity-95"
+                            className="h-auto w-full rounded-[1rem] transition duration-300 hover:opacity-95 md:rounded-[1.2rem]"
                           />
                         </button>
                       </div>
@@ -192,18 +192,18 @@ export function ProjectsEmptyState() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-4 z-[100] flex items-center justify-center"
+              className="fixed inset-3 z-[100] flex items-center justify-center md:inset-4"
             >
               <div className="relative max-h-full max-w-full">
                 <button
                   type="button"
                   onClick={() => setPreviewImage(null)}
-                  className="absolute top-3 right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-slate-950/62 text-slate-100 backdrop-blur-md transition hover:border-white/20 hover:text-white"
+                  className="absolute top-2 right-2 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-slate-950/62 text-slate-100 backdrop-blur-md transition hover:border-white/20 hover:text-white md:top-3 md:right-3"
                 >
                   <X className="h-4 w-4" />
                 </button>
 
-                <div className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto rounded-[1.5rem] border border-white/10 bg-slate-950/40 p-3 shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-xl">
+                <div className="max-h-[calc(100vh-1.5rem)] max-w-[calc(100vw-1.5rem)] overflow-auto rounded-[1.2rem] border border-white/10 bg-slate-950/40 p-2 md:max-h-[calc(100vh-2rem)] md:max-w-[calc(100vw-2rem)] md:rounded-[1.5rem] md:p-3 shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-xl">
                   <Image
                     src={previewImage}
                     alt="项目流程图预览"

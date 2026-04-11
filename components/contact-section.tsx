@@ -13,7 +13,7 @@ export function ContactSection() {
       title={contactData.title}
       description={contactData.description}
     >
-      <Reveal className="panel relative overflow-hidden rounded-[2.2rem] p-7 md:p-10">
+      <Reveal className="panel relative overflow-hidden rounded-[2rem] p-5 md:rounded-[2.2rem] md:p-10">
         <div className="absolute inset-0">
           <Image
             src={contactData.coverImage}
@@ -26,19 +26,19 @@ export function ContactSection() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_24%,rgba(147,197,253,0.18),transparent_18%),radial-gradient(circle_at_36%_72%,rgba(99,240,255,0.08),transparent_16%),radial-gradient(circle_at_68%_22%,rgba(129,140,248,0.12),transparent_18%)]" />
         </div>
 
-        <div className="relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div className="flex min-h-[460px] flex-col justify-end">
+        <div className="relative grid gap-6 md:gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div className="flex min-h-[280px] flex-col justify-end md:min-h-[460px]">
             <div className="max-w-md">
               <p className="mb-3 text-[11px] uppercase tracking-[0.32em] text-sky-100/44">
                 Closing Frame
               </p>
-              <p className="font-display text-xl leading-8 text-slate-50/90 md:text-[1.95rem] md:leading-[2.7rem]">
+              <p className="font-display text-lg leading-8 text-slate-50/90 md:text-[1.95rem] md:leading-[2.7rem]">
                 {contactData.closing}
               </p>
             </div>
           </div>
 
-          <div className="grid gap-4 lg:pl-10">
+          <div className="grid gap-3 md:gap-4 lg:pl-10">
             <a
               href={`mailto:${contactData.email}`}
               className="interactive-card rounded-[1.55rem] border border-white/10 bg-slate-950/28 p-5 backdrop-blur-md"
@@ -47,7 +47,7 @@ export function ContactSection() {
                 <Mail className="h-4 w-4" />
               </div>
               <p className="meta-label mb-1">Email</p>
-              <p className="text-sm text-slate-100/84">{contactData.email}</p>
+              <p className="break-all text-sm text-slate-100/84">{contactData.email}</p>
             </a>
 
             <a

@@ -1,3 +1,4 @@
+import { AboutPortalSection } from "@/components/about-portal-section";
 import { BackToTop } from "@/components/back-to-top";
 import { ContactSection } from "@/components/contact-section";
 import { EducationSection } from "@/components/education-section";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <ResearchSection />
       <SkillsSection />
       <ContactSection />
+      <AboutPortalSection />
       <Footer />
       <BackToTop />
     </main>
