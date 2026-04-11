@@ -194,19 +194,37 @@ export const projectsPageData = {
   title: "正在整理中的项目实验场",
   description:
     "这里将逐步收录我的 Vibe Coding 项目、AI 应用原型与实验性作品。相比数量，我更在意项目如何体现问题定义、工具选择与产品表达之间的完整逻辑。",
-  emptyTitle: "Vibe Coding 项目正在整理中",
+  emptyTitle: "部分项目已整理上线",
   emptyDescription:
-    "即将上线更多实验性作品、工具原型与 AI 应用实践。它们会被整理成更完整的表达，而不是仓促堆叠的 demo 列表。"
+    "这里收录的是适合公开展示的项目切片。我更希望它们呈现问题、方法与结果，而不是只停留在功能罗列。"
 };
 
 export const projectPlaceholders = [
   {
-    title: "Vibe Coding 项目正在整理中",
+    eyebrow: "Featured Project",
+    title: "美团商分知识抽取与召回分析 Agent",
+    shortDescription:
+      "面向商分业务的端到端分析 Agent，完成知识抽取、召回分析与报告辅助生成。",
     description:
-      "即将上线更多实验性作品、工具原型与 AI 应用实践，覆盖产品探索、Agent workflow 与交互表达。",
-    stack: ["Next.js", "TypeScript", "AI Prototype"],
-    projectUrl: "#",
-    githubUrl: "#",
-    cover: "/projects/placeholder-cover.jpg"
+      "一个面向商分业务的端到端分析 Agent：从历史报告中抽取结构化知识，再围绕一句话业务问题完成召回、分析框架生成与报告辅助输出。",
+    details:
+      "项目核心不在于单次问答，而在于把历史商分报告沉淀为可复用的知识结构，并让 Agent 能围绕真实业务 query 进行分析组织。公开展示中保留产品思路、workflow 设计与效果结论，不展示详细 Prompt 与内部策略实现。",
+    highlights: [
+      "将历史分析报告转化为指标维度表、指标树与原子知识卡片，提升知识复用效率。",
+      "围绕一句话业务 query 进行召回与分析框架组织，输出覆盖指标与维度的完整分析思路。",
+      "基于 RAG 和评测机制提升报告质量，降低幻觉并增强分析结果可信度。",
+      "支持多业务迁移，逐步从单点工具演进为通用经营分析 workflow。"
+    ],
+    outcomes: [
+      "节省约 80% 人力，替代约 70% 基础经分工作。",
+      "分析报告评测得分提升约 70%。",
+      "拓展至神券、线下住宿等 10+ 业务场景。"
+    ],
+    note: "公开版本仅展示方法框架与业务结果，不包含详细 Prompt、内部规则或敏感数据。",
+    stack: ["Agent", "RAG", "Workflow", "Knowledge Extraction", "Evaluation", "SQL"],
+    metrics: ["80% 人力节省", "70% 基础经分替代", "10+ 业务场景扩展"],
+    projectUrl: "",
+    githubUrl: "",
+    cover: "/projects/meituan-agent-cover.png"
   }
 ];

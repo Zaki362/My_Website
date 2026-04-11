@@ -1,9 +1,19 @@
-import Link from "next/link";
-import { ArrowUpRight, Github } from "lucide-react";
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, X } from "lucide-react";
 import { projectPlaceholders, projectsPageData } from "@/data/profile";
 import { Reveal } from "@/components/reveal";
 
+const PROJECT_COVER_WIDTH = 2780;
+const PROJECT_COVER_HEIGHT = 716;
+
 export function ProjectsEmptyState() {
+  const [activeProject, setActiveProject] = useState<(typeof projectPlaceholders)[number] | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   return (
     <Reveal>
       <section className="panel rounded-[2.25rem] p-7 md:p-10">
@@ -19,31 +29,194 @@ export function ProjectsEmptyState() {
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {projectPlaceholders.map((project) => (
-            <article key={project.title} className="interactive-card rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
-              <div className="mb-5 aspect-[4/3] rounded-[1.4rem] border border-dashed border-white/12 bg-[radial-gradient(circle_at_top,_rgba(122,215,255,0.12),_transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]" />
+            <button
+              key={project.title}
+              type="button"
+              onClick={() => setActiveProject(project)}
+              className="interactive-card rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 text-left"
+            >
+              <div className="mb-5 overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.02] p-3">
+                <Image
+                  src={project.cover}
+                  alt={project.title}
+                  width={PROJECT_COVER_WIDTH}
+                  height={PROJECT_COVER_HEIGHT}
+                  className="h-auto w-full rounded-[1rem]"
+                />
+              </div>
+              <span className="pill mb-4">{project.eyebrow}</span>
               <h3 className="mb-3 font-display text-2xl text-white">{project.title}</h3>
-              <p className="mb-5 text-sm leading-7 text-slate-300/78">{project.description}</p>
-              <div className="mb-6 flex flex-wrap gap-2">
-                {project.stack.map((item) => (
-                  <span key={item} className="pill">
+              <p className="mb-5 text-sm leading-7 text-slate-300/78">{project.shortDescription}</p>
+              <div className="mb-5 flex flex-wrap gap-2">
+                {project.metrics.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-sky-200/10 bg-sky-100/[0.03] px-3 py-1 text-xs text-slate-200/82"
+                  >
                     {item}
                   </span>
                 ))}
               </div>
-              <div className="flex items-center gap-4 text-sm text-slate-300/75">
-                <Link href={project.projectUrl} className="inline-flex items-center gap-2 hover:text-white">
-                  项目链接
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-                <Link href={project.githubUrl} className="inline-flex items-center gap-2 hover:text-white">
-                  GitHub
-                  <Github className="h-4 w-4" />
-                </Link>
+              <div className="flex items-center gap-2 text-sm text-slate-300/76">
+                查看详情
+                <ArrowUpRight className="h-4 w-4" />
               </div>
-            </article>
+            </button>
           ))}
         </div>
       </section>
+
+      <AnimatePresence>
+        {activeProject ? (
+          <>
+            <motion.button
+              type="button"
+              aria-label="关闭项目详情"
+              className="fixed inset-0 z-[70] bg-slate-950/58 backdrop-blur-[3px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveProject(null)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.98 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-x-4 top-[8vh] z-[80] mx-auto max-h-[84vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.94))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl"
+            >
+              <div className="flex max-h-[84vh] flex-col overflow-hidden">
+                <div className="flex items-start justify-between gap-6 border-b border-white/8 px-6 py-5 md:px-8">
+                  <div className="max-w-3xl">
+                    <span className="pill mb-4">{activeProject.eyebrow}</span>
+                    <h3 className="font-display text-3xl tracking-display text-white md:text-4xl">
+                      {activeProject.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-8 text-slate-300/78 md:text-base">
+                      {activeProject.description}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveProject(null)}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-white/20 hover:text-white"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="overflow-y-auto px-6 py-6 md:px-8 md:py-8">
+                  <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+                    <div>
+                      <div className="mb-6 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-3">
+                        <button
+                          type="button"
+                          onClick={() => setPreviewImage(activeProject.cover)}
+                          className="block w-full text-left"
+                        >
+                          <Image
+                            src={activeProject.cover}
+                            alt={activeProject.title}
+                            width={PROJECT_COVER_WIDTH}
+                            height={PROJECT_COVER_HEIGHT}
+                            className="h-auto w-full rounded-[1.2rem] transition duration-300 hover:opacity-95"
+                          />
+                        </button>
+                      </div>
+                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Project Summary</p>
+                        <p className="text-sm leading-8 text-slate-300/82">{activeProject.details}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-6">
+                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Project Highlights</p>
+                        <div className="space-y-3">
+                          {activeProject.highlights.map((item) => (
+                            <p key={item} className="text-sm leading-7 text-slate-200/82">
+                              {item}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-white/8 bg-white/[0.03] p-5">
+                        <p className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-500">Outcomes</p>
+                        <div className="space-y-3">
+                          {activeProject.outcomes.map((item) => (
+                            <p key={item} className="text-sm leading-7 text-slate-200/82">
+                              {item}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {activeProject.stack.map((item) => (
+                      <span key={item} className="pill">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-[1.4rem] border border-amber-100/10 bg-amber-50/[0.03] px-4 py-3 text-sm leading-7 text-slate-300/78">
+                    {activeProject.note}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {previewImage ? (
+          <>
+            <motion.button
+              type="button"
+              aria-label="关闭图片预览"
+              className="fixed inset-0 z-[90] bg-slate-950/82 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPreviewImage(null)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-4 z-[100] flex items-center justify-center"
+            >
+              <div className="relative max-h-full max-w-full">
+                <button
+                  type="button"
+                  onClick={() => setPreviewImage(null)}
+                  className="absolute top-3 right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-slate-950/62 text-slate-100 backdrop-blur-md transition hover:border-white/20 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+
+                <div className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto rounded-[1.5rem] border border-white/10 bg-slate-950/40 p-3 shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-xl">
+                  <Image
+                    src={previewImage}
+                    alt="项目流程图预览"
+                    width={PROJECT_COVER_WIDTH}
+                    height={PROJECT_COVER_HEIGHT}
+                    className="max-w-none rounded-[1rem]"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </>
+        ) : null}
+      </AnimatePresence>
     </Reveal>
   );
 }
