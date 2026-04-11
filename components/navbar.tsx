@@ -25,6 +25,11 @@ export function Navbar() {
   }, [pathname]);
 
   const homeLinks = navigation.filter((item) => item.href.startsWith("#"));
+  const pageLinks = navigation.filter((item) => item.href.startsWith("/"));
+
+  function resolveHomeHref(href: string) {
+    return pathname === "/" ? href : `/${href}`;
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-4">
@@ -47,14 +52,20 @@ export function Navbar() {
                   ? pathname === item.href
                   : pathname === "/" && item.href.startsWith("#");
 
+              const className = `text-sm tracking-[0.04em] transition ${
+                isActive ? "text-white" : "text-slate-300/70 hover:text-white"
+              }`;
+
+              if (item.href.startsWith("#")) {
+                return (
+                  <a key={item.label} href={resolveHomeHref(item.href)} className={className}>
+                    {item.label}
+                  </a>
+                );
+              }
+
               return (
-                <Link
-                  key={item.label}
-                  href={pathname === "/projects" && item.href.startsWith("#") ? `/${item.href}` : item.href}
-                  className={`text-sm tracking-[0.04em] transition ${
-                    isActive ? "text-white" : "text-slate-300/70 hover:text-white"
-                  }`}
-                >
+                <Link key={item.label} href={item.href} className={className}>
                   {item.label}
                 </Link>
               );
@@ -84,17 +95,15 @@ export function Navbar() {
             <div className="mt-3 rounded-[1.75rem] border border-white/10 bg-slate-950/92 p-4 shadow-panel backdrop-blur-xl">
               <div className="flex flex-col gap-1">
                 {homeLinks.map((item) => (
-                  <Link
+                  <a
                     key={item.label}
-                    href={pathname !== "/" ? `/${item.href}` : item.href}
+                    href={resolveHomeHref(item.href)}
                     className="rounded-2xl px-3 py-3 text-sm text-slate-200/82 transition hover:bg-white/5 hover:text-white"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 ))}
-                {navigation
-                  .filter((item) => item.href.startsWith("/"))
-                  .map((item) => (
+                {pageLinks.map((item) => (
                     <Link
                       key={item.label}
                       href={item.href}
