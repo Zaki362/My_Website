@@ -71,7 +71,7 @@ export function ExpandableExperienceCard({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.42, ease: "easeOut" }}
             className="overflow-hidden"
           >
             <div className="mt-8 grid gap-6 border-t border-white/8 pt-8 lg:grid-cols-[1.1fr_0.9fr]">

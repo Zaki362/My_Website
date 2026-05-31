@@ -9,7 +9,10 @@ export type KnowledgeChunk = {
     | "research"
     | "campus"
     | "skills"
-    | "project-interest";
+    | "project-interest"
+    | "project"
+    | "contact"
+    | "beyond";
   text: string;
   keywords: string[];
   tags: string[];

@@ -1,10 +1,14 @@
-import { footerText } from "@/data/profile";
+"use client";
+
+import { useLanguage } from "@/components/language-provider";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
-    <footer className="container-shell py-10 md:py-12">
-      <div className="border-t border-white/8 pt-6 text-sm tracking-[0.08em] text-slate-400/88">
-        {footerText}
+    <footer className="container-shell pb-10">
+      <div className="border-t border-stone-900/10 pt-6 text-sm text-stone-500">
+        {t.footer}
       </div>
     </footer>
   );

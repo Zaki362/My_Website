@@ -1,80 +1,78 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { AgentDialog } from "@/components/agent/AgentDialog";
-import { AgentPromptBubble } from "@/components/agent/AgentPromptBubble";
 import { AgentSprite } from "@/components/agent/AgentSprite";
+import { cn } from "@/components/design-system";
 
-const AGENT_SEEN_KEY = "guohua-agent-opened";
+type AgentMode = "card" | "chat" | "minimized";
 
-export const agentPromptCandidates = [
-  "Ask about my work",
-  "Trace what I build",
-  "Explore the path",
-  "Ask about my journey",
-  "Read the signal",
-  "See what I build",
-  "Ask inside the profile",
-  "Follow the work"
-] as const;
-
-const DEFAULT_PROMPT = "Explore my journey";
-
-export function AgentLauncher() {
-  const [open, setOpen] = useState(false);
+export function AgentLauncher({ className }: { className?: string }) {
+  const [mode, setMode] = useState<AgentMode>("card");
   const [hovered, setHovered] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [hasOpenedBefore, setHasOpenedBefore] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const seen = window.localStorage.getItem(AGENT_SEEN_KEY) === "true";
-    setHasOpenedBefore(seen);
-
-    const delay = window.setTimeout(() => {
-      setShowPrompt(true);
-    }, seen ? 1800 : 1400);
-
-    return () => window.clearTimeout(delay);
-  }, []);
-
-  function handleOpen() {
-    setOpen(true);
-    setHasOpenedBefore(true);
-    setShowPrompt(true);
-
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(AGENT_SEEN_KEY, "true");
-    }
-  }
+  const reduceMotion = useReducedMotion();
 
   return (
     <>
-      <div
-        className="relative flex h-14 items-center"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        <AgentPromptBubble
-          text={DEFAULT_PROMPT}
-          visible={showPrompt}
-          subdued={hasOpenedBefore && !hovered && !open}
-          highlighted={hovered || open}
-        />
-        <button
+      {mode === "card" ? (
+        <motion.button
           type="button"
-          onClick={handleOpen}
-          className="group relative inline-flex h-12 w-12 items-center justify-center rounded-full"
-          aria-label="打开郑国华个人资料助手"
+          onClick={() => setMode("chat")}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.96 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+          whileHover={reduceMotion ? undefined : { y: -4 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className={cn(
+            "group relative z-10 flex h-[96px] w-full items-center overflow-hidden rounded-[1.75rem] border border-[rgba(130,100,70,0.12)] bg-white/[0.82] px-5 py-4 text-left shadow-[0_20px_60px_rgba(80,60,40,0.10)] backdrop-blur-2xl transition hover:border-[rgba(130,100,70,0.2)] hover:shadow-[0_26px_76px_rgba(80,60,40,0.14)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.40]",
+            className
+          )}
+          aria-label="打开国华的 AI 助手"
         >
-          <AgentSprite active={open} hovered={hovered} />
-        </button>
-      </div>
+          <span className="absolute inset-0 bg-[radial-gradient(circle_at_92%_68%,rgba(139,108,246,0.12),transparent_32%),radial-gradient(circle_at_12%_18%,rgba(255,226,184,0.34),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.84),rgba(255,247,235,0.78))]" />
+          <span className="pointer-events-none absolute -left-2 bottom-3 h-12 w-12 rounded-bl-[1.2rem] border-b-2 border-l-2 border-[#f1c78f]/[0.42]" />
+          <span className="pointer-events-none absolute -right-2 top-3 h-12 w-12 rounded-tr-[1.2rem] border-r-2 border-t-2 border-[#f1c78f]/[0.42]" />
+          <span className="pointer-events-none absolute left-4 top-4 h-2 w-2 rotate-45 rounded-[1px] bg-[#f3c98d] shadow-[11px_-9px_0_-2px_rgba(243,201,141,0.88)]" />
 
-      <AgentDialog open={open} onClose={() => setOpen(false)} />
+          <span className="relative z-10 mr-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.35rem] border border-white/70 bg-[#fff8ee] shadow-[0_14px_32px_rgba(80,60,40,0.11)]">
+            <AgentSprite hovered={hovered} size="sm" />
+          </span>
+
+          <span className="relative z-10 block min-w-0 flex-1">
+            <span className="block font-display text-[1rem] font-[760] leading-snug text-[#3a281b] drop-shadow-[0_1px_0_rgba(255,255,255,0.58)] md:text-[1.08rem]">
+              Hi！我是国华的 AI 助手 👋
+            </span>
+            <span className="mt-2.5 inline-flex items-center gap-2 font-display text-[0.88rem] font-[650] leading-none text-[#7b6650] transition group-hover:text-[#3d2a1c]">
+              点击和我对话
+              <ArrowRight className="h-[1.125rem] w-[1.125rem] transition duration-300 group-hover:translate-x-1" />
+            </span>
+          </span>
+        </motion.button>
+      ) : null}
+
+      {mode === "minimized" ? (
+        <motion.button
+          type="button"
+          onClick={() => setMode("chat")}
+          initial={reduceMotion ? false : { opacity: 0, y: 14, scale: 0.9 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+          whileHover={reduceMotion ? undefined : { y: -3, scale: 1.03 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed bottom-5 right-5 z-[65] flex h-16 w-16 items-center justify-center rounded-full border border-stone-900/10 bg-[#fffdfa]/92 shadow-[0_22px_60px_rgba(79,62,39,0.16)] backdrop-blur-2xl md:bottom-6 md:right-6"
+          aria-label="恢复国华的 AI 助手"
+        >
+          <AgentSprite active size="md" />
+        </motion.button>
+      ) : null}
+
+      <AgentDialog
+        open={mode === "chat"}
+        onMinimize={() => setMode("minimized")}
+        onClose={() => setMode("card")}
+      />
     </>
   );
 }

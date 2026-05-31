@@ -14,10 +14,10 @@ export function ChatMessage({ role, content }: ChatMessageProps) {
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[88%] rounded-[1.4rem] border px-4 py-3 text-sm leading-7",
+          "max-w-[88%] whitespace-pre-wrap rounded-[1.35rem] border px-4 py-3 text-sm leading-7 shadow-[0_12px_30px_rgba(79,62,39,0.05)]",
           isUser
-            ? "border-sky-200/16 bg-sky-300/[0.08] text-slate-50"
-            : "border-white/8 bg-white/[0.04] text-slate-200/84"
+            ? "border-[#2b2933]/10 bg-[#2b2933] text-[#fffaf2]"
+            : "border-stone-900/10 bg-[#fffdfa]/86 text-stone-700"
         )}
       >
         {content}

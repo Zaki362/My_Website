@@ -7,23 +7,22 @@ export const siteMeta = {
 };
 
 export const navigation = [
-  { label: "关于我", href: "#home" },
-  { label: "教育背景", href: "#education" },
-  { label: "实习经历", href: "#experience" },
-  { label: "科研竞赛", href: "#research" },
-  { label: "技能", href: "#skills" },
-  { label: "联系我", href: "#contact" },
-  { label: "Projects", href: "/projects" },
-  { label: "Beyond Work", href: "/beyond-work" }
+  { label: "关于", href: "#home" },
+  { label: "教育", href: "#education" },
+  { label: "工作", href: "#experience" },
+  { label: "项目", href: "/projects" },
+  { label: "科研", href: "#research" },
+  { label: "生活", href: "/beyond-work" },
+  { label: "联系", href: "#contact" }
 ] as const;
 
 export const heroData = {
   name: "郑国华",
   title: "北京大学 27 届经济学硕士 / 中国人民大学本科",
-  tagline: "AI 产品经理｜聚焦 Agent、工作流、Vibe Coding 与 AIGC 应用",
+  tagline: "AI 产品经理｜聚焦 Agent、Workflow、Vibe Coding 与 AIGC 应用",
   intro:
     "曾在字节跳动、百度、美团进行 AI 产品方向实习，分别聚焦 AIGC、Vibe Coding 与端到端分析 Agent 方向，熟悉 Agent 系统设计、评测策略与 AI 业务场景落地。",
-  eyebrow: ["Peking University", "AI / Product Manager", "Agent / Workflow Strategy"],
+  eyebrow: [],
   cta: [
     { label: "实习经历", href: "#experience", variant: "primary" as const },
     { label: "Vibe Coding 项目", href: "/projects", variant: "secondary" as const },
@@ -126,15 +125,21 @@ export const experiences = [
 ] as const;
 
 export const researchData = {
-  title: "研究能力、组织经验的体现",
+  title: "研究能力的体现",
   description: "如何处理复杂问题、组织资源并形成稳定输出的另一种证明。",
   paper: {
-    title: "Does Freight Structure Transformation Improve Air Quality?",
+    title:
+      "Does Freight Structure Transformation Improve Air Quality? Evidence from China's “Shifting Freight from Truck to Rail” Policy",
     journal: "Journal of Environmental Economics and Management（JEEM）经济学国际顶刊",
     role: "第二作者",
+    authors: "Yuchao Liang, Guohua Zheng, Jinuo Wang, Jun Pang",
     note: "以经济学研究方法切入环境治理议题，体现定量研究、英文写作与学术协同能力。",
     link: "https://www.sciencedirect.com/science/article/abs/pii/S0095069625000634",
     doi: "10.1016/j.jeem.2025.103179",
+    articleNumber: "103179",
+    coverImage: "/images/jeem-cover.jpg",
+    contribution:
+      "Writing – original draft, Visualization, Validation, Software, Formal analysis, Data curation.",
     citation:
       "Liang Y, Zheng G, Wang J, et al. Does freight structure transformation improve air quality?–Evidence from China's “shifting freight from truck to rail” policy[J]. Journal of Environmental Economics and Management, 2025, 132: 103179.",
     journalInfo: [
@@ -182,7 +187,7 @@ export const contactData = {
   description: "AGI 将至，如果你也在思考 AI 产品的发展，或希望展开合作，欢迎联系。",
   email: "guohuaz666@163.com",
   phone: "131-4112-2166",
-  github: "https://github.com/",
+  github: "https://github.com/Zaki362",
   photoPath: "/images/profile.jpg",
   coverImage: "/images/contact-sky.jpg",
   closing:
@@ -204,30 +209,30 @@ export const projectsPageData = {
 export const projectPlaceholders = [
   {
     eyebrow: "Featured Project",
-    title: "美团商分知识抽取与召回分析 Agent",
+    title: "练一下 / FitLog Minimal",
     shortDescription:
-      "面向商分业务的端到端分析 Agent，完成知识抽取、召回分析与报告辅助生成。",
+      "用 vibe coding 方式完成的个人健身记录 PWA，围绕快速开练、轻量记录与持续复盘设计。",
     description:
-      "一个面向商分业务的端到端分析 Agent：从历史报告中抽取结构化知识，再围绕一句话业务问题完成召回、分析框架生成与报告辅助输出。",
+      "练一下 / FitLog Minimal 是我用 vibe coding 方式完成的个人健身记录 PWA。项目从自己的训练习惯出发，围绕“快速开练、轻量记录、持续复盘”设计。",
     details:
-      "项目核心不在于单次问答，而在于把历史商分报告沉淀为可复用的知识结构，并让 Agent 能围绕真实业务 query 进行分析组织。公开展示中保留产品思路、workflow 设计与效果结论，不展示详细 Prompt 与内部策略实现。",
+      "动作库、训练中记录、历史统计、数据导入导出都运行在本地浏览器中，无需登录和后端。整个过程通过与 AI 编程助手协作完成，从产品结构、交互细节到动作配图和移动端体验持续迭代，是一次把个人需求快速变成可用工具的实践。",
     highlights: [
-      "将历史分析报告转化为指标维度表、指标树与原子知识卡片，提升知识复用效率。",
-      "围绕一句话业务 query 进行召回与分析框架组织，输出覆盖指标与维度的完整分析思路。",
-      "基于 RAG 和评测机制提升报告质量，降低幻觉并增强分析结果可信度。",
-      "支持多业务迁移，逐步从单点工具演进为通用经营分析 workflow。"
+      "围绕真实训练习惯设计首页状态、开始训练、历史记录与动作库模块。",
+      "训练数据保存在本地浏览器，支持数据导入导出，无需登录和后端。",
+      "通过 AI 编程助手持续迭代产品结构、交互细节、动作配图和移动端体验。",
+      "把个人需求快速转化为可使用、可复盘、可持续维护的轻量工具。"
     ],
     outcomes: [
-      "节省约 80% 人力，替代约 70% 基础经分工作。",
-      "分析报告评测得分提升约 70%。",
-      "拓展至神券、线下住宿等 10+ 业务场景。"
+      "完成一个可直接使用的个人健身记录 PWA。",
+      "覆盖动作库、训练中记录、历史统计、数据导入导出等核心功能。",
+      "验证了 vibe coding 从个人需求到可用工具的快速闭环。"
     ],
-    note: "公开版本仅展示方法框架与业务结果，不包含详细 Prompt、内部规则或敏感数据。",
-    stack: ["Agent", "RAG", "Workflow", "Knowledge Extraction", "Evaluation", "SQL"],
-    metrics: ["80% 人力节省", "70% 基础经分替代", "10+ 业务场景扩展"],
-    projectUrl: "",
+    note: "线上版本可直接访问，数据默认保存在本地浏览器。",
+    stack: ["PWA", "Vibe Coding", "Local-first", "Fitness Tracker", "Mobile UX", "Data Export"],
+    metrics: ["0 登录 / 后端", "4 个核心模块", "PWA 本地优先"],
+    projectUrl: "https://fitlog-minimal.vercel.app/",
     githubUrl: "",
-    cover: "/projects/meituan-agent-cover.png"
+    cover: "/projects/fitlog-minimal-cover.png"
   }
 ];
 
