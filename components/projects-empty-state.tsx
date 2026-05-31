@@ -83,7 +83,7 @@ export function ProjectsEmptyState() {
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.98 }}
-              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.24, ease: "easeOut" }}
               className="fixed inset-x-3 top-16 bottom-3 z-[80] mx-auto w-auto overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.94))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl md:inset-x-4 md:top-[8vh] md:bottom-auto md:max-h-[84vh] md:w-full md:max-w-5xl md:rounded-[2rem]"
             >
               <div className="flex h-full max-h-full flex-col overflow-hidden md:max-h-[84vh]">
@@ -191,7 +191,7 @@ export function ProjectsEmptyState() {
               initial={{ opacity: 0, scale: 0.96, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
               className="fixed inset-3 z-[100] flex items-center justify-center md:inset-4"
             >
               <div className="relative max-h-full max-w-full">

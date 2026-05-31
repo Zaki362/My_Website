@@ -12,30 +12,33 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         surface: "var(--surface)",
-        stroke: "var(--stroke)",
-        accent: "var(--accent)",
+        surfaceSoft: "var(--surface-soft)",
+        border: "var(--border)",
+        accentBlue: "var(--accent-blue)",
+        accentCyan: "var(--accent-cyan)",
+        accentPurple: "var(--accent-purple)",
         accentSoft: "var(--accent-soft)"
       },
       boxShadow: {
-        panel: "0 20px 60px rgba(5, 10, 25, 0.45)",
-        glow: "0 0 0 1px rgba(131, 206, 255, 0.1), 0 16px 45px rgba(59, 130, 246, 0.18)"
+        panel: "var(--shadow-card)",
+        glow: "var(--shadow-soft)"
       },
       backgroundImage: {
         "hero-grid":
-          "linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px)"
+          "linear-gradient(rgba(86,72,56,0.032) 1px, transparent 1px), linear-gradient(90deg, rgba(86,72,56,0.032) 1px, transparent 1px)"
       },
       fontFamily: {
         sans: [
+          "\"Geist\"",
+          "\"Inter\"",
           "\"PingFang SC\"",
-          "\"Hiragino Sans GB\"",
           "\"Noto Sans SC\"",
-          "\"Microsoft YaHei\"",
           "system-ui",
           "sans-serif"
         ],
         display: [
-          "\"Avenir Next\"",
-          "\"SF Pro Display\"",
+          "\"Geist\"",
+          "\"Inter\"",
           "\"PingFang SC\"",
           "\"Noto Sans SC\"",
           "system-ui",
@@ -43,7 +46,7 @@ const config: Config = {
         ]
       },
       letterSpacing: {
-        display: "-0.04em"
+        display: "0"
       }
     }
   },

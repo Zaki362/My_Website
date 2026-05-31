@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, Send, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Check, Copy, Loader2, Mail, Minus, Send, X } from "lucide-react";
 import { agentProfile } from "@/data/knowledge-base/profile";
+import { contactData } from "@/data/profile";
 import { ChatMessage } from "@/components/agent/ChatMessage";
 import { SuggestedQuestions } from "@/components/agent/SuggestedQuestions";
+import { AgentSprite } from "@/components/agent/AgentSprite";
 
 type Message = {
   role: "user" | "assistant";
@@ -15,20 +18,79 @@ type Message = {
 type AgentDialogProps = {
   open: boolean;
   onClose: () => void;
+  onMinimize: () => void;
 };
 
 const MAX_INPUT_LENGTH = 500;
 
-export function AgentDialog({ open, onClose }: AgentDialogProps) {
+function shouldShowEmailAction(content: string) {
+  return content.includes(contactData.email);
+}
+
+function AgentActionBar() {
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(contactData.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      window.location.href = `mailto:${contactData.email}`;
+    }
+  }
+
+  return (
+    <div className="mt-2 flex flex-wrap gap-2 pl-1">
+      <button
+        type="button"
+        onClick={copyEmail}
+        className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/10 bg-blue-500/[0.065] px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-500/[0.1]"
+      >
+        {copied ? "已复制邮箱" : "复制邮箱"}
+        {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+      </button>
+    </div>
+  );
+}
+
+export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: agentProfile.welcomeMessage }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const reduceMotion = useReducedMotion();
 
   const canSend = input.trim().length > 0 && input.trim().length <= MAX_INPUT_LENGTH && !loading;
   const remaining = MAX_INPUT_LENGTH - input.trim().length;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 120);
+
+    return () => window.clearTimeout(timer);
+  }, [open]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: reduceMotion ? "auto" : "smooth"
+    });
+  }, [messages, loading, reduceMotion]);
 
   async function submitQuestion(question: string) {
     const trimmed = question.trim();
@@ -89,96 +151,129 @@ export function AgentDialog({ open, onClose }: AgentDialogProps) {
     }
   }
 
-  const emptyTips = useMemo(() => agentProfile.suggestedQuestions, []);
+  const quickQuestions = useMemo(() => agentProfile.suggestedQuestions, []);
 
-  return (
+  const dialog = (
     <AnimatePresence>
       {open ? (
-        <>
-          <motion.button
-            type="button"
-            aria-label="关闭资料助手"
-            className="fixed inset-0 z-[70] bg-slate-950/46 backdrop-blur-[2px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-
-          <motion.aside
-            initial={{ opacity: 0, y: 22, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 22, scale: 0.98 }}
-            transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed right-4 top-20 z-[80] flex h-[min(78vh,720px)] w-[min(460px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(10,14,31,0.96),rgba(7,10,22,0.9))] shadow-[0_24px_80px_rgba(4,9,22,0.58)] backdrop-blur-2xl md:right-6 md:top-24 max-md:inset-x-3 max-md:top-auto max-md:bottom-3 max-md:h-[78vh] max-md:w-auto max-md:rounded-[1.6rem]"
-          >
-            <div className="border-b border-white/8 px-4 py-4 md:px-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-display text-lg text-white">{agentProfile.agentName}</p>
-                  <p className="mt-1 text-xs leading-6 text-slate-400">{agentProfile.subtitle}</p>
+        <motion.aside
+          initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.92 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+          exit={reduceMotion ? undefined : { opacity: 0, y: 18, scale: 0.92 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: "100% 100%" }}
+          className="fixed bottom-5 right-5 z-[80] flex h-[min(560px,calc(100vh-2.5rem))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.75rem] border border-stone-900/10 bg-[#fffdfa]/95 shadow-[0_30px_90px_rgba(79,62,39,0.18)] backdrop-blur-2xl md:bottom-6 md:right-6"
+          aria-label="国华的 AI 助手聊天窗口"
+        >
+          <header className="border-b border-stone-900/10 bg-[linear-gradient(135deg,#fffdfa,#f5efe4_52%,#eef5ff)] px-4 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-stone-900/10 bg-white/70 shadow-[0_12px_28px_rgba(79,62,39,0.10)]">
+                  <AgentSprite active />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-base font-[620] leading-6 text-stone-950">
+                    {agentProfile.agentName}
+                  </p>
+                  <p className="mt-0.5 flex items-center gap-1.5 text-xs leading-5 text-stone-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    {agentProfile.subtitle}
+                  </p>
                 </div>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={onMinimize}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
+                  aria-label="最小化 AI 助手"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-white/20 hover:text-white"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
+                  aria-label="关闭 AI 助手"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
+          </header>
 
-            <div className="border-b border-white/8 px-4 py-3 md:px-6 md:py-4">
-              <SuggestedQuestions questions={emptyTips} onSelect={submitQuestion} disabled={loading} />
-            </div>
-
-            <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 md:px-6 md:py-5">
-              {messages.map((message, index) => (
-                <ChatMessage key={`${message.role}-${index}`} role={message.role} content={message.content} />
-              ))}
-
-              {loading ? (
-                <div className="flex justify-start">
-                  <div className="inline-flex items-center gap-2 rounded-[1.4rem] border border-white/8 bg-white/[0.04] px-4 py-3 text-sm text-slate-300/78">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    正在整理相关资料片段...
+          <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+            {messages.map((message, index) => (
+              <div key={`${message.role}-${index}`}>
+                <ChatMessage role={message.role} content={message.content} />
+                {message.role === "assistant" && shouldShowEmailAction(message.content) ? <AgentActionBar /> : null}
+                {index === 0 ? (
+                  <div className="mt-3">
+                    <SuggestedQuestions questions={quickQuestions} onSelect={submitQuestion} disabled={loading} />
                   </div>
-                </div>
-              ) : null}
-            </div>
+                ) : null}
+              </div>
+            ))}
 
-            <form
-              className="border-t border-white/8 px-4 py-4 md:px-6"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void submitQuestion(input);
-              }}
-            >
-              <div className="mb-3 flex items-center justify-between text-xs text-slate-500">
-                <span>仅回答与郑国华个人资料相关的问题</span>
-                <span>{remaining}</span>
+            {loading ? (
+              <div className="flex justify-start">
+                <div className="inline-flex items-center gap-2 rounded-[1.35rem] border border-stone-900/10 bg-[#fffdfa]/86 px-4 py-3 text-sm text-stone-600">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  正在整理站内资料...
+                </div>
               </div>
-              <div className="flex items-end gap-2 md:gap-3">
-                <textarea
-                  value={input}
-                  onChange={(event) => setInput(event.target.value.slice(0, MAX_INPUT_LENGTH))}
-                  rows={1}
-                  placeholder="例如：他在百度主要做了哪些工作？"
-                  className="min-h-[52px] flex-1 resize-none rounded-[1.25rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-sky-200/28 focus:bg-white/[0.06] md:rounded-[1.4rem]"
-                />
-                <button
-                  type="submit"
-                  disabled={!canSend}
-                  className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-full border border-sky-200/16 bg-sky-300/[0.1] text-sky-100 transition hover:border-sky-200/28 hover:bg-sky-300/[0.16] disabled:cursor-not-allowed disabled:opacity-45"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
-              </div>
-              {error ? <p className="mt-3 text-xs text-rose-300/78">{error}</p> : null}
-            </form>
-          </motion.aside>
-        </>
+            ) : null}
+          </div>
+
+          <form
+            className="border-t border-stone-900/10 bg-[#fffdfa]/92 px-4 py-4"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void submitQuestion(input);
+            }}
+          >
+            <div className="mb-2 flex items-center justify-between text-[11px] text-stone-400">
+              <span>主要回答国华的站内资料问题</span>
+              <span>{remaining}</span>
+            </div>
+            <div className="flex items-end gap-2">
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(event) => setInput(event.target.value.slice(0, MAX_INPUT_LENGTH))}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    if (canSend) {
+                      void submitQuestion(input);
+                    }
+                  }
+                }}
+                rows={1}
+                placeholder="想了解国华的什么？"
+                className="min-h-[48px] flex-1 resize-none rounded-[1.2rem] border border-stone-900/10 bg-white/72 px-4 py-3 text-sm text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-blue-500/24 focus:bg-white"
+              />
+              <button
+                type="submit"
+                disabled={!canSend}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#2b2933] text-[#fffaf2] shadow-[0_14px_32px_rgba(61,50,38,0.14)] transition hover:bg-[#24222b] disabled:cursor-not-allowed disabled:opacity-45"
+                aria-label="发送问题"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+            {error ? (
+              <p className="mt-3 flex items-center gap-1.5 text-xs text-rose-500">
+                <Mail className="h-3.5 w-3.5" />
+                {error}
+              </p>
+            ) : null}
+          </form>
+        </motion.aside>
       ) : null}
     </AnimatePresence>
   );
+
+  return mounted ? createPortal(dialog, document.body) : null;
 }

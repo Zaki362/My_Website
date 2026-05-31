@@ -5,17 +5,35 @@ import { motion } from "framer-motion";
 type AgentSpriteProps = {
   active?: boolean;
   hovered?: boolean;
+  size?: "sm" | "md" | "card" | "hero";
 };
 
 export function AgentSprite({
   active = false,
-  hovered = false
+  hovered = false,
+  size = "md"
 }: AgentSpriteProps) {
   const attentive = active || hovered;
+  const wrapperClass =
+    size === "hero"
+      ? "h-32 w-32 md:h-36 md:w-36"
+    : size === "card"
+        ? "h-[4.75rem] w-[4.75rem]"
+      : size === "sm"
+        ? "h-11 w-11"
+        : "h-12 w-12";
+  const svgClass =
+    size === "hero"
+      ? "h-32 w-32 md:h-36 md:w-36"
+    : size === "card"
+        ? "h-[4.75rem] w-[4.75rem]"
+      : size === "sm"
+        ? "h-10 w-10"
+        : "h-11 w-11";
 
   return (
     <motion.div
-      className="relative flex h-11 w-11 items-center justify-center"
+      className={`relative flex items-center justify-center ${wrapperClass}`}
       animate={{
         x: attentive ? [0, -2.4, 2.2, -1.2, 0] : [0, -4.8, 4.4, -2.2, 0],
         y: attentive ? [0, -2.6, -0.6, -1.6, 0] : [0, -4.2, -1.2, -2.8, 0],
@@ -57,7 +75,7 @@ export function AgentSprite({
 
       <svg
         viewBox="0 0 64 64"
-        className="relative h-10 w-10 overflow-visible drop-shadow-[0_0_18px_rgba(130,220,255,0.24)]"
+        className={`relative overflow-visible drop-shadow-[0_18px_32px_rgba(74,59,40,0.18)] ${svgClass}`}
         aria-hidden="true"
       >
         <motion.ellipse
