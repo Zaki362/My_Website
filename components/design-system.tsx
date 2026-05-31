@@ -57,9 +57,11 @@ export function SectionHeader({
 export function Badge({
   children,
   tone = "neutral",
-  className
+  className,
+  uppercase = true
 }: WithChildren & {
   tone?: "neutral" | "blue" | "cyan" | "purple" | "dark";
+  uppercase?: boolean;
 }) {
   const tones = {
     neutral: "border-stone-900/10 bg-[#fffdfa]/75 text-stone-500",
@@ -72,11 +74,12 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase",
+        "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium",
+        uppercase && "uppercase",
         tones[tone],
         className
       )}
-      style={{ letterSpacing: "0.12em" }}
+      style={{ letterSpacing: uppercase ? "0.12em" : "0" }}
     >
       {children}
     </span>

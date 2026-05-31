@@ -67,27 +67,27 @@ export const knowledgeChunks: KnowledgeChunk[] = [
     title: "字节跳动 TikTok Shop 实习",
     category: "experience",
     text:
-      "郑国华自 2026.03 起在字节跳动 TikTok Shop 担任 AIGC 策略产品，重点涉及基模评测、AIGC 电商带货图文生成 workflow、Prompt 结构优化、模版生命周期管理、模版管理平台，以及 AI 工具商家渗透率提升相关策略。",
-    keywords: ["字节跳动", "TikTok Shop", "AIGC", "电商", "策略产品", "实习"],
-    tags: ["AIGC", "Prompt", "Workflow", "Evaluation", "Template System"]
+      "郑国华自 2026.03 起在字节跳动 TikTok Shop 担任 AIGC 策略产品，负责电商图文场景下的基模评测、GSB 评测标准、Workflow 优化、ComfyUI 裁切拼接方案、行业模版全生命周期管理，以及基于 GMV、稿均 VV、GPM 的模版分发策略优化。成果包括生图准确率从 75% 提升至 90%，重点类目商品保持率提升至 90%–95%，上线 50+ 行业模版并推动商家渗透率提升 35%。",
+    keywords: ["字节跳动", "TikTok Shop", "AIGC", "GSB", "Workflow", "ComfyUI", "策略产品", "实习"],
+    tags: ["AIGC", "Prompt", "Workflow", "Evaluation", "Product Strategy"]
   },
   {
     id: "experience-2",
     title: "百度 Comate 实习",
     category: "experience",
     text:
-      "郑国华于 2025.09 至 2026.02 在百度文心快码 Comate 从事 AI Coding 产品工作，负责厂内代码库测评集构建、Agent 效果评测、自动化 bench 搭建、策略调优、Builder 产品 0-1 搭建，以及用户行为分析和产品功能优化。",
-    keywords: ["百度", "Comate", "文心快码", "AI Coding", "Builder", "实习"],
-    tags: ["Agent", "Benchmark", "Evaluation", "Product Strategy"]
+      "郑国华于 2025.09 至 2026.02 在百度文心快码 Comate 从事 AI Coding 产品工作，参考 SWE-Bench 主导构建 30+ 厂内代码库 Agent 测评集，打通自动化 Bench 构建流程，优化 Agent 工具循环 bad case 的消息拼接、System Prompt 与 Rules 前移策略，并主导 Builder 模式从需求调研到上线。成果包括节省约 80% 研发人力，工具循环率降低 60%，推动 CC_gm 新策略上线并使 SWE-Bench 通过率提升 7.2%。",
+    keywords: ["百度", "Comate", "文心快码", "AI Coding", "Builder", "SWE-Bench", "Benchmark", "实习"],
+    tags: ["Coding Agent", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
     id: "experience-3",
     title: "美团核心本地实习",
     category: "experience",
     text:
-      "郑国华于 2025.04 至 2025.08 在美团核心本地参与 Agent 0-1 搭建，围绕知识抽取、召回分析、RAG 降低幻觉、自动产出经营分析报告、评测体系设计、多业务泛化、MCP 工具封装，以及 SQL 分析 10 亿级流量和交易数据开展工作。",
-    keywords: ["美团", "核心本地", "RAG", "经营分析", "SQL", "Agent", "实习"],
-    tags: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base"]
+      "郑国华于 2025.04 至 2025.08 在美团核心本地参与 Agent 0-1 搭建，面向本地商业经营分析场景，设计知识抽取与召回分析 Workflow，构建业务知识库，通过 RAG 召回降低 LLM 分析幻觉，制定 Agent 评测维度与标准，并将 WBR 分析工作流拓展至神券、线下住宿等业务场景。成果包括将经营分析产出从 2 人 × 3 天优化至 1 人 × 1 天，RAG 下分析框架得分提升近 70%，独立维护 10+ 业务知识库并替代约 70% 基础经分工作。",
+    keywords: ["美团", "核心本地", "RAG", "经营分析", "SQL", "Agent", "MCP", "Knowledge Base", "实习"],
+    tags: ["Agent", "RAG", "SQL", "MCP", "Business Analysis"]
   },
   {
     id: "research-1",

@@ -6,7 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { useLanguage } from "@/components/language-provider";
 
 export function ExperienceSection() {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
 
   return (
     <Section id="experience" className="pt-24 lg:pt-32">
@@ -22,9 +22,9 @@ export function ExperienceSection() {
         }
       />
 
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid items-stretch gap-5 lg:grid-cols-3">
         {t.experience.cards.map((item, index) => (
-          <Reveal key={item.company} delay={index * 0.08}>
+          <Reveal key={item.company} delay={index * 0.08} className="h-full">
             <Card className="flex h-full flex-col p-6 md:p-7">
               <div className="mb-7 flex items-start justify-between gap-4">
                 <div>
@@ -46,7 +46,14 @@ export function ExperienceSection() {
                 </div>
                 <div>
                   <p className="meta-label mb-2">{t.common.role}</p>
-                  <p className="text-sm leading-7 text-stone-600">{item.role}</p>
+                  <div className="space-y-2">
+                    {item.role.map((work) => (
+                      <div key={work} className="flex gap-2.5 text-sm leading-7 text-stone-600">
+                        <span className="mt-[0.85rem] h-px w-3 shrink-0 rounded-full bg-[#d7a45f]/70" />
+                        <p>{work}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -54,7 +61,7 @@ export function ExperienceSection() {
                 <p className="meta-label mb-3">{t.common.impact}</p>
                 <div className="flex flex-wrap gap-2">
                   {item.impact.map((metric) => (
-                    <Badge key={metric} tone="blue">
+                    <Badge key={metric} tone="blue" uppercase={locale === "zh"} className="leading-5">
                       {metric}
                     </Badge>
                   ))}

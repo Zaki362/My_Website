@@ -72,18 +72,18 @@ export const experiences = [
     role: "AIGC 策略产品｜TikTok Shop",
     period: "2026.03 - 至今",
     overview:
-      "围绕电商场景下的 AIGC 视频 + 图文生成效果，参与从基模评测、workflow 搭建到模版管理平台的完整策略设计，推动 AI 工具从能力可用走向业务可用。",
+      "围绕 TikTok Shop 电商图文场景，负责 AIGC 生图能力从基模评测、Workflow 优化到行业模版策略的完整链路，推动 AI 工具从「可生成」走向「可控、可用、可增长」。",
     responsibilities: [
-      "搭建面向电商带货图文场景的基模评测集并制定分维度评测标准与指标，评测 Nano Banana 与 Seedance 5.0 模型的生图效果、可控性与电商适配度。",
-      "优化 FS / POP 自动及手动发文链路中的模版匹配、音乐、CTA 等策略，并设计 A/B test 验证策略效果。",
-      "主导图文模版全生命周期管理与平台建设，持续优化 AIGC 电商带货图文生成 workflow 与模版 Prompt 结构，搭建模版迭代与类目匹配 workflow，规范并提效创作流程。",
-      "基于商家动线设计不同商家分层触达策略，推动 AI 工具渗透率与实际使用转化。"
+      "构建电商图文生图评测集，制定 GSB 标准，评估多模型在商品一致性、文字渲染、人模与美感等维度的表现。",
+      "设计分步骤生图 Workflow 与 ComfyUI 裁切拼接方案，优化商品一致性，提升重点类目商品保持率。",
+      "负责行业模版从创作、评审、上线到更新的全生命周期，并基于 GMV、稿均 VV、GPM 数据优化分发策略。"
     ],
     impact: [
-      "评测 216 组图文基模生图效果，并基于行业类目优化模型选择。",
-      "单模版生产时间缩短 70%，商家渗透率整体提高 60%。"
+      "生图准确率从 75% 提升至 90%，3C 数码与卡牌类目商品保持率提升至 90%–95%。",
+      "上线 50+ 行业模版，模版创作效率提升 100%，一期策略优化带动日均 GMV 提升 6%。",
+      "通过圈商圈品与任务策略推广 AIGC 工具，商家渗透率提升 35%。"
     ],
-    skills: ["AIGC", "Prompt", "Evaluation", "Workflow", "Strategy", "Template System"]
+    skills: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
   },
   {
     company: "百度",
@@ -92,35 +92,34 @@ export const experiences = [
     overview:
       "聚焦 AI Coding 场景下的 Agent 效果评测、策略调优与 Builder 产品建设，覆盖从需求洞察、产品评测、策略优化到功能上线的完整产品链路。",
     responsibilities: [
-      "构建 30+ 厂内代码库 benchmark，补齐真实研发环境下的 Agent 评测样本与任务结构，并搭建自动化 bench 构建流程。",
-      "优化 Agent 策略，设计本地测试与 A/B test，解决 Agent 循环调用工具 bad case，推动 Rules 前移策略上线，工具循环率降低 60%。",
-      "从 0 到 1 主导 Builder 产品搭建，推进调研、需求设计与 demo 验证，明确产品业务价值、目标用户与 MVP 规划。",
-      "分析 Agent 任务粒度下的用户使用情况，拉取厂内 3168 位用户、8804 条问答 session 数据并进行清洗压缩，批量分析用户使用场景、task 类别与执行状态。"
+      "参考 SWE-Bench 构建 30+ 厂内代码库 Agent 测评集，打通自动化 Bench 构建流程。",
+      "针对 Agent 工具循环等 bad case，优化消息拼接、System Prompt 与 Rules 策略，并通过 AB Test 和 SWE 评测验证效果。",
+      "主导 Builder 模式从需求调研到上线，并基于 3168 名用户、8804 条 Session 分析 Agent 使用场景与用户分层。"
     ],
     impact: [
-      "形成数据驱动的评测与策略调优机制，推动 benchmark 构建自动化。",
-      "推动 CC_gm 新策略上线，提升用户满意度，并使 SWE-bench 通过率提升 7.2%。"
+      "打通自动化 Bench 构建流程，节省约 80% 研发人力。",
+      "工具循环率降低 60%，推动 CC_gm 新策略上线，使 SWE-Bench 通过率提升 7.2%。",
+      "分析 3168 名用户、8804 条 Session，产出用户分层与 Agent 场景分析报告。"
     ],
-    skills: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "0-1 builder"]
+    skills: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
     company: "美团",
-    role: "Agent 0-1 搭建｜核心本地",
+    role: "Agent 0-1 搭建｜核心本地商业分析",
     period: "2025.04 - 2025.08",
     overview:
-      "面向美团商分业务，搭建基于知识抽取、召回分析与报告生成的端到端分析 Agent，节省 80% 人力，替代 70% 基础经分工作。",
+      "面向美团本地商业经营分析场景，主导搭建基于知识抽取、RAG 召回与报告生成的分析 Agent，实现从历史报告知识沉淀到端到端自动产出分析报告与图表。",
     responsibilities: [
-      "设计知识抽取与召回分析 Agent，端到端自动产出分析报告及图表。",
-      "设计 RAG 策略优化模型分析能力，降低幻觉并提升 70% 分析报告评测得分。",
-      "基于历史分析 query 构建评测集及脱敏数据集，搭建 Agent 测评体系。",
-      "MCP 封装 workflow，实现 Agent 自动调用，拓展神券、线下住宿等 10+ 业务场景。",
-      "使用 SQL 分析 10 亿级流量与交易数据，为策略制定提供数据结论。"
+      "设计经营分析 Agent Workflow，基于历史报告抽取指标树、原子卡片等结构化知识，沉淀业务知识库。",
+      "通过 RAG 召回降低 LLM 分析幻觉，端到端自动生成经营分析报告与图表。",
+      "构建评测集对比不同输入与模型效果，并将 WBR 工作流拓展至神券、线下住宿等 10+ 业务知识库场景。"
     ],
     impact: [
-      "让 workflow 从单业务场景工具，发展为通用经营分析 Agent。",
-      "模型能力与业务场景深度融合，显著提升分析效率。"
+      "将经营分析产出从 2 人 × 3 天优化至 1 人 × 1 天。",
+      "RAG 下 LLM 分析框架得分相比单报告输入 / 无输入提升近 70%。",
+      "独立维护 10+ 业务知识库，接入多业务场景，替代约 70% 基础经分工作。"
     ],
-    skills: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Workflow"]
+    skills: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
   }
 ] as const;
 

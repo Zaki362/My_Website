@@ -4,11 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Copy, Loader2, Mail, Minus, Send, X } from "lucide-react";
-import { agentProfile } from "@/data/knowledge-base/profile";
+import { agentProfiles } from "@/data/knowledge-base/profile";
 import { contactData } from "@/data/profile";
 import { ChatMessage } from "@/components/agent/ChatMessage";
 import { SuggestedQuestions } from "@/components/agent/SuggestedQuestions";
 import { AgentSprite } from "@/components/agent/AgentSprite";
+import { useLanguage } from "@/components/language-provider";
 
 type Message = {
   role: "user" | "assistant";
@@ -23,11 +24,50 @@ type AgentDialogProps = {
 
 const MAX_INPUT_LENGTH = 500;
 
+const agentDialogCopy = {
+  zh: {
+    copiedEmail: "已复制邮箱",
+    copyEmail: "复制邮箱",
+    unavailable: "资料助手暂时不可用。",
+    noAnswer:
+      "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。",
+    genericError: "资料助手暂时出现了一点问题。",
+    windowLabel: "国华的 AI 助手聊天窗口",
+    minimizeLabel: "最小化 AI 助手",
+    closeLabel: "关闭 AI 助手",
+    loading: "正在整理站内资料...",
+    helper: "主要回答国华的站内资料问题",
+    placeholder: "想了解国华的什么？",
+    sendLabel: "发送问题"
+  },
+  en: {
+    copiedEmail: "Email copied",
+    copyEmail: "Copy email",
+    unavailable: "The assistant is temporarily unavailable.",
+    noAnswer:
+      "I do not have enough site information to answer that. You can ask about Guohua's education, work experience, research, projects or skills.",
+    genericError: "The assistant ran into a temporary issue.",
+    windowLabel: "Guohua's AI assistant chat window",
+    minimizeLabel: "Minimize AI assistant",
+    closeLabel: "Close AI assistant",
+    loading: "Reviewing site information...",
+    helper: "Mainly answers questions based on Guohua's site profile",
+    placeholder: "What would you like to know about Guohua?",
+    sendLabel: "Send question"
+  }
+} as const;
+
 function shouldShowEmailAction(content: string) {
   return content.includes(contactData.email);
 }
 
-function AgentActionBar() {
+function AgentActionBar({
+  copiedEmail,
+  copyEmailLabel
+}: {
+  copiedEmail: string;
+  copyEmailLabel: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   async function copyEmail() {
@@ -47,7 +87,7 @@ function AgentActionBar() {
         onClick={copyEmail}
         className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/10 bg-blue-500/[0.065] px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-500/[0.1]"
       >
-        {copied ? "已复制邮箱" : "复制邮箱"}
+        {copied ? copiedEmail : copyEmailLabel}
         {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
       </button>
     </div>
@@ -55,9 +95,12 @@ function AgentActionBar() {
 }
 
 export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
+  const { locale } = useLanguage();
+  const profile = agentProfiles[locale];
+  const copy = agentDialogCopy[locale];
   const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: agentProfile.welcomeMessage }
+    { role: "assistant", content: profile.welcomeMessage }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,6 +115,21 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const welcomeMessages = Object.values(agentProfiles).map((item) => item.welcomeMessage);
+    setMessages((current) => {
+      if (
+        current.length === 1 &&
+        current[0]?.role === "assistant" &&
+        (welcomeMessages as readonly string[]).includes(current[0].content)
+      ) {
+        return [{ role: "assistant", content: profile.welcomeMessage }];
+      }
+
+      return current;
+    });
+  }, [profile.welcomeMessage]);
 
   useEffect(() => {
     if (!open) {
@@ -112,14 +170,15 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          messages: nextMessages
+          messages: nextMessages,
+          locale
         })
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.reply || "资料助手暂时不可用。");
+        throw new Error(data?.reply || copy.unavailable);
       }
 
       setMessages((current) => [
@@ -129,14 +188,14 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           content:
             typeof data?.reply === "string" && data.reply.trim()
               ? data.reply.trim()
-              : "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。"
+              : copy.noAnswer
         }
       ]);
     } catch (submissionError) {
       const message =
         submissionError instanceof Error
           ? submissionError.message
-          : "资料助手暂时出现了一点问题。";
+          : copy.genericError;
 
       setError(message);
       setMessages((current) => [
@@ -151,7 +210,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
     }
   }
 
-  const quickQuestions = useMemo(() => agentProfile.suggestedQuestions, []);
+  const quickQuestions = useMemo(() => profile.suggestedQuestions, [profile.suggestedQuestions]);
 
   const dialog = (
     <AnimatePresence>
@@ -163,7 +222,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "100% 100%" }}
           className="fixed bottom-5 right-5 z-[80] flex h-[min(560px,calc(100vh-2.5rem))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.75rem] border border-stone-900/10 bg-[#fffdfa]/95 shadow-[0_30px_90px_rgba(79,62,39,0.18)] backdrop-blur-2xl md:bottom-6 md:right-6"
-          aria-label="国华的 AI 助手聊天窗口"
+          aria-label={copy.windowLabel}
         >
           <header className="border-b border-stone-900/10 bg-[linear-gradient(135deg,#fffdfa,#f5efe4_52%,#eef5ff)] px-4 py-4">
             <div className="flex items-center justify-between gap-3">
@@ -173,11 +232,11 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                 </span>
                 <div className="min-w-0">
                   <p className="font-display text-base font-[620] leading-6 text-stone-950">
-                    {agentProfile.agentName}
+                    {profile.agentName}
                   </p>
                   <p className="mt-0.5 flex items-center gap-1.5 text-xs leading-5 text-stone-500">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    {agentProfile.subtitle}
+                    {profile.subtitle}
                   </p>
                 </div>
               </div>
@@ -187,7 +246,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   type="button"
                   onClick={onMinimize}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
-                  aria-label="最小化 AI 助手"
+                  aria-label={copy.minimizeLabel}
                 >
                   <Minus className="h-4 w-4" />
                 </button>
@@ -195,7 +254,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   type="button"
                   onClick={onClose}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
-                  aria-label="关闭 AI 助手"
+                  aria-label={copy.closeLabel}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -207,7 +266,9 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             {messages.map((message, index) => (
               <div key={`${message.role}-${index}`}>
                 <ChatMessage role={message.role} content={message.content} />
-                {message.role === "assistant" && shouldShowEmailAction(message.content) ? <AgentActionBar /> : null}
+                {message.role === "assistant" && shouldShowEmailAction(message.content) ? (
+                  <AgentActionBar copiedEmail={copy.copiedEmail} copyEmailLabel={copy.copyEmail} />
+                ) : null}
                 {index === 0 ? (
                   <div className="mt-3">
                     <SuggestedQuestions questions={quickQuestions} onSelect={submitQuestion} disabled={loading} />
@@ -220,7 +281,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
               <div className="flex justify-start">
                 <div className="inline-flex items-center gap-2 rounded-[1.35rem] border border-stone-900/10 bg-[#fffdfa]/86 px-4 py-3 text-sm text-stone-600">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  正在整理站内资料...
+                  {copy.loading}
                 </div>
               </div>
             ) : null}
@@ -234,7 +295,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             }}
           >
             <div className="mb-2 flex items-center justify-between text-[11px] text-stone-400">
-              <span>主要回答国华的站内资料问题</span>
+              <span>{copy.helper}</span>
               <span>{remaining}</span>
             </div>
             <div className="flex items-end gap-2">
@@ -251,14 +312,14 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   }
                 }}
                 rows={1}
-                placeholder="想了解国华的什么？"
+                placeholder={copy.placeholder}
                 className="min-h-[48px] flex-1 resize-none rounded-[1.2rem] border border-stone-900/10 bg-white/72 px-4 py-3 text-sm text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-blue-500/24 focus:bg-white"
               />
               <button
                 type="submit"
                 disabled={!canSend}
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#2b2933] text-[#fffaf2] shadow-[0_14px_32px_rgba(61,50,38,0.14)] transition hover:bg-[#24222b] disabled:cursor-not-allowed disabled:opacity-45"
-                aria-label="发送问题"
+                aria-label={copy.sendLabel}
               >
                 <Send className="h-4 w-4" />
               </button>

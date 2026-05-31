@@ -181,11 +181,11 @@ export function Navbar() {
             type="button"
             onClick={toggleLocale}
             className="hidden h-12 items-center gap-2 rounded-full border border-[rgba(40,35,30,0.08)] bg-white/[0.75] px-3.5 text-xs font-semibold text-stone-700 shadow-[0_12px_40px_rgba(80,60,40,0.08)] backdrop-blur-xl transition hover:bg-white/[0.9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35] sm:inline-flex"
-            aria-label={locale === "en" ? "切换到中文" : "Switch to English"}
+            aria-label={locale === "en" ? "Switch to Chinese" : "Switch to English"}
           >
             <span className={cn(locale === "en" ? "text-stone-950" : "text-stone-400")}>EN</span>
             <span className="h-3 w-px bg-stone-900/12" />
-            <span className={cn(locale === "zh" ? "text-stone-950" : "text-stone-400")}>中文</span>
+            <span className={cn(locale === "zh" ? "text-stone-950" : "text-stone-400")}>ZH</span>
           </button>
           <a
             href={resolveHomeHref("#experience")}
@@ -242,11 +242,11 @@ export function Navbar() {
                   type="button"
                   onClick={toggleLocale}
                   className="rounded-full px-4 py-3 text-left text-sm text-stone-600 transition hover:bg-stone-900/[0.045] hover:text-stone-950 sm:hidden"
-                  aria-label={locale === "en" ? "切换到中文" : "Switch to English"}
+                  aria-label={locale === "en" ? "Switch to Chinese" : "Switch to English"}
                 >
                   <span className={cn(locale === "en" ? "font-semibold text-stone-950" : "text-stone-400")}>EN</span>
                   <span className="mx-2 text-stone-300">/</span>
-                  <span className={cn(locale === "zh" ? "font-semibold text-stone-950" : "text-stone-400")}>中文</span>
+                  <span className={cn(locale === "zh" ? "font-semibold text-stone-950" : "text-stone-400")}>ZH</span>
                 </button>
                 <a
                   href={resolveHomeHref("#experience")}
