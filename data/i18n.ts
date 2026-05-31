@@ -26,6 +26,193 @@ const worldItems = beyondWorkGroups[0].items;
 const snowItem = beyondWorkGroups[1].items[0];
 const musicItem = beyondWorkGroups[2].items[0];
 
+const englishEducationItems = [
+  {
+    school: "Peking University",
+    degree: "Master",
+    department: "Yenching Academy | Economics",
+    period: educationItems[0].period,
+    highlights: [
+      "GPA A",
+      "Top 5%",
+      "English-taught international program",
+      "Recommended admission with full scholarship"
+    ]
+  },
+  {
+    school: "Renmin University of China",
+    degree: "Bachelor",
+    department: "School of Ecology and Environment | Economics & Science dual degree",
+    period: educationItems[1].period,
+    highlights: [
+      "GPA 3.9/4",
+      "Ranked 1/57",
+      "National Scholarship",
+      "Special-class Academic Excellence Scholarship"
+    ]
+  }
+] as const;
+
+const englishExperienceCards = [
+  {
+    number: "01",
+    company: "ByteDance",
+    domain: "AIGC Strategy Product | TikTok Shop",
+    problem:
+      "Owned the end-to-end AIGC image-generation workflow for TikTok Shop e-commerce graphics, from foundation model evaluation and Workflow optimization to industry template strategy, moving the tool from basic generation toward controllable, usable and growth-driving output.",
+    role: [
+      "Built an e-commerce image-generation evaluation set, defined GSB standards, and assessed model performance across product consistency, text rendering, human models and aesthetics.",
+      "Designed a step-by-step generation Workflow and ComfyUI crop-and-stitch pipeline to improve product consistency and retention in key categories.",
+      "Managed industry templates from creation and review to launch and updates, optimizing distribution with GMV, average VV per creative and GPM data."
+    ],
+    impact: [
+      "Image-generation accuracy improved from 75% to 90%; product retention in 3C electronics and trading cards reached 90%-95%.",
+      "Launched 50+ industry templates, doubled template creation efficiency, and drove a 6% increase in average daily GMV in the first strategy iteration.",
+      "Improved merchant penetration by 35% through merchant/product targeting and task-based adoption strategies."
+    ],
+    tags: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
+  },
+  {
+    number: "02",
+    company: "Baidu",
+    domain: "AI Coding Product | Wenxin KuaiMa Comate",
+    problem:
+      "Focused on Agent evaluation, strategy optimization and Builder product development in AI Coding scenarios, covering the full product chain from user research and product evaluation to strategy iteration and feature launch.",
+    role: [
+      "Built 30+ internal-codebase Agent benchmarks inspired by SWE-Bench and connected the automated Bench construction workflow.",
+      "Optimized message stitching, System Prompt and Rules strategies for tool-loop bad cases, then validated impact through AB Tests and SWE evaluation.",
+      "Led Builder mode from research to launch, using 3,168 users and 8,804 sessions to analyze Agent scenarios and user segments."
+    ],
+    impact: [
+      "Connected the automated Bench construction workflow, saving about 80% of engineering effort.",
+      "Reduced tool-loop rate by 60%, shipped the CC_gm strategy update, and improved SWE-Bench pass rate by 7.2%.",
+      "Analyzed 3,168 users and 8,804 sessions to produce user segmentation and Agent scenario insights."
+    ],
+    tags: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
+  },
+  {
+    number: "03",
+    company: "Meituan",
+    domain: "Agent 0-1 Build | Core Local Business Analysis",
+    problem:
+      "Built an analysis Agent for Meituan local commerce business analysis, connecting knowledge extraction, RAG retrieval and report generation to turn historical report knowledge into end-to-end automated reports and charts.",
+    role: [
+      "Designed the business-analysis Agent Workflow, extracting metric trees and atomic cards from historical reports into reusable knowledge bases.",
+      "Used RAG retrieval to reduce LLM hallucination and generate business analysis reports and charts end to end.",
+      "Built evaluation sets to compare inputs and models, then expanded the WBR workflow to 10+ knowledge-base scenarios including Shenquan and offline accommodation."
+    ],
+    impact: [
+      "Reduced business analysis production from 2 people x 3 days to 1 person x 1 day.",
+      "With RAG, LLM analysis-framework scores improved by nearly 70% over single-report input / no-input baselines.",
+      "Maintained 10+ business knowledge bases across multiple scenarios, replacing about 70% of basic business analysis work."
+    ],
+    tags: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
+  }
+] as const;
+
+const englishSkillGroups = [
+  {
+    title: "AI / Product",
+    items: ["AI Product", "Agent", "AIGC", "Prompt Engineering", "Evaluation", "Workflow"],
+    icon: "sparkles",
+    size: "large"
+  },
+  {
+    title: "Data",
+    items: ["SQL", "Python", "SPSS", "Excel", "Stata", "Experiment Design"],
+    icon: "database",
+    size: "medium"
+  },
+  {
+    title: "Design / Build",
+    items: ["Figma", "V0", "Gemini", "Vibe Coding", "PRD", "A/B test"],
+    icon: "code",
+    size: "medium"
+  }
+] as const;
+
+const englishBeyondHomeItems = [
+  {
+    caption: "Hiking · Tiger Leaping Gorge",
+    src: worldItems[2].image?.src ?? "/images/beyond-work-hiking.jpg",
+    alt: "Guohua Zheng hiking at Tiger Leaping Gorge",
+    featured: true
+  },
+  {
+    caption: "Travel · Routes / Places",
+    src: worldItems[0].image?.src ?? "/images/beyond-work-travel.jpg",
+    alt: "Guohua Zheng traveling in Japan"
+  },
+  {
+    caption: "Diving · Semporna",
+    src: worldItems[1].image?.src ?? "/images/beyond-work-diving.jpg",
+    alt: "Guohua Zheng diving in Semporna"
+  },
+  {
+    caption: "Music · JJ / Blackpink / R&B",
+    src: musicItem.image?.src ?? "/images/beyond-work-music.jpg",
+    alt: "Guohua Zheng at a live music show"
+  }
+] as const;
+
+const englishBeyondPageSlices = [
+  {
+    name: "Travel",
+    label: "Travel",
+    description:
+      "I have been to Japan and Malaysia, and traveled through much of China. Next on the map: New Zealand and Southern Europe.",
+    image: {
+      src: worldItems[0].image?.src ?? "/images/beyond-work-travel.jpg",
+      alt: "Guohua Zheng traveling in Japan"
+    },
+    accent: "Routes / Places"
+  },
+  {
+    name: "Diving",
+    label: "Diving",
+    description:
+      "After diving in Semporna, I began to understand how concrete quietness can be. Underwater, attention becomes very clean.",
+    image: {
+      src: worldItems[1].image?.src ?? "/images/beyond-work-diving.jpg",
+      alt: "Guohua Zheng diving in Semporna"
+    },
+    accent: "Semporna"
+  },
+  {
+    name: "Hiking",
+    label: "Hiking",
+    description:
+      "Tiger Leaping Gorge was long and direct. The body moved, thoughts slowed down, and focus returned.",
+    image: {
+      src: worldItems[2].image?.src ?? "/images/beyond-work-hiking.jpg",
+      alt: "Guohua Zheng hiking at Tiger Leaping Gorge"
+    },
+    accent: "Tiger Leaping Gorge"
+  },
+  {
+    name: "Snowboarding",
+    label: "Snowboarding",
+    description:
+      "From skiing to snowboarding, two seasons in. I like activities where speed, control and mistakes give immediate feedback.",
+    image: {
+      src: snowItem.image?.src ?? "/images/beyond-work-ski.jpg",
+      alt: "Guohua Zheng snowboarding"
+    },
+    accent: "2 Seasons"
+  },
+  {
+    name: "Music",
+    label: "Music",
+    description:
+      "I like JJ Lin, Blackpink and R&B. More than genre labels, I care whether a song can hold an emotion.",
+    image: {
+      src: musicItem.image?.src ?? "/images/beyond-work-music.jpg",
+      alt: "Guohua Zheng at a live music show"
+    },
+    accent: "JJ / Blackpink / R&B"
+  }
+] as const;
+
 export const dictionary = {
   en: {
     nav: [
@@ -47,10 +234,10 @@ export const dictionary = {
       impact: "Impact"
     },
     hero: {
-      name: "郑国华",
+      name: "Guohua Zheng",
       romanName: "Guohua Zheng",
       title: "Peking University M.A. 2027 / Renmin University B.A.",
-      tagline: "AI Product Builder focused on Agent, workflow, Vibe Coding and AIGC applications.",
+      tagline: "AI Product Builder focused on Agent, Workflow, Vibe Coding and AIGC applications.",
       intro:
         "I have worked on AI product internships at ByteDance, Baidu and Meituan, focusing on AIGC, Vibe Coding and end-to-end analysis agents. My work centers on agent system design, evaluation strategy and AI product implementation in real business scenarios.",
       location: "Beijing",
@@ -64,7 +251,8 @@ export const dictionary = {
     education: {
       kicker: "Education",
       title: "Education",
-      description: educationSection.description,
+      description:
+        "An academic path shaped by economics, English-language study, quantitative research and campus leadership.",
       pathLabel: "Academic Path",
       highlightsTitle: "Academic Highlights",
       honorsTitle: "Honors & Campus Leadership",
@@ -77,20 +265,7 @@ export const dictionary = {
       honorsNote:
         "Led Renmin University's Shaanxi admissions team and organized nearly 100 admissions presentations with 46 students. Former head of the new media department, responsible for school communications and event planning.",
       items: [
-        {
-          school: "Peking University",
-          degree: "Master",
-          department: "Yenching Academy | Economics",
-          period: educationItems[0].period,
-          highlights: educationItems[0].highlights
-        },
-        {
-          school: "Renmin University of China",
-          degree: "Bachelor",
-          department: "School of Ecology and Environment | Economics & Science dual degree",
-          period: educationItems[1].period,
-          highlights: educationItems[1].highlights
-        }
+        ...englishEducationItems
       ],
       badges: educationBadges.slice(0, 2)
     },
@@ -100,20 +275,7 @@ export const dictionary = {
       description:
         "Internship experience across AIGC e-commerce, Vibe Coding and end-to-end analysis agents. The focus is not only what I built, but how I defined problems, designed strategy and made model capabilities work in real scenarios.",
       action: "Contact me",
-      cards: experiences.map((item, index) => ({
-        number: String(index + 1).padStart(2, "0"),
-        company:
-          item.company === "字节跳动"
-            ? "ByteDance"
-            : item.company === "百度"
-              ? "Baidu"
-              : "Meituan",
-        domain: item.role,
-        problem: item.overview,
-        role: item.responsibilities[0],
-        impact: item.impact,
-        tags: item.skills.slice(0, 5)
-      }))
+      cards: englishExperienceCards
     },
     featuredWork: {
       kicker: "Featured Project",
@@ -121,7 +283,7 @@ export const dictionary = {
       description:
         "A personal fitness tracking PWA built with vibe coding: fast workout start, lightweight logging and continuous review.",
       action: "View projects",
-      cardTitle: "练一下 / FitLog Minimal",
+      cardTitle: "FitLog Minimal",
       cardDescription:
         "A local-first personal fitness tracker that keeps exercise library, workout logging, history statistics and import/export inside the browser, with no login or backend.",
       cardBadge: "Vibe Coding / PWA / Local-first",
@@ -134,7 +296,7 @@ export const dictionary = {
       ],
       workflow: [
         { label: "Training habit", icon: "book" },
-        { label: "AI pair build", icon: "bot" },
+        { label: "AI-assisted build", icon: "bot" },
         { label: "Local data", icon: "database" },
         { label: "Review / export", icon: "file" }
       ]
@@ -148,29 +310,13 @@ export const dictionary = {
       howIWork: "",
       howIWorkTitle: "",
       workflow: [],
-      items: [
-        {
-          title: skillGroups[0].title,
-          description: skillGroups[0].items.join(" / "),
-          tags: skillGroups[0].items,
-          icon: "sparkles",
-          size: "large"
-        },
-        {
-          title: skillGroups[1].title,
-          description: skillGroups[1].items.join(" / "),
-          tags: skillGroups[1].items,
-          icon: "database",
-          size: "medium"
-        },
-        {
-          title: skillGroups[2].title,
-          description: skillGroups[2].items.join(" / "),
-          tags: skillGroups[2].items,
-          icon: "code",
-          size: "medium"
-        }
-      ]
+      items: englishSkillGroups.map((group) => ({
+        title: group.title,
+        description: group.items.join(" / "),
+        tags: group.items,
+        icon: group.icon,
+        size: group.size
+      }))
     },
     research: {
       kicker: "Research",
@@ -190,7 +336,8 @@ export const dictionary = {
         coverAlt: "Journal of Environmental Economics and Management cover",
         coverCaption: "JEEM journal cover",
         creditLabel: "Guohua Zheng · CRediT contribution",
-        credit: researchData.paper.contribution,
+        credit:
+          "Original draft writing, visualization, validation, software, formal analysis and data curation.",
         journalInfo: researchData.paper.journalInfo,
         tags: ["Environmental economics", "Quantitative research", "Academic collaboration"],
         link: researchData.paper.link,
@@ -215,29 +362,7 @@ export const dictionary = {
       description:
         "Outside professional work, I keep expanding how I understand the world through travel, mountains, water, speed, sound and small moments.",
       action: "Open Beyond Work",
-      items: [
-        {
-          caption: `${worldItems[2].label} · ${worldItems[2].accent}`,
-          src: worldItems[2].image?.src ?? "/images/beyond-work-hiking.jpg",
-          alt: worldItems[2].image?.alt ?? "Hiking",
-          featured: true
-        },
-        {
-          caption: `${worldItems[0].label} · ${worldItems[0].accent}`,
-          src: worldItems[0].image?.src ?? "/images/beyond-work-travel.jpg",
-          alt: worldItems[0].image?.alt ?? "Travel"
-        },
-        {
-          caption: `${worldItems[1].label} · ${worldItems[1].accent}`,
-          src: worldItems[1].image?.src ?? "/images/beyond-work-diving.jpg",
-          alt: worldItems[1].image?.alt ?? "Diving"
-        },
-        {
-          caption: `${musicItem.label} · ${musicItem.accent}`,
-          src: musicItem.image?.src ?? "/images/beyond-work-music.jpg",
-          alt: musicItem.image?.alt ?? "Music"
-        }
-      ]
+      items: englishBeyondHomeItems
     },
     contact: {
       title: "Open to AI product, work opportunities and collaboration.",
@@ -258,11 +383,12 @@ export const dictionary = {
       title: "Projects",
       description:
         "Small, public project cards. Each one focuses on UI, product thinking and a concise build story.",
-      featuredKicker: featuredProject.eyebrow,
-      featuredDescription: featuredProject.details,
+      featuredKicker: "Featured Project",
+      featuredDescription:
+        "Exercise library, in-workout logging, history statistics and data import/export all run locally in the browser, without login or backend.",
       featured: {
-        title: "练一下 / FitLog Minimal",
-        label: featuredProject.eyebrow,
+        title: "FitLog Minimal",
+        label: "Vibe Coding / PWA",
         status: "Live PWA",
         context:
           "FitLog Minimal is a personal fitness tracking PWA built from my own training habits, designed around fast workout start, lightweight logging and continuous review.",
@@ -278,20 +404,25 @@ export const dictionary = {
         projectUrl: featuredProject.projectUrl
       },
       otherKicker: "Other Projects",
-      otherTitle: projectsPageData.emptyTitle,
-      otherDescription: projectsPageData.emptyDescription,
+      otherTitle: "More projects are being curated",
+      otherDescription:
+        "This area will gradually collect public project slices that show problem definition, method and outcome.",
       contactKicker: "Contact",
       contactTitle: "Want to talk about AI products?",
-      contactDescription: contactData.description,
+      contactDescription:
+        "If you are thinking about AI products, work opportunities or collaboration, feel free to reach out.",
       contactAction: "Contact me",
       other: []
     },
     beyondPage: {
-      kicker: beyondWorkPage.kicker,
+      kicker: "Beyond Work",
       title: "Beyond Work",
       intro:
         "This page is not a resume archive or a complete collection. It is a set of preserved life slices about being on the road, feeling the world and staying curious beyond professional work.",
-      leadImage: beyondWorkPage.leadImage,
+      leadImage: {
+        src: beyondWorkPage.leadImage.src,
+        alt: "Guohua Zheng under the night sky"
+      },
       leadNote:
         "Rather than explaining life completely, I prefer to put myself into real scenes and understand them slowly.",
       storyCaptions: [
@@ -313,48 +444,7 @@ export const dictionary = {
         items: ["New Zealand", "Southern Europe"]
       },
       continue: "Continue the conversation",
-      slices: [
-        {
-          name: "Travel",
-          label: worldItems[0].label,
-          description:
-            "I have been to Japan and Malaysia, and traveled through much of China. Next on the map: New Zealand and Southern Europe.",
-          image: worldItems[0].image,
-          accent: worldItems[0].accent
-        },
-        {
-          name: "Diving",
-          label: worldItems[1].label,
-          description:
-            "After diving in Semporna, I began to understand how concrete quietness can be. Underwater, attention becomes very clean.",
-          image: worldItems[1].image,
-          accent: worldItems[1].accent
-        },
-        {
-          name: "Hiking",
-          label: worldItems[2].label,
-          description:
-            "Tiger Leaping Gorge was long and direct. The body moved, thoughts slowed down, and focus returned.",
-          image: worldItems[2].image,
-          accent: worldItems[2].accent
-        },
-        {
-          name: "Snowboarding",
-          label: snowItem.label,
-          description:
-            "From skiing to snowboarding, two seasons in. I like activities where speed, control and mistakes give immediate feedback.",
-          image: snowItem.image,
-          accent: snowItem.accent
-        },
-        {
-          name: "Music",
-          label: musicItem.label,
-          description:
-            "I like JJ Lin, Blackpink and R&B. More than genre labels, I care whether a song can hold an emotion.",
-          image: musicItem.image,
-          accent: musicItem.accent
-        }
-      ]
+      slices: englishBeyondPageSlices
     }
   },
   zh: {
@@ -411,9 +501,9 @@ export const dictionary = {
         company: item.company,
         domain: item.role,
         problem: item.overview,
-        role: item.responsibilities[0],
+        role: item.responsibilities,
         impact: item.impact,
-        tags: item.skills.slice(0, 5)
+        tags: item.skills
       }))
     },
     featuredWork: {

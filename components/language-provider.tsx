@@ -12,6 +12,19 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
+const pageMeta = {
+  en: {
+    title: "Guohua Zheng | AI Product Builder",
+    description:
+      "Personal website of Guohua Zheng, focused on AI product work, research training, Vibe Coding projects and collaboration."
+  },
+  zh: {
+    title: "郑国华｜北京大学经济学硕士 / AI 产品经理",
+    description:
+      "郑国华的个人网站，聚焦教育背景、工作经历、科研竞赛、Vibe Coding 项目展示。"
+  }
+} as const;
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
 
@@ -28,6 +41,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem("site-locale", nextLocale);
     document.documentElement.lang = nextLocale === "zh" ? "zh-CN" : "en";
   }
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+    document.title = pageMeta[locale].title;
+
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (description) {
+      description.content = pageMeta[locale].description;
+    }
+  }, [locale]);
 
   const value = useMemo<LanguageContextValue>(
     () => ({
