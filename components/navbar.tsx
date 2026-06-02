@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowUpRight, FileText, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/components/design-system";
 import { useLanguage } from "@/components/language-provider";
+import { ResumeRequestDialog } from "@/components/resume-request-dialog";
 
 function getHomeSectionId(href: string) {
   if (href.startsWith("#")) {
@@ -39,6 +39,7 @@ function isRouteActive(pathname: string, href: string) {
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [resumeRequestOpen, setResumeRequestOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const reduceMotion = useReducedMotion();
@@ -141,16 +142,7 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 pointer-events-none">
       <div className="container-shell relative flex h-12 items-center justify-between">
-        <Link
-          href="/"
-          className={cn(
-            "pointer-events-auto inline-flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(40,35,30,0.08)] bg-white/[0.75] text-sm font-semibold text-[#241f1b] shadow-[0_12px_40px_rgba(80,60,40,0.08)] backdrop-blur-2xl transition hover:bg-white/[0.9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35]",
-            scrolled && "bg-[#fffdfa]/90"
-          )}
-          aria-label="Go to home"
-        >
-          GZ
-        </Link>
+        <div aria-hidden="true" className="pointer-events-none h-12 w-12" />
 
         <nav
           className={cn(
@@ -187,14 +179,15 @@ export function Navbar() {
             <span className="h-3 w-px bg-stone-900/12" />
             <span className={cn(locale === "zh" ? "text-stone-950" : "text-stone-400")}>ZH</span>
           </button>
-          <a
-            href={resolveHomeHref("#experience")}
+          <button
+            type="button"
+            onClick={() => setResumeRequestOpen(true)}
             className="hidden h-12 items-center gap-2.5 rounded-full border border-stone-900/10 bg-[#2b251f] px-5 text-sm font-semibold text-[#fffaf2] shadow-[0_14px_42px_rgba(62,46,31,0.18)] transition hover:-translate-y-0.5 hover:bg-[#211d19] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.45] md:inline-flex"
           >
             <FileText className="h-4 w-4" />
             {t.common.viewCv}
             <ArrowUpRight className="h-4 w-4" />
-          </a>
+          </button>
 
           <button
             type="button"
@@ -248,19 +241,25 @@ export function Navbar() {
                   <span className="mx-2 text-stone-300">/</span>
                   <span className={cn(locale === "zh" ? "font-semibold text-stone-950" : "text-stone-400")}>ZH</span>
                 </button>
-                <a
-                  href={resolveHomeHref("#experience")}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setResumeRequestOpen(true);
+                  }}
                   className="mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#2b251f] px-4 py-3 text-sm font-medium text-[#fffaf2]"
                 >
                   <FileText className="h-4 w-4" />
                   {t.common.viewCv}
                   <ArrowUpRight className="h-4 w-4" />
-                </a>
+                </button>
               </div>
             </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
+
+      <ResumeRequestDialog open={resumeRequestOpen} onClose={() => setResumeRequestOpen(false)} />
     </header>
   );
 }

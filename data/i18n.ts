@@ -225,13 +225,34 @@ export const dictionary = {
       { label: "Contact", href: "#contact" }
     ],
     common: {
-      viewCv: "View CV",
+      viewCv: "View Resume",
       backHome: "Back home",
       contact: "Contact",
       available: "Open to talk",
       problem: "Overview",
       role: "Work",
       impact: "Impact"
+    },
+    resumeRequest: {
+      title: "Request Resume Access",
+      description:
+        "Leave your email and a brief reason. Guohua will receive a notification and can follow up with the resume.",
+      emailLabel: "Your email",
+      emailPlaceholder: "name@example.com",
+      reasonLabel: "Reason for viewing",
+      reasonPlaceholder: "Briefly describe the opportunity, collaboration context, or what you want to learn.",
+      submit: "Submit request",
+      submitting: "Submitting...",
+      cancel: "Cancel",
+      successTitle: "Request sent",
+      success:
+        "Thanks. Your request has been submitted, and Guohua can follow up by email.",
+      errors: {
+        email: "Please enter a valid email.",
+        reason: "Please enter a brief reason.",
+        service: "Email notification is not configured yet.",
+        generic: "Submission failed. Please try again later."
+      }
     },
     hero: {
       name: "Guohua Zheng",
@@ -458,13 +479,33 @@ export const dictionary = {
       { label: "联系", href: "#contact" }
     ],
     common: {
-      viewCv: "查看履历",
+      viewCv: "查看简历",
       backHome: "返回首页",
       contact: "联系我",
       available: "开放交流",
       problem: "概览",
       role: "工作",
       impact: "成果"
+    },
+    resumeRequest: {
+      title: "查看简历申请",
+      description:
+        "请留下你的邮箱和查看原因，提交后我会收到邮件提醒，并可通过邮箱与你跟进。",
+      emailLabel: "你的邮箱",
+      emailPlaceholder: "name@example.com",
+      reasonLabel: "查看原因",
+      reasonPlaceholder: "简单说明机会类型、合作背景，或你希望了解的内容。",
+      submit: "提交申请",
+      submitting: "提交中...",
+      cancel: "取消",
+      successTitle: "申请已提交",
+      success: "谢谢，你的申请已提交。我会收到提醒，并可通过邮箱与你跟进。",
+      errors: {
+        email: "请输入有效邮箱。",
+        reason: "请填写简短的查看原因。",
+        service: "邮件通知服务暂未配置。",
+        generic: "提交失败，请稍后再试。"
+      }
     },
     hero: {
       name: heroData.name,
