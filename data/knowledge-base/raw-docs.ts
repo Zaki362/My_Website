@@ -22,5 +22,11 @@ export const rawProfileDocs = [
     title: "科研与荣誉原始资料",
     content:
       "JEEM 英文论文《Does Freight Structure Transformation Improve Air Quality?》，第二作者。国家奖学金、学习优秀特等奖学金、“大创”市级优秀结项（负责人）、“创新杯”一等奖（负责人）。"
+  },
+  {
+    id: "raw-projects",
+    title: "Vibe Coding 项目原始资料",
+    content:
+      "随手记 / Suishouji Mobile，线上地址 https://suishouji-mobile-mvp.vercel.app/，是一款本地优先的极简灵感记录 App，围绕“快速放进去、历史找回来”设计，支持文字、图片/视频、录音、位置、收藏、分类与历史搜索筛选。项目从 PRD、移动端交互、视觉还原到 GitHub / Vercel 部署完整落地，并持续优化真实地图选点、本地数据稳定保存和手机端使用体验。"
   }
 ] as const;

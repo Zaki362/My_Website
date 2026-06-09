@@ -144,6 +144,15 @@ export const knowledgeChunks: KnowledgeChunk[] = [
     tags: ["Design/Build", "Prototype", "Vibe Coding"]
   },
   {
+    id: "project-1",
+    title: "随手记 Vibe Coding 项目",
+    category: "project",
+    text:
+      "随手记 / Suishouji Mobile 是郑国华独立开发的本地优先极简灵感记录 App，线上地址为 https://suishouji-mobile-mvp.vercel.app/。它围绕“快速放进去、历史找回来”的核心体验设计，支持文字、图片/视频、录音、位置、收藏、分类与历史搜索筛选。项目从 PRD、移动端交互、视觉还原到 GitHub / Vercel 部署完整落地，并持续优化真实地图选点、本地数据稳定保存和手机端使用体验。",
+    keywords: ["随手记", "Suishouji", "Vibe Coding", "本地优先", "灵感记录", "移动端", "项目"],
+    tags: ["Vibe Coding", "Local-first", "Mobile UX", "Media Notes", "Map Picker"]
+  },
+  {
     id: "interest-1",
     title: "关注方向",
     category: "project-interest",

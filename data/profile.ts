@@ -232,6 +232,33 @@ export const projectPlaceholders = [
     projectUrl: "https://fitlog-minimal.vercel.app/",
     githubUrl: "",
     cover: "/projects/fitlog-minimal-cover.png"
+  },
+  {
+    eyebrow: "Vibe Coding Project",
+    title: "随手记 / Suishouji Mobile",
+    shortDescription:
+      "本地优先的极简灵感记录 App，围绕快速放进去、历史找回来设计。",
+    description:
+      "随手记是一款我独立开发的本地优先极简灵感记录 App，支持文字、图片/视频、录音、位置、收藏、分类与历史搜索筛选。",
+    details:
+      "项目从 PRD、移动端交互、视觉还原到 GitHub / Vercel 部署完整落地，并在实现过程中持续优化真实地图选点、本地数据稳定保存和手机端使用体验。",
+    highlights: [
+      "围绕“快速放进去、历史找回来”设计快速记录与历史筛选体验。",
+      "支持文字、图片/视频、录音、位置、收藏、分类等多模态记录。",
+      "通过本地优先数据保存，保证轻量使用和稳定找回。",
+      "完整走通 PRD、移动端交互、视觉还原、GitHub 与 Vercel 部署。"
+    ],
+    outcomes: [
+      "完成一个可直接访问的移动端优先灵感记录 App。",
+      "覆盖快速记录、媒体记录、位置记录、收藏分类与历史搜索筛选。",
+      "验证了从 PRD 到上线的 vibe coding 产品构建闭环。"
+    ],
+    note: "线上版本可直接访问，数据默认保存在本地浏览器。",
+    stack: ["Vibe Coding", "Local-first", "Mobile UX", "Media Notes", "Map Picker", "Vercel"],
+    metrics: ["7 个记录维度", "Local 本地优先", "Search 历史筛选"],
+    projectUrl: "https://suishouji-mobile-mvp.vercel.app/",
+    githubUrl: "",
+    cover: "/projects/suishouji-mobile-cover.png"
   }
 ];
 

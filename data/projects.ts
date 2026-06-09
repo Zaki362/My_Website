@@ -115,6 +115,103 @@ export const portfolioProjects: PortfolioProject[] = [
         detailLabel: "View details"
       }
     }
+  },
+  {
+    slug: "suishouji-mobile-mvp",
+    year: "2026",
+    cover: "/projects/suishouji-mobile-cover.png",
+    liveUrl: "https://suishouji-mobile-mvp.vercel.app/",
+    locales: {
+      zh: {
+        category: "Vibe Coding / Mobile App",
+        status: "Live App",
+        title: "随手记 / Suishouji Mobile",
+        summary: "本地优先的极简灵感记录 App，围绕快速放进去、历史找回来设计。",
+        cardIntro:
+          "围绕“快速放进去、历史找回来”的本地优先灵感记录 App。",
+        detailIntro:
+          "随手记是一款我独立开发的本地优先极简灵感记录 App，围绕“快速放进去、历史找回来”的核心体验设计，支持文字、图片/视频、录音、位置、收藏、分类与历史搜索筛选。",
+        contextTitle: "背景",
+        context:
+          "灵感和碎片信息常常发生在手机上，但传统备忘录容易混杂、难找，重型笔记工具又会打断记录动作。我希望做一个打开就能快速放入、之后能按历史、分类、收藏和关键词找回的小工具。",
+        contributionTitle: "设计与构建",
+        contribution:
+          "项目从 PRD、移动端交互、视觉还原到 GitHub / Vercel 部署完整落地，重点打磨快速记录、媒体与录音入口、真实地图选点、本地数据稳定保存和手机端触控体验。",
+        impactTitle: "成果",
+        impact: [
+          "完成一个可直接访问的移动端优先灵感记录 App。",
+          "覆盖文字、图片/视频、录音、位置、收藏、分类与历史搜索筛选等核心能力。",
+          "验证了从 PRD、交互、视觉到部署的完整 vibe coding 产品闭环。"
+        ],
+        metrics: [
+          { value: "7", label: "记录维度" },
+          { value: "Local", label: "本地优先" },
+          { value: "Search", label: "历史筛选" }
+        ],
+        workflow: [
+          { label: "PRD / 场景定义", icon: "book" },
+          { label: "AI 协作开发", icon: "bot" },
+          { label: "本地数据保存", icon: "database" },
+          { label: "部署 / 体验优化", icon: "file" }
+        ],
+        tags: [
+          "Vibe Coding",
+          "Local-first",
+          "Mobile UX",
+          "Inspiration Capture",
+          "Media Notes",
+          "Map Picker",
+          "Vercel"
+        ],
+        liveLabel: "打开 App",
+        detailLabel: "查看详情"
+      },
+      en: {
+        category: "Vibe Coding / Mobile App",
+        status: "Live App",
+        title: "Suishouji Mobile",
+        summary:
+          "A local-first minimalist inspiration capture app built around quick capture and reliable retrieval.",
+        cardIntro:
+          "A local-first inspiration capture app designed around fast input and searchable history.",
+        detailIntro:
+          "Suishouji Mobile is a local-first minimalist inspiration capture app I built independently. It centers on putting thoughts in quickly and finding them later, with text, image/video, audio, location, favorites, categories and searchable history filters.",
+        contextTitle: "Context",
+        context:
+          "Ideas and fragments often appear on mobile, but generic notes can become messy while heavy note tools interrupt the capture moment. I wanted a tool that opens quickly, records multiple forms of context and helps retrieve them later through history, category, favorites and search.",
+        contributionTitle: "Design & Build",
+        contribution:
+          "I drove the project from PRD and mobile interaction design to visual implementation, GitHub / Vercel deployment and iteration. The build focused on quick capture, media and audio entry points, real map selection, stable local data storage and mobile usability.",
+        impactTitle: "Impact",
+        impact: [
+          "Built a mobile-first inspiration capture app that can be used directly online.",
+          "Covered text, image/video, audio, location, favorites, categories and searchable history filters.",
+          "Validated a complete vibe coding product loop from PRD and interaction to visual polish and deployment."
+        ],
+        metrics: [
+          { value: "7", label: "Capture modes" },
+          { value: "Local", label: "Local-first" },
+          { value: "Search", label: "History filters" }
+        ],
+        workflow: [
+          { label: "PRD / scenario", icon: "book" },
+          { label: "AI pair build", icon: "bot" },
+          { label: "Local storage", icon: "database" },
+          { label: "Deploy / refine", icon: "file" }
+        ],
+        tags: [
+          "Vibe Coding",
+          "Local-first",
+          "Mobile UX",
+          "Inspiration Capture",
+          "Media Notes",
+          "Map Picker",
+          "Vercel"
+        ],
+        liveLabel: "Open app",
+        detailLabel: "View details"
+      }
+    }
   }
 ];
 
