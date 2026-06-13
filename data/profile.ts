@@ -70,6 +70,7 @@ export const experiences = [
   {
     company: "字节跳动",
     role: "AIGC 策略产品｜TikTok Shop",
+    focus: "AIGC Strategy",
     period: "2026.03 - 至今",
     overview:
       "围绕 TikTok Shop 电商图文场景，负责 AIGC 生图能力从基模评测、Workflow 优化到行业模版策略的完整链路，推动 AI 工具从「可生成」走向「可控、可用、可增长」。",
@@ -83,11 +84,17 @@ export const experiences = [
       "上线 50+ 行业模版，模版创作效率提升 100%，一期策略优化带动日均 GMV 提升 6%。",
       "通过圈商圈品与任务策略推广 AIGC 工具，商家渗透率提升 35%。"
     ],
+    impactMetrics: [
+      { value: "75% → 90%", label: "生图准确率" },
+      { value: "90%–95%", label: "重点类目保持率" },
+      { value: "+35%", label: "商家渗透率" }
+    ],
     skills: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
   },
   {
     company: "百度",
     role: "AI Coding 产品｜文心快码 Comate",
+    focus: "Agent Evaluation",
     period: "2025.09 - 2026.02",
     overview:
       "聚焦 AI Coding 场景下的 Agent 效果评测、策略调优与 Builder 产品建设，覆盖从需求洞察、产品评测、策略优化到功能上线的完整产品链路。",
@@ -101,11 +108,17 @@ export const experiences = [
       "工具循环率降低 60%，推动 CC_gm 新策略上线，使 SWE-Bench 通过率提升 7.2%。",
       "分析 3168 名用户、8804 条 Session，产出用户分层与 Agent 场景分析报告。"
     ],
+    impactMetrics: [
+      { value: "80%", label: "研发人力节省" },
+      { value: "-60%", label: "工具循环率" },
+      { value: "+7.2%", label: "SWE-Bench 通过率" }
+    ],
     skills: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
     company: "美团",
     role: "Agent 0-1 搭建｜核心本地商业分析",
+    focus: "Business Agent",
     period: "2025.04 - 2025.08",
     overview:
       "面向美团本地商业经营分析场景，主导搭建基于知识抽取、RAG 召回与报告生成的分析 Agent，实现从历史报告知识沉淀到端到端自动产出分析报告与图表。",
@@ -118,6 +131,11 @@ export const experiences = [
       "将经营分析产出从 2 人 × 3 天优化至 1 人 × 1 天。",
       "RAG 下 LLM 分析框架得分相比单报告输入 / 无输入提升近 70%。",
       "独立维护 10+ 业务知识库，接入多业务场景，替代约 70% 基础经分工作。"
+    ],
+    impactMetrics: [
+      { value: "3天 → 1天", label: "分析产出周期" },
+      { value: "+70%", label: "RAG 框架得分" },
+      { value: "10+", label: "业务知识库" }
     ],
     skills: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
   }

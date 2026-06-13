@@ -10,9 +10,16 @@ import { portfolioProjects } from "@/data/projects";
 
 function ProjectCardGrid({ className }: { className?: string }) {
   const { locale } = useLanguage();
+  const useTwoColumnLayout = portfolioProjects.length <= 2;
 
   return (
-    <div className={cn("grid gap-6 md:grid-cols-2 xl:grid-cols-3", className)}>
+    <div
+      className={cn(
+        "grid gap-6 md:grid-cols-2",
+        useTwoColumnLayout ? "mx-auto xl:max-w-[920px]" : "xl:grid-cols-3",
+        className
+      )}
+    >
       {portfolioProjects.map((project, index) => {
         const copy = project.locales[locale];
 
