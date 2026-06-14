@@ -212,6 +212,102 @@ export const portfolioProjects: PortfolioProject[] = [
         detailLabel: "View details"
       }
     }
+  },
+  {
+    slug: "codex-widget",
+    year: "2026",
+    cover: "/projects/codex-widget-cover.png",
+    liveUrl: "https://github.com/Zaki362/codex-widget",
+    githubUrl: "https://github.com/Zaki362/codex-widget",
+    locales: {
+      zh: {
+        category: "Vibe Coding / macOS Widget",
+        status: "GitHub",
+        title: "Codex Widget",
+        summary: "一个 macOS 桌面小组件，用来快速查看 Codex 额度剩余、刷新时间与近 5 天 token 消耗趋势。",
+        cardIntro:
+          "给 Codex 做的“赛博油表”：桌面或小组件抽屉里一眼查看额度状态。",
+        detailIntro:
+          "Codex Widget 是我自己开发的 macOS 桌面小组件，用来解决每次查看 Codex 额度都要点进设置的麻烦。它可以直接添加到桌面，也可以放进左滑的小组件抽屉，快速展示额度剩余、刷新时间、进度条和近 5 天 token 消耗趋势。",
+        contextTitle: "背景",
+        context:
+          "高频使用 Codex 时，额度状态其实很像生产力工具里的“油表”。但原本每次都需要打开设置查看，路径偏深，也不适合随手瞄一眼。我希望把这个信息变成桌面上的轻量状态组件。",
+        contributionTitle: "设计与构建",
+        contribution:
+          "项目围绕 macOS 小组件的日常可见性设计，将 5 小时额度、周限额、刷新时间和近 5 天 token 趋势组织成紧凑面板。视觉上保留类似系统小组件的圆角、浅色毛玻璃和绿色进度反馈，让信息可以被快速扫描。",
+        impactTitle: "成果",
+        impact: [
+          "完成一个可添加到 macOS 桌面或小组件抽屉的 Codex 额度小组件。",
+          "支持额度百分比、刷新时间、进度条与近 5 天 token 消耗趋势展示。",
+          "把原本藏在设置里的额度信息变成随手可见的桌面状态。"
+        ],
+        metrics: [
+          { value: "5h", label: "短周期额度" },
+          { value: "7d", label: "周限额" },
+          { value: "5", label: "趋势天数" }
+        ],
+        workflow: [
+          { label: "额度场景识别", icon: "book" },
+          { label: "Widget UI 设计", icon: "bot" },
+          { label: "消耗数据展示", icon: "database" },
+          { label: "GitHub 发布", icon: "file" }
+        ],
+        tags: [
+          "macOS Widget",
+          "Codex",
+          "Vibe Coding",
+          "Desktop Utility",
+          "Token Usage",
+          "GitHub"
+        ],
+        liveLabel: "查看 GitHub",
+        detailLabel: "查看详情"
+      },
+      en: {
+        category: "Vibe Coding / macOS Widget",
+        status: "GitHub",
+        title: "Codex Widget",
+        summary:
+          "A macOS desktop widget for checking Codex quota, refresh time, progress bars and recent token usage trends.",
+        cardIntro:
+          "A small desktop fuel gauge for Codex quota, built as a macOS widget.",
+        detailIntro:
+          "Codex Widget is a macOS desktop widget I built for checking Codex quota without opening settings every time. It can sit on the desktop or in the widget drawer, showing remaining quota, refresh time, progress bars and a five-day token usage trend.",
+        contextTitle: "Context",
+        context:
+          "When Codex becomes a high-frequency work tool, quota status starts to feel like a productivity fuel gauge. The original path through settings was too deep for quick checks, so I wanted a lightweight widget that keeps this state visible at a glance.",
+        contributionTitle: "Design & Build",
+        contribution:
+          "The widget organizes five-hour quota, weekly quota, refresh timing and recent token usage into a compact panel. The visual style follows macOS widget conventions with soft corners, a light glassy surface and green progress feedback for fast scanning.",
+        impactTitle: "Impact",
+        impact: [
+          "Built a Codex quota widget that can be added to the macOS desktop or widget drawer.",
+          "Shows quota percentages, refresh time, progress bars and five-day token usage trends.",
+          "Turns quota information hidden in settings into an always-visible desktop status surface."
+        ],
+        metrics: [
+          { value: "5h", label: "Short quota" },
+          { value: "7d", label: "Weekly limit" },
+          { value: "5", label: "Trend days" }
+        ],
+        workflow: [
+          { label: "Quota use case", icon: "book" },
+          { label: "Widget UI design", icon: "bot" },
+          { label: "Usage data view", icon: "database" },
+          { label: "GitHub release", icon: "file" }
+        ],
+        tags: [
+          "macOS Widget",
+          "Codex",
+          "Vibe Coding",
+          "Desktop Utility",
+          "Token Usage",
+          "GitHub"
+        ],
+        liveLabel: "Open GitHub",
+        detailLabel: "View details"
+      }
+    }
   }
 ];
 
