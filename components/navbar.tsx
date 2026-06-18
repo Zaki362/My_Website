@@ -36,6 +36,8 @@ function isRouteActive(pathname: string, href: string) {
   return href.startsWith("/") && pathname === href;
 }
 
+const RESUME_REQUEST_EVENT = "resume-request:open";
+
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -122,6 +124,16 @@ export function Navbar() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const openResumeRequest = () => {
+      setOpen(false);
+      setResumeRequestOpen(true);
+    };
+
+    window.addEventListener(RESUME_REQUEST_EVENT, openResumeRequest);
+    return () => window.removeEventListener(RESUME_REQUEST_EVENT, openResumeRequest);
+  }, []);
 
   function resolveHomeHref(href: string) {
     if (pathname === "/" && href === "/projects") {

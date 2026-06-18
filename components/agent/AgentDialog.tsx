@@ -3,18 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Check, Copy, Loader2, Mail, Minus, Send, X } from "lucide-react";
+import { Loader2, Mail, Minus, Send, X } from "lucide-react";
 import { agentProfiles } from "@/data/knowledge-base/profile";
-import { contactData } from "@/data/profile";
 import { ChatMessage } from "@/components/agent/ChatMessage";
 import { SuggestedQuestions } from "@/components/agent/SuggestedQuestions";
 import { AgentSprite } from "@/components/agent/AgentSprite";
 import { useLanguage } from "@/components/language-provider";
+import type { AgentAction, AgentResponse } from "@/lib/agent/types";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
-};
+} & Partial<Pick<AgentResponse, "sections" | "sources" | "actions" | "followups" | "refused" | "fallback" | "casual">>;
 
 type AgentDialogProps = {
   open: boolean;
@@ -23,11 +23,10 @@ type AgentDialogProps = {
 };
 
 const MAX_INPUT_LENGTH = 500;
+const RESUME_REQUEST_EVENT = "resume-request:open";
 
 const agentDialogCopy = {
   zh: {
-    copiedEmail: "已复制邮箱",
-    copyEmail: "复制邮箱",
     unavailable: "资料助手暂时不可用。",
     noAnswer:
       "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。",
@@ -41,8 +40,6 @@ const agentDialogCopy = {
     sendLabel: "发送问题"
   },
   en: {
-    copiedEmail: "Email copied",
-    copyEmail: "Copy email",
     unavailable: "The assistant is temporarily unavailable.",
     noAnswer:
       "I do not have enough site information to answer that. You can ask about Guohua's education, work experience, research, projects or skills.",
@@ -57,43 +54,6 @@ const agentDialogCopy = {
   }
 } as const;
 
-function shouldShowEmailAction(content: string) {
-  return content.includes(contactData.email);
-}
-
-function AgentActionBar({
-  copiedEmail,
-  copyEmailLabel
-}: {
-  copiedEmail: string;
-  copyEmailLabel: string;
-}) {
-  const [copied, setCopied] = useState(false);
-
-  async function copyEmail() {
-    try {
-      await navigator.clipboard.writeText(contactData.email);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
-    } catch {
-      window.location.href = `mailto:${contactData.email}`;
-    }
-  }
-
-  return (
-    <div className="mt-2 flex flex-wrap gap-2 pl-1">
-      <button
-        type="button"
-        onClick={copyEmail}
-        className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/10 bg-blue-500/[0.065] px-3 py-1.5 text-xs font-medium text-blue-700 transition hover:bg-blue-500/[0.1]"
-      >
-        {copied ? copiedEmail : copyEmailLabel}
-        {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-      </button>
-    </div>
-  );
-}
-
 export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   const { locale } = useLanguage();
   const profile = agentProfiles[locale];
@@ -105,6 +65,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copiedActionId, setCopiedActionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const reduceMotion = useReducedMotion();
@@ -188,7 +149,14 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           content:
             typeof data?.reply === "string" && data.reply.trim()
               ? data.reply.trim()
-              : copy.noAnswer
+              : copy.noAnswer,
+          sections: Array.isArray(data?.sections) ? data.sections : undefined,
+          sources: Array.isArray(data?.sources) ? data.sources : undefined,
+          actions: Array.isArray(data?.actions) ? data.actions : undefined,
+          followups: Array.isArray(data?.followups) ? data.followups : undefined,
+          refused: Boolean(data?.refused),
+          fallback: Boolean(data?.fallback),
+          casual: Boolean(data?.casual)
         }
       ]);
     } catch (submissionError) {
@@ -202,11 +170,55 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
         ...current,
         {
           role: "assistant",
-          content: message
+          content: message,
+          sections: [{ type: "summary", content: message }]
         }
       ]);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleAgentAction(action: AgentAction) {
+    if (action.kind === "copy" && action.value) {
+      try {
+        await navigator.clipboard.writeText(action.value);
+        setCopiedActionId(action.id);
+        window.setTimeout(() => setCopiedActionId(null), 1500);
+      } catch {
+        if (action.value.includes("@")) {
+          window.location.href = `mailto:${action.value}`;
+        }
+      }
+      return;
+    }
+
+    if (action.kind === "resume") {
+      window.dispatchEvent(new CustomEvent(RESUME_REQUEST_EVENT));
+      return;
+    }
+
+    if (action.kind === "mailto" && action.href) {
+      window.location.href = action.href;
+      return;
+    }
+
+    if (action.kind === "anchor" && action.href) {
+      if (action.href.startsWith("#")) {
+        if (window.location.pathname !== "/") {
+          window.location.href = `/${action.href}`;
+          return;
+        }
+
+        const target = document.querySelector(action.href);
+        if (target) {
+          target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+          window.history.replaceState(null, "", action.href);
+        }
+        return;
+      }
+
+      window.location.href = action.href;
     }
   }
 
@@ -263,19 +275,34 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           </header>
 
           <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
-            {messages.map((message, index) => (
-              <div key={`${message.role}-${index}`}>
-                <ChatMessage role={message.role} content={message.content} />
-                {message.role === "assistant" && shouldShowEmailAction(message.content) ? (
-                  <AgentActionBar copiedEmail={copy.copiedEmail} copyEmailLabel={copy.copyEmail} />
-                ) : null}
-                {index === 0 ? (
+            {messages.map((message, index) => {
+              const suggestions =
+                index === 0
+                  ? quickQuestions
+                  : message.role === "assistant"
+                    ? message.followups ?? []
+                    : [];
+
+              return (
+                <div key={`${message.role}-${index}`}>
+                  <ChatMessage
+                    role={message.role}
+                    content={message.content}
+                    locale={locale}
+                    sections={message.sections}
+                    sources={message.sources}
+                    actions={message.actions}
+                    copiedActionId={copiedActionId}
+                    onAction={handleAgentAction}
+                  />
+                  {suggestions.length ? (
                   <div className="mt-3">
-                    <SuggestedQuestions questions={quickQuestions} onSelect={submitQuestion} disabled={loading} />
+                    <SuggestedQuestions questions={suggestions} onSelect={submitQuestion} disabled={loading} />
                   </div>
-                ) : null}
-              </div>
-            ))}
+                  ) : null}
+                </div>
+              );
+            })}
 
             {loading ? (
               <div className="flex justify-start">

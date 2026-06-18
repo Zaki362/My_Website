@@ -1,4 +1,5 @@
 import { knowledgeChunks, type KnowledgeChunk } from "@/data/knowledge-base/chunks";
+import { agentFaqs } from "@/data/knowledge-base/faqs";
 import { portfolioProjects } from "@/data/projects";
 import {
   beyondWorkGroups,
@@ -161,6 +162,17 @@ const skillChunks: KnowledgeChunk[] = skillGroups.map((group, index) =>
   })
 );
 
+const faqChunks: KnowledgeChunk[] = agentFaqs.map((faq, index) =>
+  chunk({
+    id: `site-faq-${index + 1}`,
+    title: faq.question,
+    category: "identity",
+    text: `常见问题：${faq.question} 回答：${faq.answer}`,
+    keywords: [faq.question, "常见问题", "招聘", "面试", "候选人", "优势", "成果"],
+    tags: ["FAQ", "Candidate", "Profile"]
+  })
+);
+
 const beyondChunks: KnowledgeChunk[] = [
   chunk({
     id: "site-beyond-summary",
@@ -225,6 +237,7 @@ export const siteKnowledgeChunks: KnowledgeChunk[] = [
   ...projectChunks,
   ...researchChunks,
   ...skillChunks,
+  ...faqChunks,
   ...beyondChunks,
   ...knowledgeChunks
 ];

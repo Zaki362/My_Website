@@ -38,7 +38,7 @@ export function AgentLauncher({ className }: { className?: string }) {
           onClick={() => setMode("chat")}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.96 }}
+          initial={false}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
           whileHover={reduceMotion ? undefined : { y: -4 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
@@ -73,7 +73,7 @@ export function AgentLauncher({ className }: { className?: string }) {
         <motion.button
           type="button"
           onClick={() => setMode("chat")}
-          initial={reduceMotion ? false : { opacity: 0, y: 14, scale: 0.9 }}
+          initial={false}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
           whileHover={reduceMotion ? undefined : { y: -3, scale: 1.03 }}
           transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}

@@ -30,7 +30,7 @@ export function HeroSection() {
 
       <Container className="relative grid min-h-[calc(100vh-4.25rem)] items-center gap-10 pb-14 md:pb-16 lg:grid-cols-[minmax(0,58%)_minmax(340px,42%)] lg:gap-8 xl:grid-cols-[minmax(0,56%)_minmax(380px,44%)] xl:gap-10 2xl:gap-14">
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 22 }}
+          initial={false}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.74, ease }}
           className="lg:-mt-2"
@@ -114,7 +114,7 @@ export function HeroSection() {
         </motion.div>
 
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
+          initial={false}
           animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.08, ease }}
           className="mx-auto flex w-full max-w-[420px] flex-col gap-4 lg:max-w-[392px] lg:justify-self-center xl:max-w-[410px]"
