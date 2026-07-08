@@ -1,75 +1,6 @@
 import type { KnowledgeChunk } from "@/data/knowledge-base/chunks";
 import { siteKnowledgeChunks } from "@/lib/agent/siteKnowledge";
 
-const POSITIVE_HINTS = [
-  "郑国华",
-  "他",
-  "他的",
-  "教育",
-  "背景",
-  "实习",
-  "科研",
-  "论文",
-  "荣誉",
-  "竞赛",
-  "技能",
-  "项目",
-  "作品",
-  "agent",
-  "aigc",
-  "vibe",
-  "workflow",
-  "产品",
-  "ai coding",
-  "fitlog",
-  "练一下",
-  "字节",
-  "百度",
-  "美团",
-  "北大",
-  "人大",
-  "生活",
-  "联系方式",
-  "邮箱",
-  "github",
-  "cv",
-  "简历",
-  "招聘",
-  "面试",
-  "候选人",
-  "适合",
-  "匹配",
-  "优势",
-  "亮点",
-  "成果",
-  "指标",
-  "impact",
-  "metric",
-  "candidate",
-  "interview",
-  "hire",
-  "fit",
-  "resume"
-];
-
-const NEGATIVE_HINTS = [
-  "天气",
-  "股票",
-  "新闻",
-  "总统",
-  "汇率",
-  "写代码教程",
-  "算法题",
-  "医学",
-  "法律",
-  "历史事件",
-  "电影推荐",
-  "菜谱",
-  "旅游攻略",
-  "数学题",
-  "编程教程"
-];
-
 const STOP_WORDS = [
   "的",
   "了",
@@ -140,18 +71,6 @@ function inferIntentCategories(question: string): KnowledgeChunk["category"][] {
   );
 }
 
-export function isLikelyRelevantQuestion(question: string) {
-  const normalized = normalizeText(question);
-  const positive = POSITIVE_HINTS.some((hint) => normalized.includes(normalizeText(hint)));
-  const negative = NEGATIVE_HINTS.some((hint) => normalized.includes(normalizeText(hint)));
-
-  if (negative && !positive) {
-    return false;
-  }
-
-  return positive || normalized.includes("经历") || normalized.includes("方向");
-}
-
 function scoreChunk(question: string, chunk: KnowledgeChunk) {
   const normalizedQuestion = normalizeText(question).replace(/\s+/g, "");
   const searchableText = normalizeText(`${chunk.title} ${chunk.category} ${chunk.text} ${chunk.tags.join(" ")}`)
@@ -208,33 +127,4 @@ export function formatChunksForPrompt(items: { chunk: KnowledgeChunk; score: num
         `[${index + 1}] ${chunk.title}\n分类：${chunk.category}\n内容：${chunk.text}\n标签：${chunk.tags.join(" / ")}`
     )
     .join("\n\n");
-}
-
-export function shouldRefuseBeforeModel(question: string) {
-  const ranked = retrieveRelevantChunks(question);
-
-  if (!isLikelyRelevantQuestion(question)) {
-    if (ranked.length > 0 && ranked[0].score >= 4) {
-      return { refuse: false, ranked };
-    }
-
-    return {
-      refuse: true,
-      reason:
-        "这个助手只回答与郑国华本人相关的资料问题。你可以改问他的教育背景、实习经历、科研、竞赛、技能或项目方向。"
-    };
-  }
-
-  const totalScore = ranked.reduce((sum, item) => sum + item.score, 0);
-  const topScore = ranked[0]?.score ?? 0;
-
-  if (topScore < 2 || totalScore < 3) {
-    return {
-      refuse: true,
-      reason:
-        "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。"
-    };
-  }
-
-  return { refuse: false, ranked };
 }

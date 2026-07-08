@@ -239,7 +239,7 @@ export const dictionary = {
       { label: "Work", href: "#experience" },
       { label: "Projects", href: "/projects" },
       { label: "Research", href: "#research" },
-      { label: "Life", href: "/beyond-work" },
+      { label: "Life", href: "#beyond" },
       { label: "Contact", href: "#contact" }
     ],
     common: {
@@ -400,7 +400,7 @@ export const dictionary = {
       title: "Beyond Work",
       description:
         "Outside professional work, I keep expanding how I understand the world through travel, mountains, water, speed, sound and small moments.",
-      action: "Open Beyond Work",
+      action: "View Life Slices",
       items: englishBeyondHomeItems
     },
     contact: {
@@ -462,8 +462,10 @@ export const dictionary = {
         src: beyondWorkPage.leadImage.src,
         alt: "Guohua Zheng under the night sky"
       },
+      leadMeta: "Open sky / Slow attention",
       leadNote:
         "Rather than explaining life completely, I prefer to put myself into real scenes and understand them slowly.",
+      frameLabel: "Frame",
       storyCaptions: [
         "Travel keeps curiosity open.",
         "Underwater quiet makes attention clean.",
@@ -475,6 +477,10 @@ export const dictionary = {
       curatedTitle: "Movement, skill and mood.",
       curatedDescription:
         "These slices are signals of how I observe contexts, adapt to feedback and keep curiosity alive.",
+      galleryKicker: "Life Gallery",
+      galleryTitle: "A quiet archive of places and signals.",
+      galleryDescription:
+        "Kept in a looser rhythm: not a checklist of hobbies, but a visual memory of water, routes, mountains, speed and sound.",
       nextStops: {
         kicker: beyondWorkPage.nextStops.kicker,
         title: "Coordinates still waiting on the map",
@@ -493,7 +499,7 @@ export const dictionary = {
       { label: "工作", href: "#experience" },
       { label: "项目", href: "/projects" },
       { label: "科研", href: "#research" },
-      { label: "生活", href: "/beyond-work" },
+      { label: "生活", href: "#beyond" },
       { label: "联系", href: "#contact" }
     ],
     common: {
@@ -724,7 +730,9 @@ export const dictionary = {
       title: beyondWorkPage.title,
       intro: beyondWorkPage.intro,
       leadImage: beyondWorkPage.leadImage,
+      leadMeta: "Open sky / Slow attention",
       leadNote: beyondWorkPage.leadNote,
+      frameLabel: "Frame",
       storyCaptions: [
         "旅行让好奇心保持开放。",
         "水下会让注意力变干净。",
@@ -736,6 +744,10 @@ export const dictionary = {
       curatedTitle: "在专业之外继续保持好奇",
       curatedDescription:
         "这些不是完整归档，而是一些信号：我如何观察语境、适应反馈，并让好奇心持续生长。",
+      galleryKicker: "Life Gallery",
+      galleryTitle: "把地点、速度与声音放进同一个安静档案",
+      galleryDescription:
+        "不是按兴趣清单陈列，而是用更松弛的节奏保存水下、路线、山、雪面和现场声音。",
       nextStops: beyondWorkPage.nextStops,
       continue: "继续交流",
       slices: [

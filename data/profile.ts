@@ -12,7 +12,7 @@ export const navigation = [
   { label: "工作", href: "#experience" },
   { label: "项目", href: "/projects" },
   { label: "科研", href: "#research" },
-  { label: "生活", href: "/beyond-work" },
+  { label: "生活", href: "#beyond" },
   { label: "联系", href: "#contact" }
 ] as const;
 
@@ -26,7 +26,7 @@ export const heroData = {
   cta: [
     { label: "实习经历", href: "#experience", variant: "primary" as const },
     { label: "Vibe Coding 项目", href: "/projects", variant: "secondary" as const },
-    { label: "生活切片", href: "/beyond-work", variant: "secondary" as const },
+    { label: "生活切片", href: "#beyond", variant: "secondary" as const },
     { label: "联系我", href: "#contact", variant: "ghost" as const }
   ]
 };
@@ -285,8 +285,8 @@ export const aboutPortalData = {
   title: "工作与学习之外的我",
   description:
     "专业表达之外，我也在通过旅行、山海、速度、声音与微醺时刻，慢慢扩展自己理解世界的方式。",
-  href: "/beyond-work",
-  linkLabel: "进入生活侧写"
+  href: "#beyond",
+  linkLabel: "查看生活切片"
 };
 
 type BeyondWorkImage = {

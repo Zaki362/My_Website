@@ -2,31 +2,16 @@
 
 import { ArrowUpRight, Check, Copy, FileText, Mail } from "lucide-react";
 import { cn } from "@/components/agent/cn";
-import type { AgentAction, AgentSection, AgentSource } from "@/lib/agent/types";
+import type { AgentAction, AgentSection } from "@/lib/agent/types";
 
 type ChatMessageProps = {
   role: "user" | "assistant";
   content: string;
   locale?: "zh" | "en";
   sections?: AgentSection[];
-  sources?: AgentSource[];
   actions?: AgentAction[];
   copiedActionId?: string | null;
   onAction?: (action: AgentAction) => void;
-};
-
-const categoryLabels: Record<string, { zh: string; en: string }> = {
-  identity: { zh: "定位", en: "Profile" },
-  education: { zh: "教育", en: "Education" },
-  honor: { zh: "荣誉", en: "Honors" },
-  experience: { zh: "工作", en: "Work" },
-  research: { zh: "科研", en: "Research" },
-  campus: { zh: "校园", en: "Campus" },
-  skills: { zh: "技能", en: "Skills" },
-  "project-interest": { zh: "方向", en: "Interests" },
-  project: { zh: "项目", en: "Projects" },
-  contact: { zh: "联系", en: "Contact" },
-  beyond: { zh: "生活", en: "Life" }
 };
 
 function getActionIcon(action: AgentAction, copied: boolean) {
@@ -130,7 +115,6 @@ export function ChatMessage({
   content,
   locale = "zh",
   sections,
-  sources,
   actions,
   copiedActionId,
   onAction
@@ -152,20 +136,6 @@ export function ChatMessage({
         ) : (
           <div className="space-y-3.5">
             <AssistantSections sections={sections} content={content} />
-
-            {sources?.length ? (
-              <div className="flex flex-wrap gap-1.5 border-t border-stone-900/10 pt-3">
-                {sources.slice(0, 4).map((source) => (
-                  <span
-                    key={source.id}
-                    className="rounded-full border border-stone-900/10 bg-stone-900/[0.035] px-2.5 py-1 text-[11px] font-medium text-stone-500"
-                    title={source.title}
-                  >
-                    {categoryLabels[source.category]?.[locale] ?? source.category}
-                  </span>
-                ))}
-              </div>
-            ) : null}
 
             {actions?.length ? (
               <div className="flex flex-wrap gap-2">

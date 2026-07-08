@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   formatChunksForPrompt,
-  retrieveRelevantChunks,
-  shouldRefuseBeforeModel
+  retrieveRelevantChunks
 } from "@/lib/agent/retrieve";
 import {
   AGENT_SYSTEM_PROMPT,
@@ -39,41 +38,78 @@ const rateLimitStore = new Map<string, number[]>();
 
 const routeCopy = {
   zh: {
-    rateLimited: "提问频率有点快。请稍等片刻后再继续提问关于郑国华资料的问题。",
-    emptyQuestion: "请输入一个与郑国华资料相关的问题。",
+    rateLimited: "提问有点快，稍等一下再继续聊。",
+    emptyQuestion: "先输入一句想聊的内容吧。",
     tooLong: `问题请控制在 ${MAX_MESSAGE_LENGTH} 字以内。`,
     noEvidence:
-      "我在站内资料里没有检索到足够证据回答这个问题。你可以换成更具体的教育、工作、项目、科研、生活或联系方式问题。",
+      "这个问题不太在国华的站内资料里。我可以简单聊聊，但如果想了解国华本人，问工作、项目、科研或联系方式会更准。",
     refuse:
-      "这个助手主要回答与郑国华本人相关的资料问题。你可以改问他的教育背景、实习经历、科研、竞赛、技能或项目方向。",
+      "这个问题我不太适合展开。可以换个轻一点的问题，或者问问国华的经历、项目和研究。",
     noAnswer:
-      "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。",
+      "这个我掌握的信息不多，只能先简单说到这里。你也可以换个问法。",
     genericError:
-      "资料助手暂时出现了一点问题。你可以稍后再试，或改问更明确的个人资料问题。",
+      "助手暂时卡了一下。可以稍后再试，或者换个更短的问题。",
     languagePrompt:
-      "请用简洁中文回答，保持 2 到 6 句。可以简单寒暄，但涉及资料问题时必须基于检索内容。",
+      "请用轻松自然的中文回答。默认 1 句结论 + 最多 3 条要点，总长度尽量控制在 180 个中文字符内。优先结合郑国华站内资料；如果问题是普通闲聊或泛问题，可以简短回答，但不要假装有实时信息或编造国华资料。",
     structuredPrompt:
-      "请只输出 JSON，不要输出 Markdown 或解释。JSON 格式：{\"summary\":\"一句结论\",\"bullets\":[\"2-4条要点\"],\"metrics\":[{\"label\":\"指标名\",\"value\":\"数值\",\"detail\":\"可选说明\"}],\"note\":\"可选补充\"}。如果没有指标，metrics 用空数组。"
+      "请只输出 JSON，不要输出 Markdown 或解释。JSON 格式：{\"summary\":\"一句自然结论\",\"bullets\":[\"0-3条短要点\"],\"metrics\":[{\"label\":\"指标名\",\"value\":\"数值\",\"detail\":\"可选说明\"}],\"note\":\"可选补充\"}。如果没有要点或指标，用空数组。语气可以轻松一点。"
   },
   en: {
     rateLimited:
-      "You are asking a bit quickly. Please wait a moment, then continue with questions about Guohua Zheng.",
-    emptyQuestion: "Please enter a question about Guohua Zheng's profile.",
+      "You're asking a bit quickly. Give it a moment, then keep going.",
+    emptyQuestion: "Type something you'd like to ask.",
     tooLong: `Please keep your question within ${MAX_MESSAGE_LENGTH} characters.`,
     noEvidence:
-      "I could not find enough evidence in the site profile. Try asking a more specific question about education, work, projects, research, life or contact information.",
+      "That is not really covered by Guohua's site profile. I can keep it brief, but for Guohua-specific details, work, projects, research and contact questions will be more accurate.",
     refuse:
-      "This assistant mainly answers questions about Guohua Zheng's own profile. You can ask about his education, work experience, research, honors, skills or projects.",
+      "I may not be the best place to go deep on that. Try a lighter question, or ask about Guohua's work, projects or research.",
     noAnswer:
-      "I do not have enough site information to answer that. You can ask about Guohua's education, work experience, research, projects or skills.",
+      "I do not have much information on that, so I can only keep the answer brief.",
     genericError:
-      "The assistant ran into a temporary issue. Please try again later or ask a more specific profile question.",
+      "The assistant got stuck for a moment. Please try again or ask a shorter question.",
     languagePrompt:
-      "Answer in concise English, ideally 2 to 6 sentences. Simple greetings are allowed, but profile questions must be grounded in the retrieved site context.",
+      "Answer in relaxed, natural English. Default to one short conclusion plus up to 3 bullets, ideally under 120 words. Prioritize Guohua's site profile when relevant; for casual or general questions, answer briefly, but do not pretend to know real-time facts or invent Guohua-specific details.",
     structuredPrompt:
-      "Return JSON only, with no Markdown or extra explanation. JSON shape: {\"summary\":\"one-sentence conclusion\",\"bullets\":[\"2-4 concise points\"],\"metrics\":[{\"label\":\"metric name\",\"value\":\"value\",\"detail\":\"optional detail\"}],\"note\":\"optional note\"}. Use natural English casing, not all caps. If there are no metrics, use an empty metrics array."
+      "Return JSON only, with no Markdown or extra explanation. JSON shape: {\"summary\":\"one natural conclusion\",\"bullets\":[\"0-3 short points\"],\"metrics\":[{\"label\":\"metric name\",\"value\":\"value\",\"detail\":\"optional detail\"}],\"note\":\"optional note\"}. Use natural English casing, not all caps. Empty arrays are fine."
   }
 } as const;
+
+const PROFILE_INTENT_HINTS = [
+  "郑国华",
+  "国华",
+  "他",
+  "他的",
+  "教育",
+  "学校",
+  "北大",
+  "人大",
+  "工作",
+  "实习",
+  "项目",
+  "科研",
+  "论文",
+  "简历",
+  "联系",
+  "邮箱",
+  "github",
+  "agent",
+  "aigc",
+  "vibe",
+  "workflow",
+  "产品",
+  "面试",
+  "招聘",
+  "候选人",
+  "guohua",
+  "zheng",
+  "work",
+  "project",
+  "research",
+  "resume",
+  "contact",
+  "candidate",
+  "interview"
+];
 
 function normalizeCasualInput(input: string) {
   return input
@@ -93,11 +129,7 @@ function buildCasualReply(question: string, locale: Locale) {
     return null;
   }
 
-  if (
-    ["hi", "hello", "hey", "你好", "您好", "哈喽", "嗨", "在吗", "在不在"].some((item) =>
-      normalized.includes(item)
-    )
-  ) {
+  if (["hi", "hello", "hey", "你好", "您好", "哈喽", "嗨", "在吗", "在不在"].includes(normalized)) {
     return locale === "en"
       ? "Hi, I'm here. You can ask me about Guohua's education, work, projects, research or contact information."
       : "你好，我在。你可以问我关于国华的教育、工作、项目、科研或联系方式。";
@@ -181,6 +213,11 @@ function questionIncludes(question: string, hints: string[]) {
   return hints.some((hint) => normalized.includes(normalizeCasualInput(hint)));
 }
 
+function hasProfileIntent(question: string, sources: AgentSource[] = []) {
+  void sources;
+  return questionIncludes(question, PROFILE_INTENT_HINTS);
+}
+
 function addAction(actions: AgentAction[], action: AgentAction) {
   if (!actions.some((item) => item.id === action.id)) {
     actions.push(action);
@@ -209,6 +246,10 @@ function buildActions(question: string, sources: AgentSource[], locale: Locale):
           copyEmail: "Copy email",
           resume: "Request resume"
         };
+
+  if (!hasProfileIntent(question, sources)) {
+    return [];
+  }
 
   if (questionIncludes(question, ["简历", "履历", "resume", "cv"])) {
     addAction(actions, { id: "resume", label: copy.resume, kind: "resume", variant: "primary" });
@@ -251,6 +292,10 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
       followups.push(item);
     }
   };
+
+  if (!hasProfileIntent(question, sources)) {
+    return [];
+  }
 
   if (locale === "zh") {
     if (hasAnyCategory(sources, ["experience", "skills"])) {
@@ -382,10 +427,10 @@ function parseStructuredSections(rawReply: string, locale: Locale) {
 
   try {
     const parsed = JSON.parse(rawReply.slice(firstBrace, lastBrace + 1)) as Record<string, unknown>;
-    const summary = cleanString(parsed.summary, 260);
-    const bullets = cleanStringList(parsed.bullets, 4, 180);
+    const summary = cleanString(parsed.summary, locale === "zh" ? 180 : 220);
+    const bullets = cleanStringList(parsed.bullets, 3, locale === "zh" ? 120 : 150);
     const metrics = cleanMetrics(parsed.metrics);
-    const note = cleanString(parsed.note, 220);
+    const note = cleanString(parsed.note, locale === "zh" ? 140 : 180);
     const sections: AgentSection[] = [];
 
     if (summary) {
@@ -410,9 +455,49 @@ function parseStructuredSections(rawReply: string, locale: Locale) {
   }
 }
 
-function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale) {
+function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, question: string) {
   if (rankedChunks.length === 0) {
     const sections: AgentSection[] = [{ type: "summary", content: routeCopy[locale].noEvidence }];
+    return {
+      reply: buildReplyFromSections(sections),
+      sections
+    };
+  }
+
+  if (questionIncludes(question, ["agent", "智能体", "代理"])) {
+    const sections: AgentSection[] =
+      locale === "en"
+        ? [
+            {
+              type: "summary",
+              content: "His Agent experience is mainly in business-analysis Agents and Coding Agents."
+            },
+            {
+              type: "bullets",
+              title: "Quick view",
+              items: [
+                "Meituan: built a business-analysis Agent around knowledge extraction, RAG retrieval, report generation and evaluation.",
+                "Baidu: worked on Coding Agent benchmarks, tool-loop bad cases, prompt/rule strategy and Builder product work.",
+                "The common thread: defining tasks, measuring agent behavior and turning model ability into usable workflows."
+              ]
+            }
+          ]
+        : [
+            {
+              type: "summary",
+              content: "他的 Agent 经验主要分两条线：经营分析 Agent 和 Coding Agent。"
+            },
+            {
+              type: "bullets",
+              title: "简短版",
+              items: [
+                "美团：做经营分析 Agent 0-1，串起知识抽取、RAG 召回、报告生成和效果评测。",
+                "百度：做 Coding Agent 测评集、工具循环 bad case 优化、Prompt / Rules 策略和 Builder 产品建设。",
+                "共同点：不是只调模型，而是围绕任务定义、评测指标和业务落地做产品闭环。"
+              ]
+            }
+          ];
+
     return {
       reply: buildReplyFromSections(sections),
       sections
@@ -422,17 +507,22 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale) {
   const topChunks = rankedChunks.slice(0, 3);
   const categories = Array.from(new Set(topChunks.map((item) => item.chunk.category)));
   const categoryText = categories.map((category) => sourceCategoryLabel(category, locale)).join(locale === "zh" ? "、" : ", ");
+  const briefEvidence = (item: RankedChunk, maxLength: number) => {
+    const text = item.chunk.text.replace(/\s+/g, " ").trim();
+    const summary = text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+    return `${item.chunk.title}: ${summary}`;
+  };
 
   if (locale === "en") {
     const sections: AgentSection[] = [
       {
         type: "summary",
-        content: `I found related site evidence in ${categoryText}, but the model service is temporarily unavailable.`
+        content: `Quick version from Guohua's site profile.`
       },
       {
         type: "bullets",
-        title: "Available evidence",
-        items: topChunks.map((item) => `${sourceCategoryLabel(item.chunk.category, locale)}: ${item.chunk.title}`)
+        title: "Highlights",
+        items: topChunks.map((item) => briefEvidence(item, 90))
       }
     ];
 
@@ -445,21 +535,30 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale) {
   const sections: AgentSection[] = [
     {
       type: "summary",
-      content: `我从站内资料中检索到 ${categoryText} 相关信息，先做一个简短归纳。`
+      content: `可以，先给你一个基于站内资料的简短版。`
     },
     {
       type: "bullets",
-      title: "站内证据",
-      items: topChunks.map((item) => {
-        const summary =
-          item.chunk.text.length > 110 ? `${item.chunk.text.slice(0, 110).trim()}...` : item.chunk.text;
-        return `${item.chunk.title}：${summary}`;
-      })
+      title: `${categoryText}线索`,
+      items: topChunks.map((item) => briefEvidence(item, 70).replace(":", "："))
     }
   ];
 
   return {
     reply: buildReplyFromSections(sections),
+    sections
+  };
+}
+
+function buildGeneralFallback(locale: Locale) {
+  const content =
+    locale === "zh"
+      ? "可以简单聊。现在模型服务暂时不可用，我先给一个轻量建议：选一个 20 分钟内能开始、没负担的小活动，比如散步、听一张专辑或整理一下桌面。"
+      : "Sure. The model service is temporarily unavailable, so here is a light suggestion: choose something low-friction you can start within 20 minutes, like a walk, one album, or a quick desk reset.";
+  const sections: AgentSection[] = [{ type: "summary", content }];
+
+  return {
+    reply: content,
     sections
   };
 }
@@ -584,27 +683,15 @@ export async function POST(request: NextRequest) {
       } satisfies AgentResponse);
     }
 
-    const retrieveResult = shouldRefuseBeforeModel(latestUserMessage.content);
-
-    if (retrieveResult.refuse) {
-      const refusedReply = locale === "zh" ? retrieveResult.reason ?? copy.refuse : copy.refuse;
-      const sections: AgentSection[] = [{ type: "summary", content: refusedReply }];
-      return NextResponse.json({
-        reply: refusedReply,
-        refused: true,
-        sections,
-        followups: buildFollowups(latestUserMessage.content, [], locale)
-      } satisfies AgentResponse);
-    }
-
-    const rankedChunks = retrieveResult.ranked?.length
-      ? retrieveResult.ranked
-      : retrieveRelevantChunks(latestUserMessage.content);
+    const isProfileQuestion = hasProfileIntent(latestUserMessage.content);
+    const rankedChunks = isProfileQuestion ? retrieveRelevantChunks(latestUserMessage.content) : [];
     const sources = toSources(rankedChunks);
     const modelConfig = getModelConfig();
 
     if (!modelConfig) {
-      const fallback = buildRetrievalFallback(rankedChunks, locale);
+      const fallback = isProfileQuestion
+        ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
+        : buildGeneralFallback(locale);
       return NextResponse.json({
         reply: fallback.reply,
         refused: false,
@@ -637,14 +724,16 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: modelConfig.model,
         messages: modelMessages,
-        temperature: 0.18,
-        max_tokens: 420
+        temperature: 0.45,
+        max_tokens: 360
       })
     });
 
     if (!response.ok) {
       await response.text().catch(() => "");
-      const fallback = buildRetrievalFallback(rankedChunks, locale);
+      const fallback = isProfileQuestion
+        ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
+        : buildGeneralFallback(locale);
       return NextResponse.json(
         {
           reply: fallback.reply,

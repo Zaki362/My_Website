@@ -1,40 +1,48 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
-import { ButtonLink, Section, SectionHeader, cn } from "@/components/design-system";
+import { Section, SectionHeader } from "@/components/design-system";
 import { Reveal } from "@/components/reveal";
 import { useLanguage } from "@/components/language-provider";
 
 function ImageStoryCard({
-  src,
-  alt,
-  caption,
-  featured = false
+  name,
+  label,
+  image,
+  accent
 }: {
-  src: string;
-  alt: string;
-  caption: string;
-  featured?: boolean;
+  name: string;
+  label: string;
+  image: {
+    src: string;
+    alt: string;
+  } | null;
+  accent: string;
 }) {
   return (
     <div
-      className={cn(
-        "interactive-card group relative overflow-hidden rounded-[1.75rem] border border-stone-900/10 bg-stone-100",
-        featured ? "min-h-[28rem] lg:row-span-2" : "min-h-[13.5rem]"
-      )}
+      className="interactive-card group flex h-[15.5rem] flex-col overflow-hidden rounded-[1.5rem] border border-stone-900/10 bg-[#fffdfa] shadow-panel sm:h-[17rem] lg:h-[18.5rem]"
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={featured ? "(max-width: 1024px) 100vw, 700px" : "(max-width: 1024px) 100vw, 360px"}
-        className="object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,35,31,0)_48%,rgba(37,35,31,0.48)_100%)]" />
-      <p className="absolute left-5 bottom-5 right-5 text-base font-medium leading-7 text-[#fffaf2]">
-        {caption}
-      </p>
+      <div className="relative h-[68%] overflow-hidden bg-stone-100">
+        {image ? (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 240px"
+            className="object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
+          />
+        ) : null}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,35,31,0)_42%,rgba(37,35,31,0.42)_100%)]" />
+        <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-white/15 px-2.5 py-1 text-[0.68rem] font-medium text-[#fffaf2] backdrop-blur">
+          {accent}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col justify-center p-4">
+        <p className="meta-label mb-2">{label}</p>
+        <h3 className="font-display text-xl font-[620] leading-tight text-stone-950">{name}</h3>
+      </div>
     </div>
   );
 }
@@ -43,27 +51,25 @@ export function BeyondWorkSection() {
   const { t } = useLanguage();
 
   return (
-    <Section id="beyond" className="pt-20 lg:pt-28">
+    <Section id="beyond" className="pt-20 lg:pt-24">
       <SectionHeader
         kicker={t.beyondHome.kicker}
         title={t.beyondHome.title}
         description={t.beyondHome.description}
-        action={
-          <ButtonLink href="/beyond-work" variant="ghost" className="px-0">
-            {t.beyondHome.action}
-            <ArrowUpRight className="h-4 w-4" />
-          </ButtonLink>
-        }
+        className="mb-8 md:mb-10"
       />
 
       <Reveal>
-        <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-          <ImageStoryCard {...t.beyondHome.items[0]} />
-          <div className="grid gap-5">
-            {t.beyondHome.items.slice(1).map((item) => (
-              <ImageStoryCard key={item.caption} {...item} />
-            ))}
-          </div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {t.beyondPage.slices.map((item) => (
+            <ImageStoryCard
+              key={item.name}
+              name={item.name}
+              label={item.label}
+              image={item.image}
+              accent={item.accent}
+            />
+          ))}
         </div>
       </Reveal>
     </Section>

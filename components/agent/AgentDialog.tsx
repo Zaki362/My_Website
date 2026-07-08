@@ -27,30 +27,30 @@ const RESUME_REQUEST_EVENT = "resume-request:open";
 
 const agentDialogCopy = {
   zh: {
-    unavailable: "资料助手暂时不可用。",
+    unavailable: "助手暂时不可用。",
     noAnswer:
-      "我目前的资料里没有足够信息回答这个问题。你可以改问他的教育、实习、科研或技能相关内容。",
-    genericError: "资料助手暂时出现了一点问题。",
+      "这个我掌握的信息不多，只能先简单说到这里。",
+    genericError: "助手暂时卡了一下。",
     windowLabel: "国华的 AI 助手聊天窗口",
     minimizeLabel: "最小化 AI 助手",
     closeLabel: "关闭 AI 助手",
-    loading: "正在整理站内资料...",
-    helper: "主要回答国华的站内资料问题",
-    placeholder: "想了解国华的什么？",
-    sendLabel: "发送问题"
+    loading: "正在想一下...",
+    helper: "轻松聊，回答会尽量简短",
+    placeholder: "想聊点什么？",
+    sendLabel: "发送"
   },
   en: {
     unavailable: "The assistant is temporarily unavailable.",
     noAnswer:
-      "I do not have enough site information to answer that. You can ask about Guohua's education, work experience, research, projects or skills.",
-    genericError: "The assistant ran into a temporary issue.",
+      "I do not have much information on that, so I can only keep it brief.",
+    genericError: "The assistant got stuck for a moment.",
     windowLabel: "Guohua's AI assistant chat window",
     minimizeLabel: "Minimize AI assistant",
     closeLabel: "Close AI assistant",
-    loading: "Reviewing site information...",
-    helper: "Mainly answers questions based on Guohua's site profile",
-    placeholder: "What would you like to know about Guohua?",
-    sendLabel: "Send question"
+    loading: "Thinking briefly...",
+    helper: "Ask anything; replies stay brief",
+    placeholder: "What would you like to ask?",
+    sendLabel: "Send"
   }
 } as const;
 
@@ -290,7 +290,6 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                     content={message.content}
                     locale={locale}
                     sections={message.sections}
-                    sources={message.sources}
                     actions={message.actions}
                     copiedActionId={copiedActionId}
                     onAction={handleAgentAction}
