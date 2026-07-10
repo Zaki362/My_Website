@@ -59,23 +59,12 @@ const englishExperienceCards = [
     company: "ByteDance",
     domain: "AIGC Strategy Product | TikTok Shop",
     focus: "AIGC Strategy",
+    period: "2026.03 - Present",
     problem:
       "Owned the end-to-end AIGC image-generation workflow for TikTok Shop e-commerce graphics, from foundation model evaluation and Workflow optimization to industry template strategy, moving the tool from basic generation toward controllable, usable and growth-driving output.",
-    role: [
-      "Built an e-commerce image-generation evaluation set, defined GSB standards, and assessed model performance across product consistency, text rendering, human models and aesthetics.",
-      "Designed a step-by-step generation Workflow and ComfyUI crop-and-stitch pipeline to improve product consistency and retention in key categories.",
-      "Managed industry templates from creation and review to launch and updates, optimizing distribution with GMV, average VV per creative and GPM data."
-    ],
-    impact: [
-      "Image-generation accuracy improved from 75% to 90%; product retention in 3C electronics and trading cards reached 90%-95%.",
-      "Launched 50+ industry templates, doubled template creation efficiency, and drove a 6% increase in average daily GMV in the first strategy iteration.",
-      "Improved merchant penetration by 35% through merchant/product targeting and task-based adoption strategies."
-    ],
-    impactMetrics: [
-      { value: "75% → 90%", label: "Generation accuracy" },
-      { value: "90%–95%", label: "Product retention" },
-      { value: "+35%", label: "Merchant penetration" }
-    ],
+    role: [],
+    impact: [],
+    impactMetrics: [],
     tags: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
   },
   {
@@ -83,23 +72,12 @@ const englishExperienceCards = [
     company: "Baidu",
     domain: "AI Coding Product | Wenxin KuaiMa Comate",
     focus: "Agent Evaluation",
+    period: "2025.09 - 2026.02",
     problem:
       "Focused on Agent evaluation, strategy optimization and Builder product development in AI Coding scenarios, covering the full product chain from user research and product evaluation to strategy iteration and feature launch.",
-    role: [
-      "Built 30+ internal-codebase Agent benchmarks inspired by SWE-Bench and connected the automated Bench construction workflow.",
-      "Optimized message stitching, System Prompt and Rules strategies for tool-loop bad cases, then validated impact through AB Tests and SWE evaluation.",
-      "Led Builder mode from research to launch, using 3,168 users and 8,804 sessions to analyze Agent scenarios and user segments."
-    ],
-    impact: [
-      "Connected the automated Bench construction workflow, saving about 80% of engineering effort.",
-      "Reduced tool-loop rate by 60%, shipped the CC_gm strategy update, and improved SWE-Bench pass rate by 7.2%.",
-      "Analyzed 3,168 users and 8,804 sessions to produce user segmentation and Agent scenario insights."
-    ],
-    impactMetrics: [
-      { value: "80%", label: "Engineering effort saved" },
-      { value: "-60%", label: "Tool-loop rate" },
-      { value: "+7.2%", label: "SWE-Bench pass rate" }
-    ],
+    role: [],
+    impact: [],
+    impactMetrics: [],
     tags: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
@@ -107,23 +85,12 @@ const englishExperienceCards = [
     company: "Meituan",
     domain: "Agent 0-1 Build | Core Local Business Analysis",
     focus: "Business Agent",
+    period: "2025.04 - 2025.08",
     problem:
       "Built an analysis Agent for Meituan local commerce business analysis, connecting knowledge extraction, RAG retrieval and report generation to turn historical report knowledge into end-to-end automated reports and charts.",
-    role: [
-      "Designed the business-analysis Agent Workflow, extracting metric trees and atomic cards from historical reports into reusable knowledge bases.",
-      "Used RAG retrieval to reduce LLM hallucination and generate business analysis reports and charts end to end.",
-      "Built evaluation sets to compare inputs and models, then expanded the WBR workflow to 10+ knowledge-base scenarios including Shenquan and offline accommodation."
-    ],
-    impact: [
-      "Reduced business analysis production from 2 people x 3 days to 1 person x 1 day.",
-      "With RAG, LLM analysis-framework scores improved by nearly 70% over single-report input / no-input baselines.",
-      "Maintained 10+ business knowledge bases across multiple scenarios, replacing about 70% of basic business analysis work."
-    ],
-    impactMetrics: [
-      { value: "3d → 1d", label: "Production cycle" },
-      { value: "+70%", label: "RAG framework score" },
-      { value: "10+", label: "Knowledge bases" }
-    ],
+    role: [],
+    impact: [],
+    impactMetrics: [],
     tags: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
   }
 ] as const;
@@ -249,7 +216,8 @@ export const dictionary = {
       available: "Open to talk",
       problem: "Overview",
       role: "Work",
-      impact: "Impact"
+      impact: "Impact",
+      keywords: "Keywords"
     },
     resumeRequest: {
       title: "Request Resume Access",
@@ -509,7 +477,8 @@ export const dictionary = {
       available: "开放交流",
       problem: "概览",
       role: "工作",
-      impact: "成果"
+      impact: "成果",
+      keywords: "关键词"
     },
     resumeRequest: {
       title: "查看简历申请",
@@ -566,6 +535,7 @@ export const dictionary = {
         company: item.company,
         domain: item.role,
         focus: item.focus,
+        period: item.period,
         problem: item.overview,
         role: item.responsibilities,
         impact: item.impact,

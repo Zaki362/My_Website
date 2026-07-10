@@ -9,8 +9,6 @@ type ExperienceCardProps = {
   role: string;
   period: string;
   overview: string;
-  responsibilities: readonly string[];
-  impact: readonly string[];
   skills: readonly string[];
 };
 
@@ -19,8 +17,6 @@ export function ExpandableExperienceCard({
   role,
   period,
   overview,
-  responsibilities,
-  impact,
   skills
 }: ExperienceCardProps) {
   const [open, setOpen] = useState(false);
@@ -74,48 +70,14 @@ export function ExpandableExperienceCard({
             transition={{ duration: 0.42, ease: "easeOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-8 grid gap-6 border-t border-white/8 pt-8 lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="space-y-6">
-                <div>
-                  <p className="meta-label mb-3">关键项目 / 职责</p>
-                  <div className="space-y-3">
-                    {responsibilities.map((item) => (
-                      <div
-                        key={item}
-                        className="content-card rounded-2xl px-4 py-3 text-sm leading-7 text-slate-200/78"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <p className="meta-label mb-3">结果 / 影响</p>
-                  <div className="space-y-3">
-                    {impact.map((item) => (
-                      <div
-                        key={item}
-                        className="rounded-2xl border border-sky-200/10 bg-sky-100/[0.03] px-4 py-3 text-sm leading-7 text-slate-100/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="meta-label mb-3">技能标签</p>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill) => (
-                      <span key={skill} className="pill">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            <div className="mt-8 border-t border-white/8 pt-8">
+              <p className="meta-label mb-3">公开关键词</p>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill) => (
+                  <span key={skill} className="pill">
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </motion.div>

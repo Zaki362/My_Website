@@ -45,7 +45,7 @@ const educationChunks: KnowledgeChunk[] = educationItems.map((item, index) =>
   })
 );
 
-const experienceChunks: KnowledgeChunk[] = experiences.flatMap((item, index) => [
+const experienceChunks: KnowledgeChunk[] = experiences.map((item, index) =>
   chunk({
     id: `site-experience-${index + 1}-overview`,
     title: `${item.company} ${item.role}`,
@@ -57,19 +57,8 @@ const experienceChunks: KnowledgeChunk[] = experiences.flatMap((item, index) => 
     ]),
     keywords: [item.company, item.role, item.period, ...item.skills],
     tags: ["Experience", item.company, ...item.skills.slice(0, 4)]
-  }),
-  chunk({
-    id: `site-experience-${index + 1}-work`,
-    title: `${item.company} 工作内容`,
-    category: "experience",
-    text: compactText([
-      `${item.company}工作内容：${item.responsibilities.join(" ")}`,
-      `成果：${item.impact.join(" ")}`
-    ]),
-    keywords: [item.company, ...item.skills, "工作", "成果", "职责"],
-    tags: ["Work", item.company, ...item.skills.slice(0, 4)]
   })
-]);
+);
 
 const projectChunks: KnowledgeChunk[] = [
   ...projectPlaceholders.map((project, index) =>

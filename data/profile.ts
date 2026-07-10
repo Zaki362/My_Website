@@ -74,21 +74,9 @@ export const experiences = [
     period: "2026.03 - 至今",
     overview:
       "围绕 TikTok Shop 电商图文场景，负责 AIGC 生图能力从基模评测、Workflow 优化到行业模版策略的完整链路，推动 AI 工具从「可生成」走向「可控、可用、可增长」。",
-    responsibilities: [
-      "构建电商图文生图评测集，制定 GSB 标准，评估多模型在商品一致性、文字渲染、人模与美感等维度的表现。",
-      "设计分步骤生图 Workflow 与 ComfyUI 裁切拼接方案，优化商品一致性，提升重点类目商品保持率。",
-      "负责行业模版从创作、评审、上线到更新的全生命周期，并基于 GMV、稿均 VV、GPM 数据优化分发策略。"
-    ],
-    impact: [
-      "生图准确率从 75% 提升至 90%，3C 数码与卡牌类目商品保持率提升至 90%–95%。",
-      "上线 50+ 行业模版，模版创作效率提升 100%，一期策略优化带动日均 GMV 提升 6%。",
-      "通过圈商圈品与任务策略推广 AIGC 工具，商家渗透率提升 35%。"
-    ],
-    impactMetrics: [
-      { value: "75% → 90%", label: "生图准确率" },
-      { value: "90%–95%", label: "重点类目保持率" },
-      { value: "+35%", label: "商家渗透率" }
-    ],
+    responsibilities: [],
+    impact: [],
+    impactMetrics: [],
     skills: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
   },
   {
@@ -98,21 +86,9 @@ export const experiences = [
     period: "2025.09 - 2026.02",
     overview:
       "聚焦 AI Coding 场景下的 Agent 效果评测、策略调优与 Builder 产品建设，覆盖从需求洞察、产品评测、策略优化到功能上线的完整产品链路。",
-    responsibilities: [
-      "参考 SWE-Bench 构建 30+ 厂内代码库 Agent 测评集，打通自动化 Bench 构建流程。",
-      "针对 Agent 工具循环等 bad case，优化消息拼接、System Prompt 与 Rules 策略，并通过 AB Test 和 SWE 评测验证效果。",
-      "主导 Builder 模式从需求调研到上线，并基于 3168 名用户、8804 条 Session 分析 Agent 使用场景与用户分层。"
-    ],
-    impact: [
-      "打通自动化 Bench 构建流程，节省约 80% 研发人力。",
-      "工具循环率降低 60%，推动 CC_gm 新策略上线，使 SWE-Bench 通过率提升 7.2%。",
-      "分析 3168 名用户、8804 条 Session，产出用户分层与 Agent 场景分析报告。"
-    ],
-    impactMetrics: [
-      { value: "80%", label: "研发人力节省" },
-      { value: "-60%", label: "工具循环率" },
-      { value: "+7.2%", label: "SWE-Bench 通过率" }
-    ],
+    responsibilities: [],
+    impact: [],
+    impactMetrics: [],
     skills: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
@@ -122,21 +98,9 @@ export const experiences = [
     period: "2025.04 - 2025.08",
     overview:
       "面向美团本地商业经营分析场景，主导搭建基于知识抽取、RAG 召回与报告生成的分析 Agent，实现从历史报告知识沉淀到端到端自动产出分析报告与图表。",
-    responsibilities: [
-      "设计经营分析 Agent Workflow，基于历史报告抽取指标树、原子卡片等结构化知识，沉淀业务知识库。",
-      "通过 RAG 召回降低 LLM 分析幻觉，端到端自动生成经营分析报告与图表。",
-      "构建评测集对比不同输入与模型效果，并将 WBR 工作流拓展至神券、线下住宿等 10+ 业务知识库场景。"
-    ],
-    impact: [
-      "将经营分析产出从 2 人 × 3 天优化至 1 人 × 1 天。",
-      "RAG 下 LLM 分析框架得分相比单报告输入 / 无输入提升近 70%。",
-      "独立维护 10+ 业务知识库，接入多业务场景，替代约 70% 基础经分工作。"
-    ],
-    impactMetrics: [
-      { value: "3天 → 1天", label: "分析产出周期" },
-      { value: "+70%", label: "RAG 框架得分" },
-      { value: "10+", label: "业务知识库" }
-    ],
+    responsibilities: [],
+    impact: [],
+    impactMetrics: [],
     skills: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
   }
 ] as const;

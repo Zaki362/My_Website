@@ -22,11 +22,11 @@ export const agentFaqs = [
   {
     question: "他的 Agent 经验具体体现在哪里？",
     answer:
-      "Agent 经验主要来自百度和美团：百度侧重 Coding Agent 的 benchmark、工具循环 bad case 策略调优和 Builder 产品建设；美团侧重经营分析 Agent 的知识抽取、RAG 召回、报告生成和评测体系。"
+      "Agent 经验主要来自百度和美团：百度侧重 Coding Agent 的评测、策略与 Builder 产品建设；美团侧重经营分析 Agent 的知识沉淀、RAG 召回与报告生成。公开页面只展示概览，完整细节建议通过简历申请了解。"
   },
   {
-    question: "他有哪些可量化成果？",
+    question: "他的实习方向有哪些？",
     answer:
-      "站内资料提到的成果包括：字节跳动生图准确率从 75% 提升至 90%、商家渗透率提升 35%；百度自动化 Bench 节省约 80% 研发人力、SWE-Bench 通过率提升 7.2%；美团将经营分析产出从 2 人 × 3 天优化至 1 人 × 1 天。"
+      "公开信息里，他的实习方向包括 AIGC 电商策略、AI Coding / Coding Agent 产品、以及本地商业经营分析 Agent。更具体的工作与成果细节目前不在公开页面展示。"
   }
 ] as const;

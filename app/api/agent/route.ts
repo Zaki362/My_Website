@@ -301,7 +301,7 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
     if (hasAnyCategory(sources, ["experience", "skills"])) {
       add("他的 Agent 经验具体体现在哪里？");
       add("哪段经历最匹配 AI 产品经理岗位？");
-      add("有哪些可量化成果？");
+      add("他的实习方向有哪些？");
     }
     if (hasAnyCategory(sources, ["project", "project-interest"])) {
       add("有哪些 Vibe Coding 项目？");
@@ -322,7 +322,7 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
     if (hasAnyCategory(sources, ["experience", "skills"])) {
       add("What is his Agent experience?");
       add("Which internship best fits an AI product role?");
-      add("What measurable impact did he deliver?");
+      add("What are his internship focus areas?");
     }
     if (hasAnyCategory(sources, ["project", "project-interest"])) {
       add("What Vibe Coding projects has he built?");
@@ -476,9 +476,9 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, que
               type: "bullets",
               title: "Quick view",
               items: [
-                "Meituan: built a business-analysis Agent around knowledge extraction, RAG retrieval, report generation and evaluation.",
-                "Baidu: worked on Coding Agent benchmarks, tool-loop bad cases, prompt/rule strategy and Builder product work.",
-                "The common thread: defining tasks, measuring agent behavior and turning model ability into usable workflows."
+                "Meituan: focused on business-analysis Agents, knowledge retrieval and report-generation workflows.",
+                "Baidu: focused on Coding Agent evaluation, strategy iteration and Builder product work.",
+                "The common thread: making Agent capabilities more controllable, usable and connected to real product scenarios."
               ]
             }
           ]
@@ -491,9 +491,9 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, que
               type: "bullets",
               title: "简短版",
               items: [
-                "美团：做经营分析 Agent 0-1，串起知识抽取、RAG 召回、报告生成和效果评测。",
-                "百度：做 Coding Agent 测评集、工具循环 bad case 优化、Prompt / Rules 策略和 Builder 产品建设。",
-                "共同点：不是只调模型，而是围绕任务定义、评测指标和业务落地做产品闭环。"
+                "美团：偏经营分析 Agent，关注知识召回、业务知识库和报告生成工作流。",
+                "百度：偏 Coding Agent，关注评测、策略迭代和 Builder 类产品体验。",
+                "共同点：不是只调模型，而是把 Agent 能力放进真实业务场景里做产品化。"
               ]
             }
           ];

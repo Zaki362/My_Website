@@ -7,7 +7,7 @@ export const agentProfiles = {
     suggestedQuestions: [
       "他适合 AI 产品经理岗位吗？",
       "他的 Agent 经验是什么？",
-      "有哪些可量化成果？",
+      "他的实习方向有哪些？",
       "有哪些 Vibe Coding 项目？"
     ],
     supportedTopics: [
@@ -31,7 +31,7 @@ export const agentProfiles = {
     suggestedQuestions: [
       "Why is he a good AI product candidate?",
       "What is his Agent experience?",
-      "What measurable impact did he deliver?",
+      "What are his internship focus areas?",
       "What Vibe Coding projects has he built?"
     ],
     supportedTopics: [
