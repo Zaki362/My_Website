@@ -21,7 +21,7 @@ export function AgentLauncher({ className }: { className?: string }) {
           openLabel: "打开国华的 AI 助手",
           restoreLabel: "恢复国华的 AI 助手",
           eyebrow: "PROFILE COPILOT",
-          title: "让 AI 帮你快速了解我"
+          title: "和我的 AI 助手聊聊吧"
         }
       : {
           openLabel: "Open Guohua's AI assistant",
