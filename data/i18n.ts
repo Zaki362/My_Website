@@ -55,42 +55,30 @@ const englishEducationItems = [
 
 const englishExperienceCards = [
   {
-    number: "01",
     company: "ByteDance",
     domain: "AIGC Strategy Product | TikTok Shop",
     focus: "AIGC Strategy",
     period: "2026.03 - Present",
     problem:
       "Owned the end-to-end AIGC image-generation workflow for TikTok Shop e-commerce graphics, from foundation model evaluation and Workflow optimization to industry template strategy, moving the tool from basic generation toward controllable, usable and growth-driving output.",
-    role: [],
-    impact: [],
-    impactMetrics: [],
     tags: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
   },
   {
-    number: "02",
     company: "Baidu",
     domain: "AI Coding Product | Wenxin KuaiMa Comate",
     focus: "Agent Evaluation",
     period: "2025.09 - 2026.02",
     problem:
       "Focused on Agent evaluation, strategy optimization and Builder product development in AI Coding scenarios, covering the full product chain from user research and product evaluation to strategy iteration and feature launch.",
-    role: [],
-    impact: [],
-    impactMetrics: [],
     tags: ["Coding Agent", "Vibe Coding", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
-    number: "03",
     company: "Meituan",
     domain: "Agent 0-1 Build | Core Local Business Analysis",
     focus: "Business Agent",
     period: "2025.04 - 2025.08",
     problem:
       "Built an analysis Agent for Meituan local commerce business analysis, connecting knowledge extraction, RAG retrieval and report generation to turn historical report knowledge into end-to-end automated reports and charts.",
-    role: [],
-    impact: [],
-    impactMetrics: [],
     tags: ["Agent", "RAG", "SQL", "MCP", "Knowledge Base", "Business Analysis"]
   }
 ] as const;
@@ -530,16 +518,12 @@ export const dictionary = {
       title: experienceSection.title,
       description: experienceSection.description,
       action: "联系我",
-      cards: experiences.map((item, index) => ({
-        number: String(index + 1).padStart(2, "0"),
+      cards: experiences.map((item) => ({
         company: item.company,
         domain: item.role,
         focus: item.focus,
         period: item.period,
         problem: item.overview,
-        role: item.responsibilities,
-        impact: item.impact,
-        impactMetrics: item.impactMetrics,
         tags: item.skills
       }))
     },

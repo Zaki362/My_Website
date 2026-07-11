@@ -1,74 +1,79 @@
 "use client";
 
 import Image from "next/image";
-import { Section, SectionHeader } from "@/components/design-system";
+import { Section } from "@/components/design-system";
 import { Reveal } from "@/components/reveal";
 import { useLanguage } from "@/components/language-provider";
 
-function ImageStoryCard({
-  name,
-  label,
-  image,
-  accent
-}: {
-  name: string;
-  label: string;
-  image: {
-    src: string;
-    alt: string;
-  } | null;
-  accent: string;
-}) {
-  return (
-    <div
-      className="interactive-card group flex h-[15.5rem] flex-col overflow-hidden rounded-[1.5rem] border border-stone-900/10 bg-[#fffdfa] shadow-panel sm:h-[17rem] lg:h-[18.5rem]"
-    >
-      <div className="relative h-[68%] overflow-hidden bg-stone-100">
-        {image ? (
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 240px"
-            className="object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
-          />
-        ) : null}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,35,31,0)_42%,rgba(37,35,31,0.42)_100%)]" />
-        <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-white/15 px-2.5 py-1 text-[0.68rem] font-medium text-[#fffaf2] backdrop-blur">
-          {accent}
-        </span>
-      </div>
+const tileLayout = [
+  "col-span-2 row-span-2 min-h-[24rem] md:col-span-4 md:min-h-[32rem]",
+  "col-span-1 min-h-[14rem] md:col-span-2 md:min-h-[15.5rem]",
+  "col-span-1 min-h-[14rem] md:col-span-2 md:min-h-[15.5rem]",
+  "col-span-1 min-h-[14rem] md:col-span-2 md:min-h-[15.5rem]",
+  "col-span-1 min-h-[14rem] md:col-span-2 md:min-h-[15.5rem]"
+] as const;
 
-      <div className="flex flex-1 flex-col justify-center p-4">
-        <p className="meta-label mb-2">{label}</p>
-        <h3 className="font-display text-xl font-[620] leading-tight text-stone-950">{name}</h3>
-      </div>
-    </div>
-  );
-}
+const captionTone = ["dark", "light", "dark", "dark", "light"] as const;
 
 export function BeyondWorkSection() {
   const { t } = useLanguage();
 
   return (
-    <Section id="beyond" className="pt-20 lg:pt-24">
-      <SectionHeader
-        kicker={t.beyondHome.kicker}
-        title={t.beyondHome.title}
-        description={t.beyondHome.description}
-        className="mb-8 md:mb-10"
-      />
+    <Section id="beyond" className="border-y border-stone-900/8 bg-[#f1f5f3]">
+      <div className="mb-10 grid gap-6 md:mb-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div>
+          <p className="text-[11px] font-semibold uppercase text-violet-600/70" style={{ letterSpacing: "0.1em" }}>
+            {t.beyondHome.kicker}
+          </p>
+          <h2 className="mt-4 max-w-xl font-display text-[2.3rem] font-semibold leading-[1.08] text-stone-950 md:text-[2.5rem] xl:text-[2.75rem]">
+            {t.beyondHome.title}
+          </h2>
+        </div>
+        <p className="max-w-2xl text-[0.95rem] leading-7 text-stone-600 lg:justify-self-end md:text-base md:leading-8">
+          {t.beyondHome.description}
+        </p>
+      </div>
 
       <Reveal>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-          {t.beyondPage.slices.map((item) => (
-            <ImageStoryCard
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-8 md:gap-4">
+          {t.beyondPage.slices.map((item, index) => (
+            <figure
               key={item.name}
-              name={item.name}
-              label={item.label}
-              image={item.image}
-              accent={item.accent}
-            />
+              className={`group relative overflow-hidden rounded-lg border border-stone-900/8 bg-white shadow-[0_14px_36px_rgba(62,79,70,0.09)] ${tileLayout[index] ?? tileLayout[1]}`}
+            >
+              {item.image ? (
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  fill
+                  sizes={index === 0 ? "(max-width: 768px) 100vw, 60vw" : "(max-width: 768px) 50vw, 28vw"}
+                  className="object-cover transition duration-700 ease-out group-hover:scale-[1.025]"
+                />
+              ) : null}
+              <figcaption
+                className={`absolute left-4 top-4 max-w-[75%] md:left-5 md:top-5 ${
+                  captionTone[index] === "light" ? "text-white" : "text-stone-950"
+                }`}
+                style={{ textShadow: captionTone[index] === "light" ? "0 1px 14px rgba(18,22,30,0.58)" : "0 1px 12px rgba(255,255,255,0.82)" }}
+              >
+                <p
+                  className={`text-[10px] font-semibold uppercase ${
+                    captionTone[index] === "light" ? "text-white/75" : "text-violet-700/75"
+                  }`}
+                  style={{ letterSpacing: "0.08em" }}
+                >
+                  {item.label}
+                </p>
+                <h3 className="mt-1 font-display text-xl font-semibold md:text-2xl">{item.name}</h3>
+                <span
+                  className={`mt-1.5 block text-[11px] ${
+                    captionTone[index] === "light" ? "text-white/75" : "text-stone-700"
+                  }`}
+                >
+                  {item.accent}
+                </span>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </Reveal>

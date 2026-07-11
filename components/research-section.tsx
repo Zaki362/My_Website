@@ -2,115 +2,87 @@
 
 import Image from "next/image";
 import { ArrowUpRight, FileText } from "lucide-react";
-import { Badge, ButtonLink, Card, IconFrame, Section, SectionHeader } from "@/components/design-system";
+import { Badge, ButtonLink, Section, SectionHeader } from "@/components/design-system";
 import { Reveal } from "@/components/reveal";
 import { useLanguage } from "@/components/language-provider";
 
 export function ResearchSection() {
   const { t } = useLanguage();
+  const publication = t.research.publication;
 
   return (
-    <Section id="research" className="pt-20 lg:pt-28">
+    <Section id="research" className="bg-white">
       <SectionHeader
         kicker={t.research.kicker}
         title={t.research.title}
         description={t.research.description}
         action={
-          <ButtonLink href={t.research.publication.link} variant="ghost" className="px-0" external>
+          <ButtonLink href={publication.link} variant="ghost" className="px-0" external>
             {t.research.action}
             <ArrowUpRight className="h-4 w-4" />
           </ButtonLink>
         }
       />
 
-      <div className="grid gap-5">
-        <Reveal>
-          <Card className="h-full overflow-hidden p-0">
-            <div className="grid h-full lg:grid-cols-[168px_1fr]">
-              <div className="relative overflow-hidden bg-[#075431] p-4">
-                <div className="relative mx-auto aspect-[0.72] w-full max-w-[122px] overflow-hidden rounded-[0.85rem] border border-white/18 bg-white/8 shadow-[0_22px_55px_rgba(5,44,25,0.30)]">
-                  <Image
-                    src={t.research.publication.cover}
-                    alt={t.research.publication.coverAlt}
-                    fill
-                    sizes="168px"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              <div className="p-5 md:p-6">
-                <div className="flex items-start justify-between gap-6">
-                  <IconFrame icon={FileText} />
-                  <Badge tone="cyan">{t.research.publicationBadge}</Badge>
-                </div>
-
-                <h3 className="mt-5 max-w-4xl font-display text-2xl font-[620] leading-tight text-stone-950 md:text-[1.8rem]">
-                  {t.research.publication.title}
-                </h3>
-
-                <div className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-sm leading-6 text-stone-500">
-                  <span>{t.research.publication.journal}</span>
-                  <span aria-hidden="true">/</span>
-                  <span>{t.research.publication.role}</span>
-                  <span aria-hidden="true">/</span>
-                  <span>Article {t.research.publication.articleNumber}</span>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-stone-500">
-                  {t.research.publication.authors}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-stone-600">
-                  {t.research.publication.note}
-                </p>
-
-                <div className="mt-4 grid gap-2 sm:grid-cols-4">
-                  {t.research.publication.journalInfo.map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-stone-900/10 bg-[#fffdfa]/70 px-3.5 py-2.5">
-                      <p className="text-[10px] font-medium uppercase tracking-[0.1em] text-stone-400">
-                        {item.label}
-                      </p>
-                      <p className="mt-1 font-display text-base font-[620] text-stone-950">
-                        {item.value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-stone-900/10 pt-4">
-                  <div className="flex flex-wrap gap-2">
-                    {t.research.publication.tags.map((tag) => (
-                      <Badge key={tag} tone="neutral" className="py-1">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href={`https://doi.org/${t.research.publication.doi}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950"
-                    >
-                      DOI {t.research.publication.doi}
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                    <a
-                      href={t.research.publication.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950"
-                    >
-                      ScienceDirect
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                </div>
-              </div>
+      <Reveal>
+        <article className="grid overflow-hidden border-y border-stone-900/15 lg:grid-cols-[12rem_minmax(0,1fr)]">
+          <div className="relative flex min-h-[15rem] items-center justify-center bg-[#075431] p-5 lg:min-h-[27rem]">
+            <div className="relative aspect-[0.72] h-[12rem] overflow-hidden rounded-md border border-white/20 shadow-[0_20px_48px_rgba(5,44,25,0.26)] lg:h-[18rem]">
+              <Image
+                src={publication.cover}
+                alt={publication.coverAlt}
+                fill
+                sizes="192px"
+                className="object-cover"
+              />
             </div>
-          </Card>
-        </Reveal>
+          </div>
 
-      </div>
+          <div className="p-6 md:p-8 lg:p-10">
+            <div className="flex items-center justify-between gap-5">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-stone-900/10 bg-[#efede7] text-stone-700">
+                <FileText className="h-4 w-4" />
+              </span>
+              <Badge tone="cyan">{t.research.publicationBadge}</Badge>
+            </div>
+
+            <h3 className="mt-6 max-w-4xl font-display text-[1.65rem] font-semibold leading-[1.2] text-stone-950 md:text-[2rem]">
+              {publication.title}
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-stone-500">
+              {publication.journal} / {publication.role} / Article {publication.articleNumber}
+            </p>
+            <p className="mt-1 text-sm leading-7 text-stone-500">{publication.authors}</p>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-stone-600">{publication.note}</p>
+
+            <div className="mt-7 grid grid-cols-2 border-y border-stone-900/10 sm:grid-cols-4">
+              {publication.journalInfo.map((item) => (
+                <div key={item.label} className="border-stone-900/10 py-4 pr-3 sm:border-r sm:px-4 sm:first:pl-0 sm:last:border-r-0">
+                  <p className="meta-label">{item.label}</p>
+                  <p className="mt-1.5 font-display text-lg font-semibold text-stone-950">{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-2">
+                {publication.tags.map((tag) => (
+                  <Badge key={tag} tone="neutral" uppercase={false}>{tag}</Badge>
+                ))}
+              </div>
+              <a
+                href={`https://doi.org/${publication.doi}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950"
+              >
+                DOI {publication.doi}
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </article>
+      </Reveal>
     </Section>
   );
 }

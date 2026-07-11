@@ -152,14 +152,14 @@ export function Navbar() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 pointer-events-none">
-      <div className="container-shell relative flex h-12 items-center justify-between">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div className="container-shell relative flex h-11 items-center justify-between">
         <div aria-hidden="true" className="pointer-events-none h-12 w-12" />
 
         <nav
           className={cn(
-            "pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-[rgba(40,35,30,0.08)] bg-white/[0.75] px-2 py-2 shadow-[0_12px_40px_rgba(80,60,40,0.08)] backdrop-blur-2xl transition xl:flex",
-            scrolled && "bg-white/[0.88]"
+            "pointer-events-auto absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-xl border border-stone-900/10 bg-white/80 p-1.5 shadow-[0_10px_28px_rgba(23,23,23,0.08)] backdrop-blur-2xl transition xl:flex",
+            scrolled && "bg-white/95 shadow-[0_12px_32px_rgba(23,23,23,0.1)]"
           )}
           aria-label="Primary navigation"
         >
@@ -168,8 +168,8 @@ export function Navbar() {
             const isActive = pathname === "/" && sectionId ? activeSection === sectionId : isRouteActive(pathname, item.href);
 
             const className = cn(
-              "whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium text-[#756e66] transition hover:bg-[#f5efe6] hover:text-[#241f1b] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35]",
-              isActive && "bg-[#f4eee5] text-[#241f1b] shadow-[inset_0_0_0_1px_rgba(80,60,40,0.04)]"
+              "whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-medium text-stone-500 transition hover:bg-stone-100 hover:text-stone-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30",
+              isActive && "bg-[#1d1d1f] text-white"
             );
 
             return (
@@ -184,7 +184,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleLocale}
-            className="hidden h-12 items-center gap-2 rounded-full border border-[rgba(40,35,30,0.08)] bg-white/[0.75] px-3.5 text-xs font-semibold text-stone-700 shadow-[0_12px_40px_rgba(80,60,40,0.08)] backdrop-blur-xl transition hover:bg-white/[0.9] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35] sm:inline-flex"
+            className="hidden h-11 items-center gap-2 rounded-xl border border-stone-900/10 bg-white/85 px-3.5 text-xs font-semibold text-stone-700 shadow-[0_10px_28px_rgba(23,23,23,0.07)] backdrop-blur-xl transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30 sm:inline-flex"
             aria-label={locale === "en" ? "Switch to Chinese" : "Switch to English"}
           >
             <span className={cn(locale === "en" ? "text-stone-950" : "text-stone-400")}>EN</span>
@@ -194,7 +194,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setResumeRequestOpen(true)}
-            className="hidden h-12 items-center gap-2.5 rounded-full border border-stone-900/10 bg-[#2b251f] px-5 text-sm font-semibold text-[#fffaf2] shadow-[0_14px_42px_rgba(62,46,31,0.18)] transition hover:-translate-y-0.5 hover:bg-[#211d19] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.45] md:inline-flex"
+            className="hidden h-11 items-center gap-2.5 rounded-xl bg-[#1d1d1f] px-5 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(23,23,23,0.16)] transition hover:-translate-y-0.5 hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35 md:inline-flex"
           >
             <FileText className="h-4 w-4" />
             {t.common.viewCv}
@@ -204,7 +204,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
-            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(40,35,30,0.08)] bg-white/[0.75] text-[#241f1b] shadow-[0_12px_40px_rgba(80,60,40,0.08)] backdrop-blur-xl xl:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-stone-900/10 bg-white/90 text-stone-950 shadow-[0_10px_28px_rgba(23,23,23,0.07)] backdrop-blur-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30 xl:hidden"
             aria-label={locale === "zh" ? "打开菜单" : "Open menu"}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -221,7 +221,7 @@ export function Navbar() {
             transition={{ duration: 0.22 }}
             className="container-shell pointer-events-auto xl:hidden"
           >
-            <div className="ml-auto mt-3 max-w-[18rem] rounded-[1.5rem] border border-stone-900/10 bg-[#fffdfa]/95 p-2 shadow-[0_24px_80px_rgba(79,62,39,0.10)] backdrop-blur-2xl">
+            <div className="ml-auto mt-3 max-w-[18rem] rounded-xl border border-stone-900/10 bg-white/95 p-2 shadow-[0_20px_60px_rgba(23,23,23,0.12)] backdrop-blur-2xl">
               <div className="flex flex-col gap-1">
                 {t.nav.map((item) => (
                   (() => {
@@ -234,8 +234,8 @@ export function Navbar() {
                         href={resolveHomeHref(item.href)}
                         onClick={() => setOpen(false)}
                         className={cn(
-                          "rounded-full px-4 py-3 text-sm text-stone-600 transition hover:bg-stone-900/[0.045] hover:text-stone-950",
-                          isActive && "bg-[#f4eee5] text-stone-950"
+                          "rounded-lg px-4 py-3 text-sm text-stone-600 transition hover:bg-stone-100 hover:text-stone-950",
+                          isActive && "bg-[#1d1d1f] text-white"
                         )}
                       >
                         {item.label}
@@ -246,7 +246,7 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={toggleLocale}
-                  className="rounded-full px-4 py-3 text-left text-sm text-stone-600 transition hover:bg-stone-900/[0.045] hover:text-stone-950 sm:hidden"
+                  className="rounded-lg px-4 py-3 text-left text-sm text-stone-600 transition hover:bg-stone-100 hover:text-stone-950 sm:hidden"
                   aria-label={locale === "en" ? "Switch to Chinese" : "Switch to English"}
                 >
                   <span className={cn(locale === "en" ? "font-semibold text-stone-950" : "text-stone-400")}>EN</span>
@@ -259,7 +259,7 @@ export function Navbar() {
                     setOpen(false);
                     setResumeRequestOpen(true);
                   }}
-                  className="mt-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#2b251f] px-4 py-3 text-sm font-medium text-[#fffaf2]"
+                  className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#1d1d1f] px-4 py-3 text-sm font-medium text-white"
                 >
                   <FileText className="h-4 w-4" />
                   {t.common.viewCv}

@@ -54,7 +54,7 @@ function inferIntentCategories(question: string): KnowledgeChunk["category"][] {
     { hints: ["教育", "学校", "北大", "人大", "本科", "硕士", "gpa", "成绩", "雅思", "托福"], categories: ["education"] },
     { hints: ["工作", "实习", "经历", "字节", "百度", "美团", "agent", "aigc", "coding", "comate", "tiktok"], categories: ["experience", "skills"] },
     { hints: ["适合", "匹配", "候选人", "招聘", "面试", "优势", "亮点", "candidate", "interview", "hire", "fit"], categories: ["identity", "experience", "skills", "project", "research"] },
-    { hints: ["项目", "作品", "fitlog", "练一下", "pwa", "vibe"], categories: ["project"] },
+    { hints: ["项目", "作品", "fitlog", "练一下", "随手记", "codex widget", "pwa", "vibe"], categories: ["project"] },
     { hints: ["科研", "论文", "jeem", "研究", "doi", "期刊"], categories: ["research"] },
     { hints: ["技能", "能力", "工具", "擅长", "方向"], categories: ["skills", "experience"] },
     { hints: ["生活", "兴趣", "旅行", "旅游", "滑雪", "潜水", "音乐", "徒步", "爱好"], categories: ["beyond"] },
@@ -118,6 +118,21 @@ export function retrieveRelevantChunks(question: string, limit = 8) {
     .sort((a, b) => b.score - a.score);
 
   return ranked.slice(0, limit);
+}
+
+export function getRetrievalConfidence(items: { score: number }[]) {
+  const first = items[0]?.score ?? 0;
+  const second = items[1]?.score ?? 0;
+
+  if (first >= 20 || (first >= 15 && second >= 10)) {
+    return "high" as const;
+  }
+
+  if (first >= 9) {
+    return "medium" as const;
+  }
+
+  return "low" as const;
 }
 
 export function formatChunksForPrompt(items: { chunk: KnowledgeChunk; score: number }[]) {

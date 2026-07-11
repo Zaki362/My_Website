@@ -3,18 +3,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Loader2, Mail, Minus, Send, X } from "lucide-react";
+import { Minus, RotateCcw, Send, X } from "lucide-react";
 import { agentProfiles } from "@/data/knowledge-base/profile";
 import { ChatMessage } from "@/components/agent/ChatMessage";
 import { SuggestedQuestions } from "@/components/agent/SuggestedQuestions";
 import { AgentSprite } from "@/components/agent/AgentSprite";
+import { AgentThinking } from "@/components/agent/AgentThinking";
 import { useLanguage } from "@/components/language-provider";
 import type { AgentAction, AgentResponse } from "@/lib/agent/types";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
-} & Partial<Pick<AgentResponse, "sections" | "sources" | "actions" | "followups" | "refused" | "fallback" | "casual">>;
+} & Partial<Pick<AgentResponse, "mode" | "sections" | "sources" | "actions" | "followups" | "refused" | "fallback" | "casual">>;
 
 type AgentDialogProps = {
   open: boolean;
@@ -35,9 +36,13 @@ const agentDialogCopy = {
     minimizeLabel: "最小化 AI 助手",
     closeLabel: "关闭 AI 助手",
     loading: "正在想一下...",
-    helper: "轻松聊，回答会尽量简短",
-    placeholder: "想聊点什么？",
-    sendLabel: "发送"
+    helper: "公开资料 RAG · 简短回答",
+    placeholder: "问经历、项目，也可以随便聊聊",
+    sendLabel: "发送",
+    clearLabel: "开始新对话",
+    eyebrow: "PROFILE COPILOT",
+    capability: "检索 · 归纳 · 回答",
+    starterTitle: "从一个问题开始"
   },
   en: {
     unavailable: "The assistant is temporarily unavailable.",
@@ -48,9 +53,13 @@ const agentDialogCopy = {
     minimizeLabel: "Minimize AI assistant",
     closeLabel: "Close AI assistant",
     loading: "Thinking briefly...",
-    helper: "Ask anything; replies stay brief",
-    placeholder: "What would you like to ask?",
-    sendLabel: "Send"
+    helper: "Public-site RAG · concise replies",
+    placeholder: "Ask about work, projects, or anything light",
+    sendLabel: "Send",
+    clearLabel: "Start a new conversation",
+    eyebrow: "PROFILE COPILOT",
+    capability: "Retrieve · synthesize · answer",
+    starterTitle: "Start with a question"
   }
 } as const;
 
@@ -64,10 +73,11 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [thinkingPhase, setThinkingPhase] = useState<"retrieving" | "composing">("retrieving");
   const [copiedActionId, setCopiedActionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const thinkingTimerRef = useRef<number | null>(null);
   const reduceMotion = useReducedMotion();
 
   const canSend = input.trim().length > 0 && input.trim().length <= MAX_INPUT_LENGTH && !loading;
@@ -105,6 +115,29 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   }, [open]);
 
   useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, open]);
+
+  useEffect(() => {
+    return () => {
+      if (thinkingTimerRef.current) {
+        window.clearTimeout(thinkingTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: reduceMotion ? "auto" : "smooth"
@@ -122,7 +155,8 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
     setMessages(nextMessages);
     setInput("");
     setLoading(true);
-    setError(null);
+    setThinkingPhase("retrieving");
+    thinkingTimerRef.current = window.setTimeout(() => setThinkingPhase("composing"), 850);
 
     try {
       const response = await fetch("/api/agent", {
@@ -146,6 +180,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
         ...current,
         {
           role: "assistant",
+          mode: data?.mode === "general" ? "general" : "profile",
           content:
             typeof data?.reply === "string" && data.reply.trim()
               ? data.reply.trim()
@@ -165,7 +200,6 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           ? submissionError.message
           : copy.genericError;
 
-      setError(message);
       setMessages((current) => [
         ...current,
         {
@@ -175,8 +209,18 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
         }
       ]);
     } finally {
+      if (thinkingTimerRef.current) {
+        window.clearTimeout(thinkingTimerRef.current);
+        thinkingTimerRef.current = null;
+      }
       setLoading(false);
     }
+  }
+
+  function resetConversation() {
+    setMessages([{ role: "assistant", content: profile.welcomeMessage }]);
+    setInput("");
+    window.setTimeout(() => inputRef.current?.focus(), 0);
   }
 
   async function handleAgentAction(action: AgentAction) {
@@ -223,6 +267,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   }
 
   const quickQuestions = useMemo(() => profile.suggestedQuestions, [profile.suggestedQuestions]);
+  const hasConversation = messages.some((message) => message.role === "user");
 
   const dialog = (
     <AnimatePresence>
@@ -233,31 +278,48 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           exit={reduceMotion ? undefined : { opacity: 0, y: 18, scale: 0.92 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "100% 100%" }}
-          className="fixed bottom-5 right-5 z-[80] flex h-[min(560px,calc(100vh-2.5rem))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.75rem] border border-stone-900/10 bg-[#fffdfa]/95 shadow-[0_30px_90px_rgba(79,62,39,0.18)] backdrop-blur-2xl md:bottom-6 md:right-6"
+          className="fixed inset-x-3 bottom-3 z-[80] flex h-[min(680px,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-xl border border-violet-200/70 bg-[#fffefd] shadow-[0_28px_80px_rgba(72,58,120,0.16)] md:inset-x-auto md:bottom-6 md:right-6 md:h-[min(620px,calc(100dvh-3rem))] md:w-[430px]"
           aria-label={copy.windowLabel}
+          role="dialog"
         >
-          <header className="border-b border-stone-900/10 bg-[linear-gradient(135deg,#fffdfa,#f5efe4_52%,#eef5ff)] px-4 py-4">
+          <header className="relative overflow-hidden border-b border-violet-200/60 bg-[#f7f5fc] px-4 py-4">
+            <span className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-violet-400" />
+            <span className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[#eef7f5] opacity-70" />
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-stone-900/10 bg-white/70 shadow-[0_12px_28px_rgba(79,62,39,0.10)]">
-                  <AgentSprite active />
+                <span className="relative flex h-14 w-14 shrink-0 items-center justify-center">
+                  <AgentSprite state={loading ? "thinking" : "curious"} />
                 </span>
                 <div className="min-w-0">
-                  <p className="font-display text-base font-[620] leading-6 text-stone-950">
+                  <p className="text-[9px] font-semibold uppercase text-violet-600/70">
+                    {copy.eyebrow}
+                  </p>
+                  <p className="mt-0.5 font-display text-base font-[620] leading-6 text-stone-950">
                     {profile.agentName}
                   </p>
-                  <p className="mt-0.5 flex items-center gap-1.5 text-xs leading-5 text-stone-500">
+                  <p className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-4 text-stone-500">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    {profile.subtitle}
+                    {copy.capability}
                   </p>
                 </div>
               </div>
 
               <div className="flex shrink-0 items-center gap-1.5">
+                {hasConversation ? (
+                  <button
+                    type="button"
+                    onClick={resetConversation}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
+                    aria-label={copy.clearLabel}
+                    title={copy.clearLabel}
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                  </button>
+                ) : null}
                 <button
                   type="button"
                   onClick={onMinimize}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                   aria-label={copy.minimizeLabel}
                 >
                   <Minus className="h-4 w-4" />
@@ -265,7 +327,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-900/10 bg-white/55 text-stone-500 transition hover:bg-white hover:text-stone-950"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                   aria-label={copy.closeLabel}
                 >
                   <X className="h-4 w-4" />
@@ -274,12 +336,12 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             </div>
           </header>
 
-          <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+          <div ref={scrollRef} className="flex-1 space-y-5 overflow-y-auto px-4 py-5 md:px-5" aria-live="polite">
             {messages.map((message, index) => {
               const suggestions =
-                index === 0
+                index === 0 && !hasConversation
                   ? quickQuestions
-                  : message.role === "assistant"
+                  : message.role === "assistant" && index === messages.length - 1
                     ? message.followups ?? []
                     : [];
 
@@ -289,6 +351,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                     role={message.role}
                     content={message.content}
                     locale={locale}
+                    mode={message.mode}
                     sections={message.sections}
                     actions={message.actions}
                     copiedActionId={copiedActionId}
@@ -296,7 +359,17 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   />
                   {suggestions.length ? (
                   <div className="mt-3">
-                    <SuggestedQuestions questions={suggestions} onSelect={submitQuestion} disabled={loading} />
+                    {index === 0 ? (
+                      <p className="mb-2 text-[10px] font-semibold uppercase text-stone-400">
+                        {copy.starterTitle}
+                      </p>
+                    ) : null}
+                    <SuggestedQuestions
+                      questions={suggestions}
+                      onSelect={submitQuestion}
+                      disabled={loading}
+                      variant={index === 0 ? "starter" : "followup"}
+                    />
                   </div>
                   ) : null}
                 </div>
@@ -304,31 +377,31 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             })}
 
             {loading ? (
-              <div className="flex justify-start">
-                <div className="inline-flex items-center gap-2 rounded-[1.35rem] border border-stone-900/10 bg-[#fffdfa]/86 px-4 py-3 text-sm text-stone-600">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  {copy.loading}
-                </div>
-              </div>
+              <AgentThinking phase={thinkingPhase} locale={locale} />
             ) : null}
           </div>
 
           <form
-            className="border-t border-stone-900/10 bg-[#fffdfa]/92 px-4 py-4"
+            className="border-t border-violet-200/60 bg-[#fbfaff] px-4 py-3.5 md:px-5"
             onSubmit={(event) => {
               event.preventDefault();
               void submitQuestion(input);
             }}
           >
-            <div className="mb-2 flex items-center justify-between text-[11px] text-stone-400">
+            <div className="mb-2 flex items-center justify-between text-[10px] text-stone-400">
               <span>{copy.helper}</span>
               <span>{remaining}</span>
             </div>
-            <div className="flex items-end gap-2">
+            <div className="flex items-end gap-2 rounded-lg border border-violet-200/70 bg-white p-1.5 transition focus-within:border-violet-400 focus-within:shadow-[0_8px_24px_rgba(70,55,120,0.08)]">
               <textarea
                 ref={inputRef}
                 value={input}
                 onChange={(event) => setInput(event.target.value.slice(0, MAX_INPUT_LENGTH))}
+                onInput={(event) => {
+                  const target = event.currentTarget;
+                  target.style.height = "auto";
+                  target.style.height = `${Math.min(target.scrollHeight, 112)}px`;
+                }}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !event.shiftKey) {
                     event.preventDefault();
@@ -339,23 +412,17 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                 }}
                 rows={1}
                 placeholder={copy.placeholder}
-                className="min-h-[48px] flex-1 resize-none rounded-[1.2rem] border border-stone-900/10 bg-white/72 px-4 py-3 text-sm text-stone-800 outline-none transition placeholder:text-stone-400 focus:border-blue-500/24 focus:bg-white"
+                className="min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-sm leading-6 text-stone-800 outline-none placeholder:text-stone-400"
               />
               <button
                 type="submit"
                 disabled={!canSend}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#2b2933] text-[#fffaf2] shadow-[0_14px_32px_rgba(61,50,38,0.14)] transition hover:bg-[#24222b] disabled:cursor-not-allowed disabled:opacity-45"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-violet-600 text-white shadow-[0_8px_20px_rgba(109,91,208,0.2)] transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-violet-200 disabled:shadow-none"
                 aria-label={copy.sendLabel}
               >
                 <Send className="h-4 w-4" />
               </button>
             </div>
-            {error ? (
-              <p className="mt-3 flex items-center gap-1.5 text-xs text-rose-500">
-                <Mail className="h-3.5 w-3.5" />
-                {error}
-              </p>
-            ) : null}
           </form>
         </motion.aside>
       ) : null}

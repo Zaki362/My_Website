@@ -3,30 +3,30 @@
 @tailwind utilities;
 
 :root {
-  --bg: #fbf7ef;
-  --card: rgba(255, 255, 255, 0.78);
-  --text-main: #241f1b;
-  --text-muted: #625c55;
-  --accent-gold: #d7a45f;
-  --accent-purple: #8b6cf6;
-  --border-soft: rgba(80, 60, 40, 0.12);
-  --background: #fbf7ef;
-  --foreground: #241f1b;
-  --surface: #fffdfa;
-  --surface-soft: #f1ece2;
-  --surface-muted: #ebe4d8;
-  --text-primary: #241f1b;
-  --text-secondary: #625c55;
-  --text-tertiary: #a79f93;
-  --border: #e8ded0;
-  --border-strong: rgba(80, 68, 54, 0.18);
-  --dark: #221f27;
-  --dark-card: #2a2530;
-  --accent-blue: #6687f2;
-  --accent-cyan: #4fbfc9;
-  --accent-soft: rgba(102, 135, 242, 0.12);
-  --shadow-soft: 0 24px 80px rgba(79, 62, 39, 0.09);
-  --shadow-card: 0 16px 50px rgba(79, 62, 39, 0.065);
+  --bg: #f7f5f0;
+  --card: rgba(255, 255, 255, 0.9);
+  --text-main: #171717;
+  --text-muted: #625f58;
+  --accent-gold: #bd8237;
+  --accent-purple: #6d5bd0;
+  --border-soft: rgba(23, 23, 23, 0.1);
+  --background: #f7f5f0;
+  --foreground: #171717;
+  --surface: #ffffff;
+  --surface-soft: #efede7;
+  --surface-muted: #e5e2da;
+  --text-primary: #171717;
+  --text-secondary: #625f58;
+  --text-tertiary: #969188;
+  --border: #dedbd4;
+  --border-strong: rgba(23, 23, 23, 0.18);
+  --dark: #1d1d1f;
+  --dark-card: #27272a;
+  --accent-blue: #5471d2;
+  --accent-cyan: #2f8f98;
+  --accent-soft: rgba(109, 91, 208, 0.1);
+  --shadow-soft: 0 22px 64px rgba(28, 26, 22, 0.1);
+  --shadow-card: 0 10px 30px rgba(28, 26, 22, 0.055);
 }
 
 * {
@@ -40,11 +40,7 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 12% 88%, rgba(215, 164, 95, 0.13), transparent 30rem),
-    radial-gradient(circle at 84% 24%, rgba(139, 108, 246, 0.12), transparent 28rem),
-    linear-gradient(180deg, rgba(255, 252, 246, 0.92) 0%, rgba(248, 242, 232, 0) 30rem),
-    var(--background);
+  background: linear-gradient(180deg, #fbfaf7 0, var(--background) 42rem);
   color: var(--foreground);
   font-family:
     "Geist",
@@ -66,9 +62,9 @@ body::before {
   background-image:
     linear-gradient(rgba(86, 72, 56, 0.028) 1px, transparent 1px),
     linear-gradient(90deg, rgba(86, 72, 56, 0.028) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.28), transparent 52rem);
-  opacity: 0.42;
+  background-size: 80px 80px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent 40rem);
+  opacity: 0.28;
 }
 
 ::selection {
@@ -87,7 +83,7 @@ button {
 
 @layer components {
   .container-shell {
-    @apply mx-auto w-full max-w-[1320px] px-6 md:px-8;
+    @apply mx-auto w-full max-w-[1240px] px-5 sm:px-6 md:px-8;
   }
 
   .panel {
@@ -98,37 +94,37 @@ button {
 
   .section-kicker {
     @apply text-[11px] font-semibold uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.1em;
     color: var(--text-tertiary);
   }
 
   .section-title {
-    @apply text-[2.05rem] font-semibold leading-[1.08] text-[color:var(--text-primary)] md:text-[3.1rem];
+    @apply text-[2rem] font-semibold leading-[1.08] text-[color:var(--text-primary)] sm:text-[2.35rem] md:text-[2.8rem];
     letter-spacing: 0;
   }
 
   .section-copy {
     color: var(--text-secondary);
-    @apply max-w-3xl text-base leading-8;
+    @apply max-w-2xl text-[0.95rem] leading-7 md:text-base md:leading-8;
   }
 
   .interactive-card {
     transition:
-      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .interactive-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     border-color: var(--border-strong);
     box-shadow: var(--shadow-soft);
   }
 
   .pill {
-    @apply inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase;
-    letter-spacing: 0.12em;
+    @apply inline-flex items-center rounded-md border px-2.5 py-1 text-[11px] font-medium uppercase;
+    letter-spacing: 0.08em;
     border-color: rgba(80, 68, 54, 0.1);
     background: rgba(255, 253, 250, 0.72);
     color: var(--text-secondary);
@@ -149,14 +145,14 @@ button {
   }
 
   .content-card {
-    background: rgba(255, 253, 250, 0.78);
+    background: rgba(255, 255, 255, 0.86);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
   }
 
   .meta-label {
     @apply text-[11px] font-semibold uppercase text-stone-400;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
   }
 
   .text-fine {
@@ -164,7 +160,7 @@ button {
   }
 
   .action-chip {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm transition duration-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm transition duration-300;
     border-color: rgba(80, 68, 54, 0.1);
     background: rgba(255, 253, 250, 0.78);
     color: var(--text-primary);
@@ -179,6 +175,15 @@ button {
     @apply action-chip;
     background: var(--surface-soft);
     color: var(--text-secondary);
+  }
+
+  .section-band-soft {
+    background: #efede7;
+    border-block: 1px solid rgba(23, 23, 23, 0.06);
+  }
+
+  .editorial-rule {
+    border-color: rgba(23, 23, 23, 0.12);
   }
 }
 

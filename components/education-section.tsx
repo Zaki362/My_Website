@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Card, Section, SectionHeader } from "@/components/design-system";
+import { Badge, Section, SectionHeader } from "@/components/design-system";
 import { Reveal } from "@/components/reveal";
 import { useLanguage } from "@/components/language-provider";
 
@@ -8,84 +8,73 @@ export function EducationSection() {
   const { t } = useLanguage();
 
   return (
-    <Section
-      id="education"
-      className="pt-20 lg:pt-28"
-    >
+    <Section id="education" className="section-band-soft">
       <SectionHeader
         kicker={t.education.kicker}
         title={t.education.title}
         description={t.education.description}
       />
 
-      <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-5">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(19rem,0.8fr)] lg:gap-16">
+        <div className="border-t border-stone-900/15">
           {t.education.items.map((item, index) => (
-            <Reveal key={item.school} delay={index * 0.08}>
-              <Card className="p-7 md:p-8">
-                <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <p className="meta-label mb-3">{t.education.pathLabel}</p>
-                    <h3 className="font-display text-2xl font-[620] text-stone-950">{item.school}</h3>
-                    <p className="mt-2 text-sm leading-6 text-stone-500">
-                      {item.degree}｜{item.department}
-                    </p>
+            <Reveal key={item.school} delay={index * 0.07}>
+              <article className="grid gap-5 border-b border-stone-900/15 py-7 sm:grid-cols-[9rem_1fr] md:grid-cols-[11rem_1fr] md:py-8">
+                <div>
+                  <p className="meta-label">{t.education.pathLabel}</p>
+                  <p className="mt-2 text-sm font-medium text-stone-500">{item.period}</p>
+                </div>
+                <div>
+                  <h3 className="font-display text-2xl font-semibold text-stone-950 md:text-[1.75rem]">
+                    {item.school}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-600">
+                    {item.degree}｜{item.department}
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {item.highlights.map((highlight) => (
+                      <Badge key={highlight} tone="neutral" uppercase={false}>
+                        {highlight}
+                      </Badge>
+                    ))}
                   </div>
-                  <span className="inline-flex rounded-full border border-stone-900/10 bg-[#f7f2e9] px-4 py-1.5 text-xs uppercase text-stone-500" style={{ letterSpacing: "0.14em" }}>
-                    {item.period}
-                  </span>
                 </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {item.highlights.map((highlight) => (
-                    <Badge key={highlight} tone="neutral">
-                      {highlight}
-                    </Badge>
-                  ))}
-                </div>
-              </Card>
+              </article>
             </Reveal>
           ))}
         </div>
 
-        <Reveal delay={0.16}>
-          <Card className="self-start p-5 md:p-6">
-            <div className="mb-4 flex items-end justify-between gap-4">
+        <Reveal delay={0.12}>
+          <aside className="rounded-lg border border-stone-900/10 bg-white p-5 shadow-panel md:p-6">
+            <div className="border-b border-stone-900/10 pb-4">
               <div>
                 <p className="meta-label mb-2">Highlights</p>
-                <p className="font-display text-lg font-[620] text-stone-950">{t.education.highlightsTitle}</p>
+                <p className="font-display text-xl font-semibold text-stone-950">
+                  {t.education.highlightsTitle}
+                </p>
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-0">
               {t.education.badges.map((badge) => (
-                <div
-                  key={badge}
-                  className="rounded-2xl border border-stone-900/10 bg-[#fffdfa]/72 px-3.5 py-2.5 text-sm text-stone-600"
-                >
+                <div key={badge} className="border-b border-stone-900/[0.08] py-3 text-sm leading-6 text-stone-600">
                   {badge}
                 </div>
               ))}
             </div>
 
-            <div className="my-4 h-px bg-stone-900/10" />
-
-            <p className="mb-3 font-display text-lg font-[620] text-stone-950">{t.education.honorsTitle}</p>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <p className="mt-5 meta-label">{t.education.honorsTitle}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
               {t.education.honorsMetrics.map((metric) => (
-                <div
-                  key={metric}
-                  className="rounded-2xl border border-violet-500/10 bg-violet-500/[0.055] px-3.5 py-2.5 text-[13px] font-medium leading-5 text-stone-700"
-                >
+                <Badge key={metric} tone="purple" uppercase={false}>
                   {metric}
-                </div>
+                </Badge>
               ))}
             </div>
-
-            <p className="mt-3 rounded-2xl bg-[#f7f2e9] px-3.5 py-2.5 text-[13px] leading-6 text-stone-600">
+            <p className="mt-5 border-l-2 border-[#2f8f98] pl-4 text-[13px] leading-6 text-stone-600">
               {t.education.honorsNote}
             </p>
-          </Card>
+          </aside>
         </Reveal>
       </div>
     </Section>

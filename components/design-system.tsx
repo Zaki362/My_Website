@@ -22,9 +22,10 @@ export function Section({
   id: string;
 }) {
   return (
-    <section className={cn("container-shell relative py-32 lg:py-40", className)}>
-      <span id={id} className="block h-px" aria-hidden="true" />
-      {children}
+    <section id={id} className={cn("relative py-20 md:py-24 lg:py-28", className)}>
+      <div className="container-shell">
+        {children}
+      </div>
     </section>
   );
 }
@@ -43,11 +44,11 @@ export function SectionHeader({
   className?: string;
 }) {
   return (
-    <div className={cn("mb-12 flex flex-col gap-6 md:mb-16 lg:flex-row lg:items-end lg:justify-between", className)}>
-      <div className="max-w-3xl">
+    <div className={cn("mb-10 flex flex-col gap-5 md:mb-12 lg:flex-row lg:items-end lg:justify-between", className)}>
+      <div className="max-w-4xl">
         <p className="section-kicker mb-4">{kicker}</p>
         <h2 className="section-title">{title}</h2>
-        {description ? <p className="section-copy mt-5">{description}</p> : null}
+        {description ? <p className="section-copy mt-4">{description}</p> : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
     </div>
@@ -74,12 +75,12 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium",
+        "inline-flex items-center rounded-md border px-2.5 py-1 text-[11px] font-medium",
         uppercase && "uppercase",
         tones[tone],
         className
       )}
-      style={{ letterSpacing: uppercase ? "0.12em" : "0" }}
+      style={{ letterSpacing: uppercase ? "0.08em" : "0" }}
     >
       {children}
     </span>
@@ -88,7 +89,7 @@ export function Badge({
 
 export function Card({ children, className }: WithChildren) {
   return (
-    <div className={cn("interactive-card rounded-[1.75rem] border border-border bg-surface shadow-panel", className)}>
+    <div className={cn("interactive-card rounded-xl border border-border bg-surface shadow-panel", className)}>
       {children}
     </div>
   );
@@ -106,9 +107,9 @@ export function ButtonLink({
   external?: boolean;
 }) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition duration-300",
-    variant === "primary" && "bg-[#2b2933] text-[#fffaf2] shadow-[0_14px_40px_rgba(61,50,38,0.16)] hover:bg-[#24222b]",
-    variant === "secondary" && "border border-stone-900/10 bg-[#fffdfa]/75 text-stone-800 hover:border-stone-900/20 hover:bg-[#fffdfa]",
+    "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-medium transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
+    variant === "primary" && "bg-[#1d1d1f] text-white shadow-[0_12px_32px_rgba(23,23,23,0.14)] hover:-translate-y-0.5 hover:bg-black",
+    variant === "secondary" && "border border-stone-900/10 bg-white text-stone-800 hover:border-stone-900/20 hover:bg-stone-50",
     variant === "ghost" && "text-stone-600 hover:text-stone-950",
     variant === "dark" && "border border-white/10 bg-white/10 text-[#fffaf2] hover:bg-white/20",
     className
@@ -162,8 +163,8 @@ export function IconFrame({
   return (
     <span
       className={cn(
-        "inline-flex h-10 w-10 items-center justify-center rounded-full border",
-        dark ? "border-white/10 bg-white/10 text-[#fffaf2]" : "border-stone-900/10 bg-[#f7f2e9] text-stone-700",
+        "inline-flex h-10 w-10 items-center justify-center rounded-lg border",
+        dark ? "border-white/10 bg-white/10 text-[#fffaf2]" : "border-stone-900/10 bg-[#efede7] text-stone-700",
         className
       )}
     >

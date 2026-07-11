@@ -2,7 +2,6 @@ export const siteMeta = {
   title: "郑国华｜北京大学经济学硕士 / AI 产品经理",
   description:
     "郑国华的个人网站，聚焦教育背景、工作经历、科研竞赛、Vibe Coding 项目展示。",
-  url: "https://example.com",
   ogImage: "/images/profile.jpg"
 };
 
@@ -167,7 +166,6 @@ export const contactData = {
   title: "欢迎交流 AI 产品、工作机会与合作可能",
   description: "AGI 将至，如果你也在思考 AI 产品的发展，或希望展开合作，欢迎联系。",
   email: "guohuaz666@163.com",
-  phone: "131-4112-2166",
   github: "https://github.com/Zaki362",
   photoPath: "/images/profile.jpg",
   coverImage: "/images/contact-sky.jpg",

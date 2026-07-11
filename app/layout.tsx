@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { siteMeta } from "@/data/profile";
 import { LanguageProvider } from "@/components/language-provider";
+import { getSiteUrl } from "@/lib/site-url";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteMeta.url),
+  metadataBase: new URL(siteUrl),
   title: siteMeta.title,
   description: siteMeta.description,
   openGraph: {
     title: siteMeta.title,
     description: siteMeta.description,
-    url: siteMeta.url,
+    url: siteUrl,
     siteName: "郑国华个人网站",
     locale: "zh_CN",
     type: "website",

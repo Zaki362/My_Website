@@ -43,6 +43,7 @@ export type AgentSource = {
 
 export type AgentResponse = {
   reply: string;
+  mode?: "profile" | "general";
   refused?: boolean;
   casual?: boolean;
   fallback?: boolean;

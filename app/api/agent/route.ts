@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   formatChunksForPrompt,
+  getRetrievalConfidence,
   retrieveRelevantChunks
 } from "@/lib/agent/retrieve";
 import {
   AGENT_SYSTEM_PROMPT,
-  buildContextPrompt
+  buildContextPrompt,
+  buildModePrompt
 } from "@/lib/agent/systemPrompt";
 import type { AgentAction, AgentResponse, AgentSection, AgentSource } from "@/lib/agent/types";
 import { contactData } from "@/data/profile";
+import {
+  generateAgentReply,
+  hasConfiguredAgentModel,
+  type ModelMessage
+} from "@/lib/agent/model";
 
 type ChatRole = "user" | "assistant";
 type Locale = "en" | "zh";
@@ -50,7 +57,7 @@ const routeCopy = {
     genericError:
       "助手暂时卡了一下。可以稍后再试，或者换个更短的问题。",
     languagePrompt:
-      "请用轻松自然的中文回答。默认 1 句结论 + 最多 3 条要点，总长度尽量控制在 180 个中文字符内。优先结合郑国华站内资料；如果问题是普通闲聊或泛问题，可以简短回答，但不要假装有实时信息或编造国华资料。",
+      "请用轻松、自然、有判断力的中文回答，像一位熟悉国华作品的朋友。默认 1 句结论 + 最多 3 条要点，总长度尽量控制在 220 个中文字符内。优先结合郑国华站内资料；普通闲聊或泛问题也可以直接回答，不要生硬地把每个话题都拉回个人资料。不要假装有实时信息，也不要编造国华资料。",
     structuredPrompt:
       "请只输出 JSON，不要输出 Markdown 或解释。JSON 格式：{\"summary\":\"一句自然结论\",\"bullets\":[\"0-3条短要点\"],\"metrics\":[{\"label\":\"指标名\",\"value\":\"数值\",\"detail\":\"可选说明\"}],\"note\":\"可选补充\"}。如果没有要点或指标，用空数组。语气可以轻松一点。"
   },
@@ -68,7 +75,7 @@ const routeCopy = {
     genericError:
       "The assistant got stuck for a moment. Please try again or ask a shorter question.",
     languagePrompt:
-      "Answer in relaxed, natural English. Default to one short conclusion plus up to 3 bullets, ideally under 120 words. Prioritize Guohua's site profile when relevant; for casual or general questions, answer briefly, but do not pretend to know real-time facts or invent Guohua-specific details.",
+      "Answer in relaxed, natural English with a clear point of view, like a thoughtful guide who knows Guohua's work. Default to one short conclusion plus up to 3 bullets, ideally under 130 words. Use Guohua's site profile when relevant, but answer casual or general questions directly without forcing every topic back to his profile. Do not pretend to know real-time facts or invent Guohua-specific details.",
     structuredPrompt:
       "Return JSON only, with no Markdown or extra explanation. JSON shape: {\"summary\":\"one natural conclusion\",\"bullets\":[\"0-3 short points\"],\"metrics\":[{\"label\":\"metric name\",\"value\":\"value\",\"detail\":\"optional detail\"}],\"note\":\"optional note\"}. Use natural English casing, not all caps. Empty arrays are fine."
   }
@@ -77,8 +84,8 @@ const routeCopy = {
 const PROFILE_INTENT_HINTS = [
   "郑国华",
   "国华",
-  "他",
   "他的",
+  "这位候选人",
   "教育",
   "学校",
   "北大",
@@ -92,23 +99,28 @@ const PROFILE_INTENT_HINTS = [
   "联系",
   "邮箱",
   "github",
-  "agent",
-  "aigc",
-  "vibe",
-  "workflow",
-  "产品",
   "面试",
   "招聘",
   "候选人",
   "guohua",
   "zheng",
-  "work",
-  "project",
-  "research",
   "resume",
   "contact",
   "candidate",
   "interview"
+];
+
+const GENERAL_CONCEPT_HINTS = [
+  "什么是",
+  "怎么理解",
+  "有什么区别",
+  "原理",
+  "教程",
+  "what is",
+  "how does",
+  "explain",
+  "difference between",
+  "tutorial"
 ];
 
 function normalizeCasualInput(input: string) {
@@ -218,6 +230,10 @@ function hasProfileIntent(question: string, sources: AgentSource[] = []) {
   return questionIncludes(question, PROFILE_INTENT_HINTS);
 }
 
+function isGeneralConceptQuestion(question: string) {
+  return questionIncludes(question, GENERAL_CONCEPT_HINTS) && !hasProfileIntent(question);
+}
+
 function addAction(actions: AgentAction[], action: AgentAction) {
   if (!actions.some((item) => item.id === action.id)) {
     actions.push(action);
@@ -251,7 +267,20 @@ function buildActions(question: string, sources: AgentSource[], locale: Locale):
     return [];
   }
 
-  if (questionIncludes(question, ["简历", "履历", "resume", "cv"])) {
+  if (
+    questionIncludes(question, [
+      "简历",
+      "履历",
+      "具体工作",
+      "工作细节",
+      "成果数据",
+      "内部数据",
+      "resume",
+      "cv",
+      "specific details",
+      "internal metrics"
+    ])
+  ) {
     addAction(actions, { id: "resume", label: copy.resume, kind: "resume", variant: "primary" });
   }
 
@@ -276,13 +305,7 @@ function buildActions(question: string, sources: AgentSource[], locale: Locale):
     addAction(actions, { id: "copy-email", label: copy.copyEmail, kind: "copy", value: contactData.email, variant: "secondary" });
   }
 
-  if (actions.length === 0) {
-    addAction(actions, { id: "work", label: copy.work, kind: "anchor", href: "#experience", variant: "primary" });
-    addAction(actions, { id: "projects", label: copy.projects, kind: "anchor", href: "#projects", variant: "secondary" });
-    addAction(actions, { id: "contact", label: copy.contact, kind: "anchor", href: "#contact", variant: "secondary" });
-  }
-
-  return actions.slice(0, 3);
+  return actions.slice(0, 1);
 }
 
 function buildFollowups(question: string, sources: AgentSource[], locale: Locale) {
@@ -341,7 +364,7 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
     add("How can I contact Guohua?");
   }
 
-  return followups.slice(0, 3);
+  return followups.slice(0, 2);
 }
 
 function cleanString(value: unknown, maxLength = 260) {
@@ -563,26 +586,6 @@ function buildGeneralFallback(locale: Locale) {
   };
 }
 
-function getModelConfig() {
-  if (process.env.DEEPSEEK_API_KEY) {
-    return {
-      apiKey: process.env.DEEPSEEK_API_KEY,
-      baseUrl: process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com",
-      model: process.env.DEEPSEEK_MODEL ?? process.env.AGENT_MODEL ?? "deepseek-chat"
-    };
-  }
-
-  if (process.env.OPENAI_API_KEY) {
-    return {
-      apiKey: process.env.OPENAI_API_KEY,
-      baseUrl: process.env.OPENAI_BASE_URL ?? "https://api.openai.com/v1",
-      model: process.env.OPENAI_MODEL ?? process.env.AGENT_MODEL ?? "gpt-4.1-mini"
-    };
-  }
-
-  return null;
-}
-
 function getClientId(request: NextRequest) {
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
@@ -636,9 +639,12 @@ function sanitizeHistory(messages: unknown): ChatMessage[] {
 }
 
 export async function POST(request: NextRequest) {
+  let requestLocale: Locale = "zh";
+
   try {
     const body = await request.json();
     const locale = normalizeLocale(body.locale);
+    requestLocale = locale;
     const copy = routeCopy[locale];
     const clientId = getClientId(request);
 
@@ -668,33 +674,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const casualReply = buildCasualReply(latestUserMessage.content, locale);
-
-    if (casualReply) {
-      const sources: AgentSource[] = [];
-      const sections: AgentSection[] = [{ type: "summary", content: casualReply }];
-      return NextResponse.json({
-        reply: casualReply,
-        refused: false,
-        casual: true,
-        sections,
-        actions: buildActions(latestUserMessage.content, sources, locale),
-        followups: buildFollowups(latestUserMessage.content, sources, locale)
-      } satisfies AgentResponse);
-    }
-
-    const isProfileQuestion = hasProfileIntent(latestUserMessage.content);
-    const rankedChunks = isProfileQuestion ? retrieveRelevantChunks(latestUserMessage.content) : [];
+    const retrievedChunks = retrieveRelevantChunks(latestUserMessage.content);
+    const retrievalConfidence = getRetrievalConfidence(retrievedChunks);
+    const isProfileQuestion =
+      !isGeneralConceptQuestion(latestUserMessage.content) &&
+      (hasProfileIntent(latestUserMessage.content) || retrievalConfidence !== "low");
+    const rankedChunks = isProfileQuestion ? retrievedChunks : [];
     const sources = toSources(rankedChunks);
-    const modelConfig = getModelConfig();
+    const mode = isProfileQuestion ? "profile" : "general";
 
-    if (!modelConfig) {
-      const fallback = isProfileQuestion
-        ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
-        : buildGeneralFallback(locale);
+    if (!hasConfiguredAgentModel()) {
+      const casualReply = buildCasualReply(latestUserMessage.content, locale);
+      const fallback = casualReply
+        ? { reply: casualReply, sections: [{ type: "summary" as const, content: casualReply }] }
+        : isProfileQuestion
+          ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
+          : buildGeneralFallback(locale);
       return NextResponse.json({
         reply: fallback.reply,
+        mode,
         refused: false,
+        casual: Boolean(casualReply),
         fallback: true,
         sections: fallback.sections,
         sources,
@@ -703,11 +703,12 @@ export async function POST(request: NextRequest) {
       } satisfies AgentResponse);
     }
 
-    const context = formatChunksForPrompt(rankedChunks);
-    const modelMessages = [
+    const context = isProfileQuestion ? formatChunksForPrompt(rankedChunks) : "";
+    const modelMessages: ModelMessage[] = [
       { role: "system", content: AGENT_SYSTEM_PROMPT },
       { role: "system", content: copy.languagePrompt },
       { role: "system", content: copy.structuredPrompt },
+      { role: "system", content: buildModePrompt(mode, locale) },
       { role: "system", content: buildContextPrompt(context) },
       ...messages.map((message) => ({
         role: message.role,
@@ -715,28 +716,16 @@ export async function POST(request: NextRequest) {
       }))
     ];
 
-    const response = await fetch(`${modelConfig.baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${modelConfig.apiKey}`
-      },
-      body: JSON.stringify({
-        model: modelConfig.model,
-        messages: modelMessages,
-        temperature: 0.45,
-        max_tokens: 360
-      })
-    });
+    const modelResult = await generateAgentReply(modelMessages);
 
-    if (!response.ok) {
-      await response.text().catch(() => "");
+    if (!modelResult) {
       const fallback = isProfileQuestion
         ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
         : buildGeneralFallback(locale);
       return NextResponse.json(
         {
           reply: fallback.reply,
+          mode,
           sections: fallback.sections,
           fallback: true,
           sources,
@@ -747,14 +736,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = await response.json();
-    const reply = data?.choices?.[0]?.message?.content?.trim();
+    const reply = modelResult.text;
 
     if (!reply) {
       const sections: AgentSection[] = [{ type: "summary", content: copy.noAnswer }];
       return NextResponse.json(
         {
           reply: copy.noAnswer,
+          mode,
           sections,
           sources,
           actions: buildActions(latestUserMessage.content, sources, locale),
@@ -769,6 +758,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       reply: structuredReply,
+      mode,
       refused: false,
       sections,
       sources,
@@ -776,11 +766,11 @@ export async function POST(request: NextRequest) {
       followups: buildFollowups(latestUserMessage.content, sources, locale)
     } satisfies AgentResponse);
   } catch {
+    const content = routeCopy[requestLocale].genericError;
     const sections: AgentSection[] = [
       {
         type: "summary",
-        content:
-          "The assistant ran into a temporary issue. Please try again later, or ask a more specific profile question."
+        content
       }
     ];
     return NextResponse.json(

@@ -129,7 +129,7 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
             onClick={onClose}
           />
           <motion.div
-            className="relative w-full max-w-[31rem] overflow-hidden rounded-[1.75rem] border border-[rgba(80,60,40,0.12)] bg-[#fffdfa]/95 p-5 shadow-[0_28px_90px_rgba(60,45,28,0.20)] backdrop-blur-2xl sm:p-6"
+            className="relative w-full max-w-[31rem] overflow-hidden rounded-xl border border-stone-900/10 bg-white/95 p-5 shadow-[0_28px_80px_rgba(23,23,23,0.2)] backdrop-blur-2xl sm:p-6"
             initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.98 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? undefined : { opacity: 0, y: 12, scale: 0.98 }}
@@ -137,7 +137,7 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
           >
             <div className="flex items-start justify-between gap-5">
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[rgba(120,90,60,0.12)] bg-[#f7f0e7] text-[#7b6752]">
+                <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-stone-900/10 bg-[#efede7] text-stone-700">
                   <FileText className="h-5 w-5" />
                 </span>
                 <div>
@@ -153,7 +153,7 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-stone-900/10 bg-white/[0.72] text-stone-500 transition hover:bg-white hover:text-stone-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35]"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-stone-900/10 bg-white text-stone-500 transition hover:bg-stone-50 hover:text-stone-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                 aria-label={locale === "zh" ? "关闭" : "Close"}
               >
                 <X className="h-4 w-4" />
@@ -165,7 +165,7 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
                 <label htmlFor={emailId} className="text-xs font-semibold uppercase tracking-[0.14em] text-stone-400">
                   {copy.emailLabel}
                 </label>
-                <div className="mt-2 flex items-center gap-3 rounded-[1.125rem] border border-[rgba(80,60,40,0.12)] bg-white/[0.72] px-4 py-3 shadow-[0_10px_28px_rgba(80,60,40,0.055)]">
+                <div className="mt-2 flex items-center gap-3 rounded-lg border border-stone-900/10 bg-white px-4 py-3">
                   <Mail className="h-4 w-4 shrink-0 text-[#7b6752]" />
                   <input
                     id={emailId}
@@ -190,14 +190,14 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
                   placeholder={copy.reasonPlaceholder}
                   rows={4}
                   maxLength={600}
-                  className="mt-2 w-full resize-none rounded-[1.125rem] border border-[rgba(80,60,40,0.12)] bg-white/[0.72] px-4 py-3 text-sm leading-6 text-[#241f1b] shadow-[0_10px_28px_rgba(80,60,40,0.055)] outline-none placeholder:text-stone-400 focus:border-[#d7a45f]/[0.42]"
+                  className="mt-2 w-full resize-none rounded-lg border border-stone-900/10 bg-white px-4 py-3 text-sm leading-6 text-[#241f1b] outline-none placeholder:text-stone-400 focus:border-violet-500/30"
                 />
               </div>
 
               {message ? (
                 <div
                   className={cn(
-                    "flex items-start gap-2 rounded-[1rem] px-3.5 py-3 text-sm leading-6",
+                    "flex items-start gap-2 rounded-lg px-3.5 py-3 text-sm leading-6",
                     status === "success"
                       ? "border border-emerald-500/15 bg-emerald-50 text-emerald-800"
                       : "border border-rose-500/15 bg-rose-50 text-rose-800"
@@ -212,14 +212,14 @@ export function ResumeRequestDialog({ open, onClose }: ResumeRequestDialogProps)
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex h-11 items-center justify-center rounded-full border border-[rgba(80,60,40,0.12)] bg-white/[0.72] px-5 text-sm font-semibold text-[#4a423b] transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.35]"
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-stone-900/10 bg-white px-5 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                 >
                   {copy.cancel}
                 </button>
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#2b251f] px-5 text-sm font-semibold text-[#fffaf2] shadow-[0_14px_38px_rgba(62,46,31,0.16)] transition hover:-translate-y-0.5 hover:bg-[#211d19] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d7a45f]/[0.45]"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#1d1d1f] px-5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(23,23,23,0.14)] transition hover:-translate-y-0.5 hover:bg-black disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35"
                 >
                   {status === "submitting" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
                   {status === "submitting" ? copy.submitting : copy.submit}

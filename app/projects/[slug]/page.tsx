@@ -4,7 +4,7 @@ import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { ProjectDetailPage } from "@/components/project-detail-page";
 import { getProjectBySlug, portfolioProjects } from "@/data/projects";
-import { siteMeta } from "@/data/profile";
+import { getSiteUrl } from "@/lib/site-url";
 
 export function generateStaticParams() {
   return portfolioProjects.map((project) => ({
@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const copy = project.locales.zh;
   const title = `${copy.title}｜郑国华项目`;
+  const siteUrl = getSiteUrl();
 
   return {
     title,
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title,
       description: copy.summary,
-      url: `${siteMeta.url}/projects/${project.slug}`,
+      url: `${siteUrl}/projects/${project.slug}`,
       images: [
         {
           url: project.cover,
