@@ -92,6 +92,10 @@ const PROFILE_INTENT_HINTS = [
   "人大",
   "工作",
   "实习",
+  "tako",
+  "memory",
+  "个性化",
+  "personalization",
   "项目",
   "科研",
   "论文",
@@ -323,6 +327,7 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
   if (locale === "zh") {
     if (hasAnyCategory(sources, ["experience", "skills"])) {
       add("他的 Agent 经验具体体现在哪里？");
+      add("他的个性化 AI 经验是什么？");
       add("哪段经历最匹配 AI 产品经理岗位？");
       add("他的实习方向有哪些？");
     }
@@ -344,6 +349,7 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
   } else {
     if (hasAnyCategory(sources, ["experience", "skills"])) {
       add("What is his Agent experience?");
+      add("What is his personalized AI experience?");
       add("Which internship best fits an AI product role?");
       add("What are his internship focus areas?");
     }
@@ -493,30 +499,30 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, que
         ? [
             {
               type: "summary",
-              content: "His Agent experience is mainly in business-analysis Agents and Coding Agents."
+              content: "His Agent experience spans personalized conversational AI, business-analysis Agents and Coding Agents."
             },
             {
               type: "bullets",
               title: "Quick view",
               items: [
+                "ByteDance Tako: focuses on personalized AI, Memory strategy and evaluation for more relevant long-term conversations.",
                 "Meituan: focused on business-analysis Agents, knowledge retrieval and report-generation workflows.",
                 "Baidu: focused on Coding Agent evaluation, strategy iteration and Builder product work.",
-                "The common thread: making Agent capabilities more controllable, usable and connected to real product scenarios."
               ]
             }
           ]
         : [
             {
               type: "summary",
-              content: "他的 Agent 经验主要分两条线：经营分析 Agent 和 Coding Agent。"
+              content: "他的 Agent 经验覆盖个性化对话、经营分析和 Coding Agent 三条线。"
             },
             {
               type: "bullets",
               title: "简短版",
               items: [
+                "字节 Tako：偏个性化 AI，关注 Memory 策略与评测如何服务长期对话体验。",
                 "美团：偏经营分析 Agent，关注知识召回、业务知识库和报告生成工作流。",
                 "百度：偏 Coding Agent，关注评测、策略迭代和 Builder 类产品体验。",
-                "共同点：不是只调模型，而是把 Agent 能力放进真实业务场景里做产品化。"
               ]
             }
           ];

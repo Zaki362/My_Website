@@ -24,7 +24,7 @@ export function ExperienceSection() {
 
       <div className="border-t border-stone-900/15">
         {t.experience.cards.map((item, index) => (
-          <Reveal key={item.company} delay={index * 0.07}>
+          <Reveal key={`${item.company}-${item.domain}`} delay={index * 0.07}>
             <article className="group grid gap-5 border-b border-stone-900/15 py-7 transition-colors duration-300 hover:bg-white/70 sm:grid-cols-[8.5rem_1fr] sm:px-3 md:grid-cols-[10rem_1fr] lg:grid-cols-[10rem_15rem_1fr] lg:gap-8 lg:py-9">
               <div className="flex items-start justify-between gap-4 sm:block">
                 <span className="text-sm font-medium text-stone-500">{item.period}</span>

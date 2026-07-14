@@ -56,9 +56,18 @@ const englishEducationItems = [
 const englishExperienceCards = [
   {
     company: "ByteDance",
+    domain: "AI Strategy Product | TikTok Search · Tako",
+    focus: "Personalized AI",
+    period: "2026.06 - Present",
+    problem:
+      "Contributes to personalized Memory strategy and evaluation for Tako, TikTok Search's standalone chatbot, helping long-term user context translate into more relevant and consistent conversations.",
+    tags: ["Personalization", "Memory", "Evaluation", "Chatbot", "LLM", "TikTok Search"]
+  },
+  {
+    company: "ByteDance",
     domain: "AIGC Strategy Product | TikTok Shop",
     focus: "AIGC Strategy",
-    period: "2026.03 - Present",
+    period: "2026.03 - 2026.06",
     problem:
       "Owned the end-to-end AIGC image-generation workflow for TikTok Shop e-commerce graphics, from foundation model evaluation and Workflow optimization to industry template strategy, moving the tool from basic generation toward controllable, usable and growth-driving output.",
     tags: ["AIGC", "Prompt", "Evaluation", "Workflow", "Product Strategy", "TikTok Shop"]
@@ -234,7 +243,7 @@ export const dictionary = {
       title: "Peking University M.A. 2027 / Renmin University B.A.",
       tagline: "AI Product Builder focused on Agent, Workflow, Vibe Coding and AIGC applications.",
       intro:
-        "I have worked on AI product internships at ByteDance, Baidu and Meituan, focusing on AIGC, Vibe Coding and end-to-end analysis agents. My work centers on agent system design, evaluation strategy and AI product implementation in real business scenarios.",
+        "I currently work on personalized AI strategy for Tako at ByteDance TikTok Search. Earlier roles across TikTok Shop, Baidu and Meituan covered AIGC, AI Coding and analysis Agents, with a focus on personalization, evaluation and real-world AI product delivery.",
       location: "Beijing",
       identity: "Agent system design · Evaluation strategy · AI business implementation",
       availability: "Open to AI product, opportunity and collaboration conversations.",
@@ -268,7 +277,7 @@ export const dictionary = {
       kicker: "Experience",
       title: "Turning AI capabilities into usable product experiences.",
       description:
-        "Internship experience across AIGC e-commerce, Vibe Coding and end-to-end analysis agents. The focus is not only what I built, but how I defined problems, designed strategy and made model capabilities work in real scenarios.",
+        "Experience across personalized chatbots, AIGC e-commerce, AI Coding and analysis Agents. The focus is not only what I built, but how I defined problems, designed strategy and made model capabilities work reliably in real scenarios.",
       action: "Contact me",
       cards: englishExperienceCards
     },
@@ -498,7 +507,7 @@ export const dictionary = {
       identity: "Agent 系统设计 · 评测策略 · AI 业务场景落地",
       availability: contactData.description,
       cardNote: "以经济学、研究训练和真实 AI 产品实践为底色的产品经理。",
-      proofChips: [...heroData.eyebrow, ...experiences.map((item) => item.company)],
+      proofChips: [...heroData.eyebrow, ...Array.from(new Set(experiences.map((item) => item.company)))],
       cta: ["实习经历", "Vibe Coding 项目", "联系我"]
     },
     education: {

@@ -20,7 +20,7 @@ export const heroData = {
   title: "北京大学 27 届经济学硕士 / 中国人民大学本科",
   tagline: "AI 产品经理｜聚焦 Agent、Workflow、Vibe Coding 与 AIGC 应用",
   intro:
-    "曾在字节跳动、百度、美团进行 AI 产品方向实习，分别聚焦 AIGC、Vibe Coding 与端到端分析 Agent 方向，熟悉 Agent 系统设计、评测策略与 AI 业务场景落地。",
+    "现于字节跳动 TikTok Search 参与 Tako 个性化 AI 策略，过往在 TikTok Shop、百度和美团聚焦 AIGC、AI Coding 与分析 Agent，熟悉个性化策略、Agent 系统设计、评测与 AI 业务落地。",
   eyebrow: [],
   cta: [
     { label: "实习经历", href: "#experience", variant: "primary" as const },
@@ -62,15 +62,27 @@ export const educationBadges = [
 export const experienceSection = {
   title: "把 AI 能力，转化为真实可用的产品体验",
   description:
-    "实习经历集中在 AIGC 电商、Vibe Coding 与端到端分析 Agent 等方向。相比“做过什么”，我更在意如何定义问题、设计策略，并在真实场景中落地、优化模型能力。"
+    "实习经历覆盖个性化 Chatbot、AIGC 电商、AI Coding 与分析 Agent。相比“做过什么”，我更在意如何定义问题、设计策略，并让模型能力在真实场景中稳定发挥价值。"
 };
 
 export const experiences = [
   {
     company: "字节跳动",
+    role: "AI 策略产品｜TikTok Search · Tako",
+    focus: "Personalized AI",
+    period: "2026.06 - 至今",
+    overview:
+      "围绕 TikTok Search 独立 Chatbot Tako 的个性化体验，负责 Memory 策略与评测方向，推动长期用户信息更稳定地转化为相关、自然的对话体验。",
+    responsibilities: [],
+    impact: [],
+    impactMetrics: [],
+    skills: ["Personalization", "Memory", "Evaluation", "Chatbot", "LLM", "TikTok Search"]
+  },
+  {
+    company: "字节跳动",
     role: "AIGC 策略产品｜TikTok Shop",
     focus: "AIGC Strategy",
-    period: "2026.03 - 至今",
+    period: "2026.03 - 2026.06",
     overview:
       "围绕 TikTok Shop 电商图文场景，负责 AIGC 生图能力从基模评测、Workflow 优化到行业模版策略的完整链路，推动 AI 工具从「可生成」走向「可控、可用、可增长」。",
     responsibilities: [],

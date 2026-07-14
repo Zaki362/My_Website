@@ -3,7 +3,7 @@ secondary_name: "Zaki"
 navbar_name: "郑国华"
 
 positions:
-- name: AIGC策略产品经理
+- name: AI策略产品经理
 - name: 字节跳动
 
 email: "guohuaz666@163.com"
@@ -52,8 +52,12 @@ awards:
 experience:
 - name: 字节跳动
   logo: /assets/images/badges/bytedance.png
-  position: AIGC策略产品 - Tiktok Shop
-  date: 2026.03 - 至今
+  position: AI策略产品 - TikTok Search · Tako
+  date: 2026.06 - 至今
+- name: 字节跳动
+  logo: /assets/images/badges/bytedance.png
+  position: AIGC策略产品 - TikTok Shop
+  date: 2026.03 - 2026.06
 - name: 百度
   logo: /assets/images/badges/baidu.png
   position: AI Coding产品 - 文心快码Comate

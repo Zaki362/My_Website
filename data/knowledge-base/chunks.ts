@@ -64,15 +64,24 @@ export const knowledgeChunks: KnowledgeChunk[] = [
   },
   {
     id: "experience-1",
+    title: "字节跳动 TikTok Search Tako 实习",
+    category: "experience",
+    text:
+      "郑国华自 2026.06 起在字节跳动 TikTok Search 从事 AI 策略产品工作，围绕独立 Chatbot Tako 的个性化体验，关注 Memory 策略、评测与长期用户信息在对话中的稳定使用。公开资料不包含内部方法、数据或成果指标。",
+    keywords: ["字节跳动", "TikTok Search", "Tako", "个性化", "Personalization", "Memory", "Chatbot", "评测", "实习"],
+    tags: ["Personalized AI", "Memory", "Evaluation", "Chatbot", "TikTok Search"]
+  },
+  {
+    id: "experience-2",
     title: "字节跳动 TikTok Shop 实习",
     category: "experience",
     text:
-      "郑国华自 2026.03 起在字节跳动 TikTok Shop 担任 AIGC 策略产品，聚焦电商图文场景下的 AIGC 生图能力、Workflow 优化与行业模版策略，关注 AI 工具从可生成到可控可用的产品化落地。",
+      "郑国华于 2026.03 至 2026.06 在字节跳动 TikTok Shop 担任 AIGC 策略产品，聚焦电商图文场景下的 AIGC 生图能力、Workflow 优化与行业模版策略，关注 AI 工具从可生成到可控可用的产品化落地。",
     keywords: ["字节跳动", "TikTok Shop", "AIGC", "Workflow", "策略产品", "实习"],
     tags: ["AIGC", "Prompt", "Workflow", "Evaluation", "Product Strategy"]
   },
   {
-    id: "experience-2",
+    id: "experience-3",
     title: "百度 Comate 实习",
     category: "experience",
     text:
@@ -81,7 +90,7 @@ export const knowledgeChunks: KnowledgeChunk[] = [
     tags: ["Coding Agent", "Benchmark", "Evaluation", "Product Strategy", "Builder"]
   },
   {
-    id: "experience-3",
+    id: "experience-4",
     title: "美团核心本地实习",
     category: "experience",
     text:

@@ -15,7 +15,7 @@ export const rawProfileDocs = [
     id: "raw-experience",
     title: "实习经历原始资料",
     content:
-      "字节跳动 TikTok Shop，AIGC 策略产品，2026.03 - 至今。百度文心快码 Comate，AI Coding 产品，2025.09 - 2026.02。美团核心本地，Agent 0-1 搭建，2025.04 - 2025.08。"
+      "字节跳动 TikTok Search Tako，AI 策略产品，2026.06 - 至今，公开方向为个性化 AI、Memory 策略与评测。字节跳动 TikTok Shop，AIGC 策略产品，2026.03 - 2026.06。百度文心快码 Comate，AI Coding 产品，2025.09 - 2026.02。美团核心本地，Agent 0-1 搭建，2025.04 - 2025.08。实习资料仅用于公开概览，不包含内部方法、数据或成果指标。"
   },
   {
     id: "raw-research",
