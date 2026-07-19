@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronLeft } from "lucide-react";
 import { Badge, ButtonLink, Container, Section, SectionHeader, cn } from "@/components/design-system";
+import { CodexWidgetVisual } from "@/components/codex-widget-visual";
 import { useLanguage } from "@/components/language-provider";
 import { Reveal } from "@/components/reveal";
 import { portfolioProjects, type PortfolioProject } from "@/data/projects";
@@ -11,6 +12,10 @@ import { portfolioProjects, type PortfolioProject } from "@/data/projects";
 function ProjectImage({ project, priority = false }: { project: PortfolioProject; priority?: boolean }) {
   const { locale } = useLanguage();
   const copy = project.locales[locale];
+
+  if (project.slug === "codex-widget") {
+    return <CodexWidgetVisual locale={locale} compact />;
+  }
 
   return (
     <Image
@@ -29,7 +34,7 @@ function ProjectSummary({ project }: { project: PortfolioProject }) {
   const copy = project.locales[locale];
 
   return (
-    <div className="flex h-full flex-col p-5 md:p-6">
+    <div className="flex flex-1 flex-col p-5 md:p-6">
       <div className="flex flex-wrap gap-2">
         <Badge tone="cyan">{copy.category}</Badge>
         <Badge tone="neutral">{project.year}</Badge>

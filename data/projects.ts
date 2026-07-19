@@ -48,6 +48,124 @@ export type PortfolioProject = {
 
 export const portfolioProjects: PortfolioProject[] = [
   {
+    slug: "xiaohongshu-creator-workbench",
+    year: "2026",
+    cover: "/projects/xiaohongshu-creator-workbench-cover.png",
+    previewMode: "image",
+    locales: {
+      zh: {
+        category: "Vibe Coding / AI Agent",
+        status: "Private Demo",
+        title: "小红书 AI 运营 Agent",
+        summary: "为“阿华学长”构建的小红书自主运营 Agent，自动完成素材采集、选题决策和图文内容生产，最后由我审核并发布。",
+        cardIntro:
+          "自动收集素材、确定选题并生成图文内容，把日常运营推进到最后的人工审核与发布。",
+        detailIntro:
+          "小红书 AI 运营 Agent 不是一个单独的工作台，而是一套用 vibe coding 持续搭建的自主内容运营系统。它服务“阿华学长”账号，自动收集和筛选公开素材、判断值得生产的选题、生成原创文案与视觉内容，并把完成结果送到我面前审核；最终发布仍由我亲自确认和执行。工作台只是这套自动化闭环的控制界面。",
+        audienceTitle: "为谁设计",
+        audience: "希望减少日常选题和内容制作重复劳动，同时保留最终质量判断与账号发布权的个人创作者。",
+        problemTitle: "核心痛点",
+        problem: "运营一个知识账号需要每天反复找素材、判断选题、写文案、做图片和整理发布内容，链路长且高度依赖人工。单点生成工具只能解决其中一步，无法持续完成从素材发现到发布前成品的完整运营流程。",
+        principlesTitle: "核心产品设计",
+        principles: [
+          "让 Agent 持续完成素材采集、选题判断和图文生产，把人工参与压缩到最后的成品审核与发布。",
+          "素材信号必须回链到可信一手证据；证据不足时进入待补队列，自动化不以牺牲内容质量换取产量。",
+          "所有自动步骤都可观察、可恢复、可人工接管；账号权限和最终发布始终保留在创作者手中。"
+        ],
+        buildTitle: "我在 Vibe Coding 中做了什么",
+        buildHighlights: [
+          "从长期自主运营目标出发，定义素材、选题、内容、视觉、审核和发布交接的完整状态机。",
+          "搭建自动素材雷达与证据核验链路，让 Agent 能持续发现候选并自主判断值得生产的选题。",
+          "串联原创文案、三套视觉方向、图片生成、资产验真和版本保留，自动产出可审核的发布内容。",
+          "设计失败恢复、人工接管和发布门禁，让系统能连续运行，同时把最终账号操作留给我。"
+        ],
+        previewTitle: "脱敏控制界面",
+        previewDescription: "这是自主运营 Agent 的可视化控制界面，用于查看自动选题、内容生产和审核状态。封面仅展示产品结构、公开选题与账号名称；真实业务数据、内部地址和账号凭据均未进入网站。",
+        contextTitle: "背景",
+        context:
+          "知识类账号真正消耗时间的是日复一日的运营链路，而不是偶尔生成一篇文案。我希望让系统主动完成素材发现、选题判断和内容生产，把自己的精力集中在最后的质量判断与发布决策上。因此，这个项目从一次性脚本逐步演化为可连续运行、可审计、可恢复的自主运营 Agent。",
+        contributionTitle: "设计与构建",
+        contribution:
+          "我负责定义自主运营目标、拆解人机分工、设计全链路状态与端到端验收，并借助 AI 编程助手实现素材雷达、选题决策、内容生产、视觉生成、审核和发布交接模块。工作台用于观察和接管这套系统，而不是产品本身的全部。",
+        impactTitle: "成果",
+        impact: [
+          "跑通从公开素材自动采集、选题决策到原创图文生成的连续运营链路。",
+          "自动产出包含文案和三套视觉候选的发布前内容包，支持修改、重生成与版本保留。",
+          "将人工参与收敛到最终审核与发布，并把事实核验、失败恢复和账号权限落实为可验证的门禁。"
+        ],
+        metrics: [
+          { value: "Auto", label: "运营链路" },
+          { value: "3", label: "视觉方向" },
+          { value: "Human", label: "最终审发" }
+        ],
+        workflow: [
+          { label: "自动收集素材", icon: "book" },
+          { label: "自动确定选题", icon: "database" },
+          { label: "自动生成内容", icon: "bot" },
+          { label: "人工审核发布", icon: "file" }
+        ],
+        tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
+        liveLabel: "查看演示",
+        detailLabel: "查看详情"
+      },
+      en: {
+        category: "Vibe Coding / AI Agent",
+        status: "Private Demo",
+        title: "Xiaohongshu AI Ops Agent",
+        summary: "An autonomous operations agent for the Ahua Xuezhang account that collects material, selects topics and produces posts before my final review and publishing.",
+        cardIntro:
+          "It collects material, chooses topics and creates complete posts automatically, leaving only final review and publishing to me.",
+        detailIntro:
+          "Xiaohongshu AI Ops Agent is not simply a workbench. It is an autonomous content-operations system I have continuously built through vibe coding for the Ahua Xuezhang account. It automatically collects and filters public material, decides which topics are worth producing, generates original copy and visual content, and sends the finished package to me for review. I retain the final publishing decision and action; the workbench is only the control surface for this operating loop.",
+        audienceTitle: "Designed for",
+        audience: "Independent creators who want to remove repetitive topic and production work while retaining final quality judgment and publishing control.",
+        problemTitle: "Core problem",
+        problem: "Running a knowledge account requires repetitive daily work across sourcing, topic selection, copywriting, visuals and publish preparation. Point generation tools solve only one step and cannot sustain the complete operating loop from discovery to a publish-ready package.",
+        principlesTitle: "Core product decisions",
+        principles: [
+          "Let the agent continuously handle material collection, topic decisions and post production, reducing human involvement to final review and publishing.",
+          "Require content signals to link back to trusted primary evidence; weakly supported opportunities stay pending rather than trading quality for volume.",
+          "Keep every automated step observable, recoverable and interruptible while preserving account permissions and final publishing for the creator."
+        ],
+        buildTitle: "What I owned in Vibe Coding",
+        buildHighlights: [
+          "Defined the complete operating state machine across material, topic, content, visuals, review and publishing handoff.",
+          "Built an automated material radar and evidence pipeline so the agent can continuously discover candidates and decide what deserves production.",
+          "Connected original copy, three visual directions, image generation, asset validation and version history into a publish-ready output flow.",
+          "Designed recovery, human takeover and publishing gates so the system can keep running while leaving final account actions to me."
+        ],
+        previewTitle: "Redacted control surface",
+        previewDescription: "This is the visual control surface for monitoring automated topic decisions, content production and review state. It shows only product structure, public topic material and the account name; no private business data, internal URLs or account credentials are included.",
+        contextTitle: "Context",
+        context:
+          "The real cost of a knowledge account is the operating loop repeated every day, not generating an occasional post. I wanted the system to proactively discover material, choose topics and produce content so I could focus on final quality judgment and publishing decisions. The project therefore evolved from a one-off script into a continuously running, auditable and recoverable operations agent.",
+        contributionTitle: "Design & Build",
+        contribution:
+          "I defined the autonomous operating goal, human-agent division of labor, end-to-end state model and acceptance criteria, then used an AI coding assistant to implement the radar, topic decision, content production, visual generation, review and handoff modules. The workbench helps observe and take over the system; it is not the whole product.",
+        impactTitle: "Impact",
+        impact: [
+          "Completed a continuous operating loop from automated public-material collection and topic decisions to original post generation.",
+          "Automatically produces publish-ready packages with copy and three visual candidates, including revision, regeneration and version history.",
+          "Reduced human involvement to final review and publishing while turning evidence quality, recovery and account permissions into verifiable gates."
+        ],
+        metrics: [
+          { value: "Auto", label: "Operating loop" },
+          { value: "3", label: "Visual directions" },
+          { value: "Human", label: "Final review" }
+        ],
+        workflow: [
+          { label: "Collect material", icon: "book" },
+          { label: "Choose topics", icon: "database" },
+          { label: "Generate content", icon: "bot" },
+          { label: "Human review & post", icon: "file" }
+        ],
+        tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
+        liveLabel: "View demo",
+        detailLabel: "View details"
+      }
+    }
+  },
+  {
     slug: "fitlog-minimal",
     year: "2026",
     cover: "/projects/fitlog-minimal-cover.png",
@@ -336,8 +454,8 @@ export const portfolioProjects: PortfolioProject[] = [
           "处理 WidgetKit 刷新延迟、空数据、数据过期、解析异常和浅深色模式。",
           "完善源码安装、更新脚本与旧版本清理流程，让 Codex 也能协助用户完成安装。"
         ],
-        previewTitle: "产品实景",
-        previewDescription: "这是 Codex Quota 在 macOS 桌面上的小号与中号组件：小号负责额度速览，中号增加近 5 天趋势。",
+        previewTitle: "真实产品截图",
+        previewDescription: "详情页展示 Codex Quota 在 macOS 桌面上的真实小号与中号组件；项目列表封面使用同一信息结构的 Demo 模型。",
         contextTitle: "背景",
         context:
           "高频使用 Codex 时，额度状态其实很像生产力工具里的“油表”。但原本每次都需要打开设置查看，路径偏深，也不适合随手瞄一眼。我希望把这个信息变成桌面上的轻量状态组件。",
@@ -399,8 +517,8 @@ export const portfolioProjects: PortfolioProject[] = [
           "Handled WidgetKit refresh latency, empty, stale and error states, plus light and dark appearance.",
           "Built source installation, update and legacy-cleanup scripts so Codex can also help users install it."
         ],
-        previewTitle: "Product in context",
-        previewDescription: "Codex Quota shown as small and medium macOS widgets: the small view gives quota status, while the medium view adds a five-day trend.",
+        previewTitle: "Real product screenshot",
+        previewDescription: "The detail page shows the real small and medium Codex Quota widgets on macOS; project-list covers use a demo model with the same information structure.",
         contextTitle: "Context",
         context:
           "When Codex becomes a high-frequency work tool, quota status starts to feel like a productivity fuel gauge. The original path through settings was too deep for quick checks, so I wanted a lightweight widget that keeps this state visible at a glance.",

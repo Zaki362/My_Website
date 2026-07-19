@@ -98,7 +98,11 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                   <Badge tone="neutral">{project.year}</Badge>
                   <Badge tone="cyan">{copy.status}</Badge>
                 </div>
-                <h1 className="mt-6 max-w-[680px] font-display text-[2.7rem] font-semibold leading-[1.02] text-stone-950 sm:text-[3.5rem] lg:text-[3.8rem]">
+                <h1
+                  className={`mt-6 max-w-[680px] font-display text-[2.7rem] font-semibold leading-[1.02] text-stone-950 sm:text-[3.5rem] ${
+                    project.slug === "xiaohongshu-creator-workbench" ? "lg:text-[3.15rem]" : "lg:text-[3.8rem]"
+                  }`}
+                >
                   {copy.title}
                 </h1>
                 <p className="mt-5 max-w-xl text-base leading-8 text-stone-600">{copy.detailIntro}</p>
