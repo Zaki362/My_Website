@@ -56,12 +56,12 @@ export const portfolioProjects: PortfolioProject[] = [
       zh: {
         category: "Vibe Coding / AI Agent",
         status: "Private Demo",
-        title: "小红书 AI 运营 Agent",
+        title: "小红书自动化运营 Agent",
         summary: "为“阿华学长”构建的小红书自主运营 Agent，自动完成素材采集、选题决策和图文内容生产，最后由我审核并发布。",
         cardIntro:
           "自动收集素材、确定选题并生成图文内容，把日常运营推进到最后的人工审核与发布。",
         detailIntro:
-          "小红书 AI 运营 Agent 不是一个单独的工作台，而是一套用 vibe coding 持续搭建的自主内容运营系统。它服务“阿华学长”账号，自动收集和筛选公开素材、判断值得生产的选题、生成原创文案与视觉内容，并把完成结果送到我面前审核；最终发布仍由我亲自确认和执行。工作台只是这套自动化闭环的控制界面。",
+          "小红书自动化运营 Agent 不是一个单独的工作台，而是一套用 vibe coding 持续搭建的自主内容运营系统。它服务“阿华学长”账号，自动收集和筛选公开素材、判断值得生产的选题、生成原创文案与视觉内容，并把完成结果送到我面前审核；最终发布仍由我亲自确认和执行。工作台只是这套自动化闭环的控制界面。",
         audienceTitle: "为谁设计",
         audience: "希望减少日常选题和内容制作重复劳动，同时保留最终质量判断与账号发布权的个人创作者。",
         problemTitle: "核心痛点",
