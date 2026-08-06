@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType, MouseEventHandler, ReactNode } from "react";
 
 type WithChildren = {
   children: ReactNode;
@@ -100,11 +100,13 @@ export function ButtonLink({
   children,
   variant = "primary",
   className,
-  external
+  external,
+  onClick
 }: WithChildren & {
   href: string;
   variant?: "primary" | "secondary" | "ghost" | "dark";
   external?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
   const classes = cn(
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-medium transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/35",
@@ -117,14 +119,14 @@ export function ButtonLink({
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={classes}>
+      <a href={href} target="_blank" rel="noreferrer" className={classes} onClick={onClick}>
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} onClick={onClick}>
       {children}
     </Link>
   );

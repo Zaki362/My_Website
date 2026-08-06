@@ -42,7 +42,9 @@ export type PortfolioProject = {
   cover: string;
   liveUrl?: string;
   githubUrl?: string;
-  previewMode: "interactive" | "image";
+  video?: string;
+  videoDurationSeconds?: number;
+  previewMode: "interactive" | "image" | "video";
   locales: Record<ProjectLocale, ProjectCopy>;
 };
 
@@ -51,11 +53,13 @@ export const portfolioProjects: PortfolioProject[] = [
     slug: "xiaohongshu-creator-workbench",
     year: "2026",
     cover: "/projects/xiaohongshu-creator-workbench-cover.png",
-    previewMode: "image",
+    video: "/projects/xhs-agent-flow-annotated-30s-v3-1080p.mp4",
+    videoDurationSeconds: 30,
+    previewMode: "video",
     locales: {
       zh: {
         category: "Vibe Coding / AI Agent",
-        status: "Private Demo",
+        status: "Video Demo",
         title: "小红书自动化运营 Agent",
         summary: "为“阿华学长”构建的小红书自主运营 Agent，自动完成素材采集、选题决策和图文内容生产，最后由我审核并发布。",
         cardIntro:
@@ -79,8 +83,8 @@ export const portfolioProjects: PortfolioProject[] = [
           "串联原创文案、三套视觉方向、图片生成、资产验真和版本保留，自动产出可审核的发布内容。",
           "设计失败恢复、人工接管和发布门禁，让系统能连续运行，同时把最终账号操作留给我。"
         ],
-        previewTitle: "脱敏控制界面",
-        previewDescription: "这是自主运营 Agent 的可视化控制界面，用于查看自动选题、内容生产和审核状态。封面仅展示产品结构、公开选题与账号名称；真实业务数据、内部地址和账号凭据均未进入网站。",
+        previewTitle: "30 秒完整视频 Demo",
+        previewDescription: "视频以脱敏界面展示从素材首页、选题确认、后台生图、右侧预览到打开创作者后台的完整流程；不包含账号凭据、内部地址或真实发布操作。",
         contextTitle: "背景",
         context:
           "知识类账号真正消耗时间的是日复一日的运营链路，而不是偶尔生成一篇文案。我希望让系统主动完成素材发现、选题判断和内容生产，把自己的精力集中在最后的质量判断与发布决策上。因此，这个项目从一次性脚本逐步演化为可连续运行、可审计、可恢复的自主运营 Agent。",
@@ -105,12 +109,12 @@ export const portfolioProjects: PortfolioProject[] = [
           { label: "人工审核发布", icon: "file" }
         ],
         tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
-        liveLabel: "查看演示",
+        liveLabel: "观看视频 Demo",
         detailLabel: "查看详情"
       },
       en: {
         category: "Vibe Coding / AI Agent",
-        status: "Private Demo",
+        status: "Video Demo",
         title: "Xiaohongshu AI Ops Agent",
         summary: "An autonomous operations agent for the Ahua Xuezhang account that collects material, selects topics and produces posts before my final review and publishing.",
         cardIntro:
@@ -134,8 +138,8 @@ export const portfolioProjects: PortfolioProject[] = [
           "Connected original copy, three visual directions, image generation, asset validation and version history into a publish-ready output flow.",
           "Designed recovery, human takeover and publishing gates so the system can keep running while leaving final account actions to me."
         ],
-        previewTitle: "Redacted control surface",
-        previewDescription: "This is the visual control surface for monitoring automated topic decisions, content production and review state. It shows only product structure, public topic material and the account name; no private business data, internal URLs or account credentials are included.",
+        previewTitle: "30-second product demo",
+        previewDescription: "This redacted walkthrough covers the material homepage, topic confirmation, background image generation, the right-side preview and the final handoff to Creator Center. It contains no account credentials, internal URLs or real publishing action.",
         contextTitle: "Context",
         context:
           "The real cost of a knowledge account is the operating loop repeated every day, not generating an occasional post. I wanted the system to proactively discover material, choose topics and produce content so I could focus on final quality judgment and publishing decisions. The project therefore evolved from a one-off script into a continuously running, auditable and recoverable operations agent.",
@@ -160,8 +164,128 @@ export const portfolioProjects: PortfolioProject[] = [
           { label: "Human review & post", icon: "file" }
         ],
         tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
-        liveLabel: "View demo",
+        liveLabel: "Watch video demo",
         detailLabel: "View details"
+      }
+    }
+  },
+  {
+    slug: "scenecart-ai",
+    year: "2026",
+    cover: "/projects/scenecart-ai-cover.png",
+    video: "/projects/scenecart-full-demo-hq-v3-bgm.mp4",
+    videoDurationSeconds: 44,
+    previewMode: "video",
+    locales: {
+      zh: {
+        category: "Vibe Coding / Shopping Agent",
+        status: "Video Demo",
+        title: "淘宝场景化购物 Agent",
+        summary: "真实连接淘宝 MCP 的场景化购物 Agent，自主理解需求、规划任务、搜索商品并在确认后加购，降低复杂场景下的购物决策成本。",
+        cardIntro:
+          "真实连接淘宝 MCP 完成商品搜索与确认后加购；Agent 自主理解场景、规划步骤并比较候选，解决场景化购物决策成本高的问题。",
+        detailIntro:
+          "淘宝场景化购物 Agent 是我用 vibe coding 持续构建的任务型购物产品。它真实连接淘宝 MCP：用户描述场景、预算和偏好后，Agent 会自主理解需求、规划任务、分配预算、串行搜索并比较候选，在用户确认后执行加购。它解决的不是“搜不到商品”，而是复杂场景下不知道先买什么、如何取舍与组合所带来的高决策成本；下单和支付仍由用户完成。",
+        audienceTitle: "为谁设计",
+        audience: "面对新车用品等复杂首购任务、知道生活目标却不清楚应该先买什么和如何分配预算的用户。",
+        problemTitle: "核心痛点",
+        problem: "电商平台擅长搜索已知商品，却很少帮助用户完成场景拆解、优先级排序、预算分配和跨品类取舍。用户必须先在脑中完成整套决策，场景化购物的决策成本因此很高。",
+        principlesTitle: "核心产品设计",
+        principles: [
+          "把购物任务拆成需求理解、计划确认、串行搜索、候选复盘和清单确认，每个关键阶段都允许用户校对。",
+          "用场景模板保证结构稳定，让模型只负责理解、个性化与受约束决策；商品、预算和动作继续由业务规则校验。",
+          "通过淘宝 MCP 执行真实商品搜索与加购；加购前必须由用户显式确认，系统不会自动下单或支付。"
+        ],
+        buildTitle: "我在 Vibe Coding 中做了什么",
+        buildHighlights: [
+          "从新车用品首购的真实决策链出发，定义场景化购物 Agent 的核心任务、阶段状态与人机边界。",
+          "搭建模板、DeepSeek 决策与业务 Guardrail 协作的 Agent 编排层，让预算、模块和候选结果可解释、可校验。",
+          "实现持久 Session、任务队列、SSE 续传、断线恢复和跨实例串行化，让长流程能够持续推进。",
+          "接入淘宝 MCP，将 Agent 的自主规划与真实商品搜索、确认后加购串联起来，并用权限门和失败恢复守住账号安全。"
+        ],
+        previewTitle: "44 秒完整视频 Demo",
+        previewDescription: "当前产品依赖本机淘宝环境，暂不开放在线体验。下方视频展示 Agent 从理解场景、自主规划到通过淘宝 MCP 搜索、确认后加购的完整流程；不包含账号、地址、订单或密钥。",
+        contextTitle: "背景",
+        context:
+          "新车用品首购不是一次简单搜索。用户既要判断安全必需、清洁维护、车内实用和舒适升级之间的优先级，又要在总预算内跨品类取舍。我希望让 Agent 先帮助用户组织决策，再把已经确认的计划推进到商品候选与执行清单。",
+        contributionTitle: "设计与构建",
+        contribution:
+          "我负责产品定位、阶段式用户路径、Agent 与确定性规则的边界、预算和候选质量门、云端与本地执行分层，以及真实加购前的权限设计。实现上覆盖 Next.js 前端、服务端编排、DeepSeek 路由、PostgreSQL 持久化、任务队列、SSE 和本地执行器。",
+        impactTitle: "成果",
+        impact: [
+          "把模糊的新车用品需求转化为有优先级、有预算约束的模块化购物计划。",
+          "形成从自主规划到淘宝 MCP 搜索、候选复盘和预算安全组合的可恢复 Agent 工作流。",
+          "在用户确认后完成真实加购，并以能力权限和失败状态避免伪成功或自动交易。"
+        ],
+        metrics: [
+          { value: "9", label: "核心阶段" },
+          { value: "3", label: "候选档位" },
+          { value: "0", label: "自动下单 / 支付" }
+        ],
+        workflow: [
+          { label: "描述购物场景", icon: "book" },
+          { label: "Agent 生成规划", icon: "bot" },
+          { label: "淘宝 MCP 搜索", icon: "database" },
+          { label: "人工确认清单", icon: "file" }
+        ],
+        tags: ["AI Agent", "Vibe Coding", "Taobao MCP", "Scene Commerce", "DeepSeek", "Human-in-the-loop", "Safety Guardrails"],
+        liveLabel: "观看视频 Demo",
+        detailLabel: "查看详情与 Demo"
+      },
+      en: {
+        category: "Vibe Coding / Shopping Agent",
+        status: "Video Demo",
+        title: "Taobao Scenario Shopping Agent",
+        summary: "A scenario-shopping agent connected to Taobao MCP that autonomously plans, searches and adds confirmed products to cart, reducing complex shopping decision costs.",
+        cardIntro:
+          "Connected to Taobao MCP for real product search and confirmed cart actions, the agent autonomously understands scenarios, plans steps and compares candidates to reduce shopping decision costs.",
+        detailIntro:
+          "The Taobao Scenario Shopping Agent is a task-oriented shopping product I continuously built through vibe coding. It connects to Taobao MCP: after the user describes a scenario, budget and preferences, the agent autonomously understands the need, plans the task, allocates budget, searches sequentially and compares candidates, then adds confirmed items to cart. It addresses the high decision cost of deciding what to buy, prioritize and combine in complex scenarios; checkout and payment remain with the user.",
+        audienceTitle: "Designed for",
+        audience: "People facing a complex first-time purchase who know the life goal but are unsure what to buy first or how to allocate their budget.",
+        problemTitle: "Core problem",
+        problem: "Commerce platforms are strong at searching for known products, but rarely help users decompose a scenario, rank priorities, allocate budget and make cross-category trade-offs, leaving users with a high decision cost before search even begins.",
+        principlesTitle: "Core product decisions",
+        principles: [
+          "Break the shopping task into understanding, plan confirmation, sequential search, candidate review and checklist confirmation, with user correction at every key stage.",
+          "Use scenario templates for structural stability while constraining the model to understanding and personalization; business rules continue validating products, budgets and actions.",
+          "Use Taobao MCP for real product search and cart actions. Cart additions require explicit confirmation, and the system never places orders or pays automatically."
+        ],
+        buildTitle: "What I owned in Vibe Coding",
+        buildHighlights: [
+          "Defined the product job, staged workflow and human-agent boundary from the real decision path of setting up a new car.",
+          "Built an orchestration layer across templates, DeepSeek decisions and business guardrails so budgets, modules and candidates stay explainable and validatable.",
+          "Implemented persistent sessions, a job queue, SSE continuation, recovery and cross-instance serialization for long-running workflows.",
+          "Connected Taobao MCP so autonomous planning leads into real search and confirmed cart actions, protected by capability permissions and failure recovery."
+        ],
+        previewTitle: "44-second product demo",
+        previewDescription: "The product currently depends on a local Taobao environment and is not available as a public live experience. This video shows the complete flow from scenario understanding and autonomous planning to Taobao MCP search and confirmed cart actions, with no account, address, order or secret data exposed.",
+        contextTitle: "Context",
+        context:
+          "A first-time new-car setup is not a simple search. Users must prioritize safety essentials, maintenance, utility and comfort while making trade-offs across categories within one budget. I wanted the agent to organize this decision first, then move the confirmed plan into product candidates and an execution checklist.",
+        contributionTitle: "Design & Build",
+        contribution:
+          "I owned the positioning, staged journey, boundary between agent reasoning and deterministic rules, budget and candidate quality gates, cloud/local execution split and permission model before real cart actions. The implementation spans a Next.js frontend, server orchestration, DeepSeek routing, PostgreSQL persistence, job queues, SSE and a local executor.",
+        impactTitle: "Impact",
+        impact: [
+          "Turns a vague new-car setup request into a prioritized modular shopping plan with explicit budget constraints.",
+          "Creates a recoverable workflow from autonomous planning through Taobao MCP search, candidate review and a budget-safe bundle.",
+          "Completes real cart additions after user confirmation while capability permissions and honest failure states prevent false success or automatic transactions."
+        ],
+        metrics: [
+          { value: "9", label: "Core stages" },
+          { value: "3", label: "Candidate tiers" },
+          { value: "0", label: "Automatic orders / payment" }
+        ],
+        workflow: [
+          { label: "Describe the scenario", icon: "book" },
+          { label: "Agent builds the plan", icon: "bot" },
+          { label: "Search via Taobao MCP", icon: "database" },
+          { label: "Human confirms the list", icon: "file" }
+        ],
+        tags: ["AI Agent", "Vibe Coding", "Taobao MCP", "Scene Commerce", "DeepSeek", "Human-in-the-loop", "Safety Guardrails"],
+        liveLabel: "Watch video demo",
+        detailLabel: "View details & demo"
       }
     }
   },
@@ -432,9 +556,9 @@ export const portfolioProjects: PortfolioProject[] = [
         category: "Vibe Coding / macOS Widget",
         status: "GitHub",
         title: "Codex Widget",
-        summary: "一个 macOS 桌面小组件，用来快速查看 Codex 额度剩余、刷新时间与近 5 天 token 消耗趋势。",
+        summary: "一个 macOS 桌面小组件，用来快速查看 Codex 额度与消耗趋势；发布后获得小红书 200+ 点赞收藏、GitHub 10 Stars，已有数十位用户使用。",
         cardIntro:
-          "给 Codex 做的“赛博油表”：桌面或小组件抽屉里一眼查看额度状态。",
+          "给 Codex 做的桌面“赛博油表”：发布到小红书后获得 200+ 点赞收藏，GitHub 10 Stars，目前已有数十位用户使用。",
         detailIntro:
           "Codex Widget 是我自己开发的 macOS 桌面小组件，用来解决每次查看 Codex 额度都要点进设置的麻烦。它可以直接添加到桌面，也可以放进左滑的小组件抽屉，快速展示额度剩余、刷新时间、进度条和近 5 天 token 消耗趋势。",
         audienceTitle: "为谁设计",
@@ -466,12 +590,12 @@ export const portfolioProjects: PortfolioProject[] = [
         impact: [
           "完成一个可添加到 macOS 桌面或小组件抽屉的 Codex 额度小组件。",
           "支持额度百分比、刷新时间、进度条与近 5 天 token 消耗趋势展示。",
-          "把原本藏在设置里的额度信息变成随手可见的桌面状态。"
+          "发布到小红书后获得 200+ 点赞收藏，GitHub 获得 10 Stars，目前已有数十位用户使用。"
         ],
         metrics: [
-          { value: "5h", label: "短周期额度" },
-          { value: "7d", label: "周限额" },
-          { value: "5", label: "趋势天数" }
+          { value: "200+", label: "小红书点赞收藏" },
+          { value: "10", label: "GitHub Stars" },
+          { value: "数十", label: "当前用户" }
         ],
         workflow: [
           { label: "额度场景识别", icon: "book" },
@@ -495,9 +619,9 @@ export const portfolioProjects: PortfolioProject[] = [
         status: "GitHub",
         title: "Codex Widget",
         summary:
-          "A macOS desktop widget for checking Codex quota, refresh time, progress bars and recent token usage trends.",
+          "A macOS widget for checking Codex quota and usage trends, with 200+ Xiaohongshu likes and saves, 10 GitHub Stars and dozens of current users.",
         cardIntro:
-          "A small desktop fuel gauge for Codex quota, built as a macOS widget.",
+          "A desktop fuel gauge for Codex quota that earned 200+ Xiaohongshu likes and saves, 10 GitHub Stars and is now used by dozens of people.",
         detailIntro:
           "Codex Widget is a macOS desktop widget I built for checking Codex quota without opening settings every time. It can sit on the desktop or in the widget drawer, showing remaining quota, refresh time, progress bars and a five-day token usage trend.",
         audienceTitle: "Designed for",
@@ -529,12 +653,12 @@ export const portfolioProjects: PortfolioProject[] = [
         impact: [
           "Built a Codex quota widget that can be added to the macOS desktop or widget drawer.",
           "Shows quota percentages, refresh time, progress bars and five-day token usage trends.",
-          "Turns quota information hidden in settings into an always-visible desktop status surface."
+          "Earned 200+ likes and saves on Xiaohongshu, reached 10 GitHub Stars and is now used by dozens of people."
         ],
         metrics: [
-          { value: "5h", label: "Short quota" },
-          { value: "7d", label: "Weekly limit" },
-          { value: "5", label: "Trend days" }
+          { value: "200+", label: "Xiaohongshu likes & saves" },
+          { value: "10", label: "GitHub Stars" },
+          { value: "Dozens", label: "Current users" }
         ],
         workflow: [
           { label: "Quota use case", icon: "book" },

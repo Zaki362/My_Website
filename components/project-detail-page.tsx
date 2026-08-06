@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, type MouseEvent, type RefObject } from "react";
 import {
   ArrowUpRight,
   ChevronLeft,
   Code2,
   ExternalLink,
   MonitorSmartphone,
+  PlayCircle,
   Target,
   Users,
   WandSparkles
@@ -17,12 +19,12 @@ import { useLanguage } from "@/components/language-provider";
 import { Reveal } from "@/components/reveal";
 import type { PortfolioProject } from "@/data/projects";
 
-function ProductPreview({ project }: { project: PortfolioProject }) {
+function ProductPreview({ project, videoRef }: { project: PortfolioProject; videoRef: RefObject<HTMLVideoElement | null> }) {
   const { locale } = useLanguage();
   const copy = project.locales[locale];
 
   return (
-    <div className="relative flex h-full min-h-[34rem] flex-col overflow-hidden rounded-lg border border-stone-900/10 bg-[#edf1ed] shadow-[0_24px_64px_rgba(42,48,43,0.11)] lg:min-h-[39rem]">
+    <div id="product-demo" className="relative flex h-full min-h-[34rem] scroll-mt-28 flex-col overflow-hidden rounded-lg border border-stone-900/10 bg-[#edf1ed] shadow-[0_24px_64px_rgba(42,48,43,0.11)] lg:min-h-[39rem]">
       <div className="flex items-center justify-between border-b border-stone-900/10 bg-white/75 px-4 py-3 backdrop-blur">
         <div className="flex items-center gap-2" aria-hidden="true">
           <span className="h-2 w-2 rounded-full bg-[#d9a06a]" />
@@ -30,7 +32,13 @@ function ProductPreview({ project }: { project: PortfolioProject }) {
           <span className="h-2 w-2 rounded-full bg-[#75b98a]" />
         </div>
         <p className="text-[10px] font-semibold uppercase text-stone-500" style={{ letterSpacing: "0.08em" }}>
-          {project.previewMode === "interactive" ? (locale === "zh" ? "可交互产品" : "Interactive product") : (locale === "zh" ? "产品实景" : "Product view")}
+          {project.previewMode === "interactive"
+            ? (locale === "zh" ? "可交互产品" : "Interactive product")
+            : project.previewMode === "video"
+              ? (locale === "zh"
+                  ? `视频演示${project.videoDurationSeconds ? ` · ${project.videoDurationSeconds} 秒` : ""}`
+                  : `Video demo${project.videoDurationSeconds ? ` · ${project.videoDurationSeconds} sec` : ""}`)
+              : (locale === "zh" ? "产品实景" : "Product view")}
         </p>
       </div>
 
@@ -44,6 +52,21 @@ function ProductPreview({ project }: { project: PortfolioProject }) {
               loading="eager"
               sandbox="allow-forms allow-modals allow-popups allow-same-origin allow-scripts"
             />
+          </div>
+        ) : project.previewMode === "video" && project.video ? (
+          <div className="relative w-full overflow-hidden rounded-lg border border-stone-900/10 bg-[#0b0f0d] shadow-[0_20px_48px_rgba(27,31,29,0.2)]">
+            <video
+              ref={videoRef}
+              className="aspect-video h-auto w-full bg-[#0b0f0d] object-contain"
+              controls
+              playsInline
+              preload="metadata"
+              poster={project.cover}
+              aria-label={`${copy.title} ${locale === "zh" ? "完整视频演示" : "full video demo"}`}
+            >
+              <source src={project.video} type="video/mp4" />
+              {locale === "zh" ? "当前浏览器不支持视频播放。" : "Your browser does not support video playback."}
+            </video>
           </div>
         ) : (
           <div className="relative h-[27rem] w-full overflow-hidden rounded-lg bg-[#e5ebe6] md:h-[31rem]">
@@ -78,6 +101,17 @@ function NumberedList({ items }: { items: string[] }) {
 export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
   const { locale } = useLanguage();
   const copy = project.locales[locale];
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const playVideoDemo = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const video = videoRef.current;
+    video?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "center"
+    });
+    void video?.play().catch(() => undefined);
+  };
 
   return (
     <>
@@ -100,7 +134,7 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                 </div>
                 <h1
                   className={`mt-6 max-w-[680px] font-display text-[2.7rem] font-semibold leading-[1.02] text-stone-950 sm:text-[3.5rem] ${
-                    project.slug === "xiaohongshu-creator-workbench" ? "lg:text-[3.15rem]" : "lg:text-[3.8rem]"
+                    ["xiaohongshu-creator-workbench", "scenecart-ai"].includes(project.slug) ? "lg:text-[3.15rem]" : "lg:text-[3.8rem]"
                   }`}
                 >
                   {copy.title}
@@ -125,7 +159,12 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                 </div>
 
                 <div className="mt-7 flex flex-wrap items-center gap-3">
-                  {project.liveUrl ? (
+                  {project.video ? (
+                    <ButtonLink href="#product-demo" variant="primary" onClick={playVideoDemo}>
+                      {copy.liveLabel}
+                      <PlayCircle className="h-4 w-4" />
+                    </ButtonLink>
+                  ) : project.liveUrl ? (
                     <ButtonLink href={project.liveUrl} variant="primary" external>
                       {copy.liveLabel}
                       <ArrowUpRight className="h-4 w-4" />
@@ -148,9 +187,13 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                     <p className="section-kicker">{copy.previewTitle}</p>
                     <p className="mt-2 max-w-xl text-sm leading-6 text-stone-500">{copy.previewDescription}</p>
                   </div>
-                  {project.previewMode === "interactive" ? <MonitorSmartphone className="hidden h-5 w-5 text-stone-400 sm:block" /> : null}
+                  {project.previewMode === "interactive" ? (
+                    <MonitorSmartphone className="hidden h-5 w-5 text-stone-400 sm:block" />
+                  ) : project.previewMode === "video" ? (
+                    <PlayCircle className="hidden h-5 w-5 text-stone-400 sm:block" />
+                  ) : null}
                 </div>
-                <ProductPreview project={project} />
+                <ProductPreview project={project} videoRef={videoRef} />
               </div>
             </Reveal>
           </div>
@@ -212,7 +255,12 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
               <div>
                 <NumberedList items={copy.impact} />
                 <p className="mt-6 text-xs leading-6 text-stone-500">{copy.tags.join(" / ")}</p>
-                {project.liveUrl ? (
+                {project.video ? (
+                  <ButtonLink href="#product-demo" variant="primary" className="mt-7" onClick={playVideoDemo}>
+                    {copy.liveLabel}
+                    <PlayCircle className="h-4 w-4" />
+                  </ButtonLink>
+                ) : project.liveUrl ? (
                   <ButtonLink href={project.liveUrl} variant="primary" external className="mt-7">
                     {copy.liveLabel}
                     <ArrowUpRight className="h-4 w-4" />

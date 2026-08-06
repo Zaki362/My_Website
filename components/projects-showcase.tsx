@@ -60,7 +60,7 @@ function HomeProjectLayout() {
           <Reveal key={project.slug} delay={index * 0.07} className="h-full">
             <Link href={`/projects/${project.slug}`} className="group flex h-full min-h-[29rem] flex-col overflow-hidden rounded-lg border border-stone-900/10 bg-white shadow-panel">
               <div className="relative aspect-[16/10] overflow-hidden border-b border-stone-900/10 bg-[#efede7]">
-                <ProjectImage project={project} />
+                <ProjectImage project={project} priority={index < 3} />
               </div>
               <ProjectSummary project={project} />
             </Link>
@@ -82,7 +82,7 @@ function ProjectCardGrid({ className }: { className?: string }) {
           <Reveal key={project.slug} delay={index * 0.07} className="h-full">
             <Link href={`/projects/${project.slug}`} className="group flex h-full flex-col overflow-hidden rounded-xl border border-stone-900/10 bg-white shadow-panel">
               <div className="relative aspect-[16/10] overflow-hidden border-b border-stone-900/10 bg-[#efede7]">
-                <ProjectImage project={project} />
+                <ProjectImage project={project} priority={index < 3} />
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <div className="flex flex-wrap gap-2">
