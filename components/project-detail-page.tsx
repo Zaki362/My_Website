@@ -59,9 +59,11 @@ function ProductPreview({ project, videoRef }: { project: PortfolioProject; vide
               ref={videoRef}
               className="aspect-video h-auto w-full bg-[#0b0f0d] object-contain"
               controls
+              controlsList="nodownload"
               playsInline
               preload="metadata"
               poster={project.cover}
+              onContextMenu={(event) => event.preventDefault()}
               aria-label={`${copy.title} ${locale === "zh" ? "完整视频演示" : "full video demo"}`}
             >
               <source src={project.video} type="video/mp4" />
