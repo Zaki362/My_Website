@@ -25,7 +25,7 @@ function getHomeSectionId(href: string) {
 }
 
 function isRouteActive(pathname: string, href: string) {
-  if (href === "/projects") {
+  if (href === "#projects" || href === "/projects") {
     return pathname.startsWith("/projects");
   }
 

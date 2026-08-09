@@ -201,7 +201,7 @@ export const dictionary = {
       { label: "About", href: "#home" },
       { label: "Education", href: "#education" },
       { label: "Work", href: "#experience" },
-      { label: "Projects", href: "/projects" },
+      { label: "Projects", href: "#projects" },
       { label: "Research", href: "#research" },
       { label: "Life", href: "#beyond" },
       { label: "Contact", href: "#contact" }
@@ -462,7 +462,7 @@ export const dictionary = {
       { label: "关于", href: "#home" },
       { label: "教育", href: "#education" },
       { label: "工作", href: "#experience" },
-      { label: "项目", href: "/projects" },
+      { label: "项目", href: "#projects" },
       { label: "科研", href: "#research" },
       { label: "生活", href: "#beyond" },
       { label: "联系", href: "#contact" }

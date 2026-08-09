@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, type MouseEvent, type RefObject } from "react";
 import {
   ArrowUpRight,
@@ -101,6 +101,7 @@ function NumberedList({ items }: { items: string[] }) {
 }
 
 export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
+  const router = useRouter();
   const { locale } = useLanguage();
   const copy = project.locales[locale];
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -115,15 +116,41 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
     void video?.play().catch(() => undefined);
   };
 
+  const returnToPreviousPage = () => {
+    const [navigationEntry] = window.performance.getEntriesByType("navigation");
+    const initialPathname = navigationEntry ? new URL(navigationEntry.name).pathname : null;
+    const navigatedWithinDocument = initialPathname !== null && initialPathname !== window.location.pathname;
+
+    let referredFromThisSite = false;
+    if (document.referrer) {
+      try {
+        referredFromThisSite = new URL(document.referrer).origin === window.location.origin;
+      } catch {
+        referredFromThisSite = false;
+      }
+    }
+
+    if (navigatedWithinDocument || referredFromThisSite) {
+      router.back();
+      return;
+    }
+
+    router.replace("/#projects");
+  };
+
   return (
     <>
       <section className="border-b border-stone-900/10 bg-[#fbfaf7] pt-24 md:pt-28">
         <Container className="pb-12 lg:pb-14">
           <Reveal>
-            <Link href="/projects" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950">
+            <button
+              type="button"
+              onClick={returnToPreviousPage}
+              className="mb-6 inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
+            >
               <ChevronLeft className="h-4 w-4" />
-              {locale === "zh" ? "返回项目" : "Back to projects"}
-            </Link>
+              {locale === "zh" ? "返回上一页" : "Go back"}
+            </button>
           </Reveal>
 
           <div className="grid gap-9 lg:grid-cols-[0.86fr_1.14fr] lg:items-center lg:gap-14">

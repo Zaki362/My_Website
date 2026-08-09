@@ -23,7 +23,7 @@ export function CapabilityBento() {
         title={t.capability.title}
         description={t.capability.description}
         action={
-          <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950">
+          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition hover:text-stone-950">
             {t.capability.action}
             <ArrowRight className="h-4 w-4" />
           </Link>

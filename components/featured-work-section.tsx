@@ -17,7 +17,7 @@ export function FeaturedWorkSection() {
         title={t.featuredWork.title}
         description={t.featuredWork.description}
         action={
-          <ButtonLink href="/projects" variant="ghost" className="px-0">
+          <ButtonLink href="/#projects" variant="ghost" className="px-0">
             {t.featuredWork.action}
             <ArrowUpRight className="h-4 w-4" />
           </ButtonLink>

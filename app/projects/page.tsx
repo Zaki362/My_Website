@@ -1,13 +1,5 @@
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
-import { ProjectsShowcase } from "@/components/projects-showcase";
+import { redirect } from "next/navigation";
 
 export default function ProjectsPage() {
-  return (
-    <main className="relative min-h-screen overflow-hidden">
-      <Navbar />
-      <ProjectsShowcase />
-      <Footer />
-    </main>
-  );
+  redirect("/#projects");
 }

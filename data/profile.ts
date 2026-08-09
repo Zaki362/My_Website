@@ -9,7 +9,7 @@ export const navigation = [
   { label: "关于", href: "#home" },
   { label: "教育", href: "#education" },
   { label: "工作", href: "#experience" },
-  { label: "项目", href: "/projects" },
+  { label: "项目", href: "#projects" },
   { label: "科研", href: "#research" },
   { label: "生活", href: "#beyond" },
   { label: "联系", href: "#contact" }
@@ -24,7 +24,7 @@ export const heroData = {
   eyebrow: [],
   cta: [
     { label: "实习经历", href: "#experience", variant: "primary" as const },
-    { label: "Vibe Coding 项目", href: "/projects", variant: "secondary" as const },
+    { label: "Vibe Coding 项目", href: "#projects", variant: "secondary" as const },
     { label: "生活切片", href: "#beyond", variant: "secondary" as const },
     { label: "联系我", href: "#contact", variant: "ghost" as const }
   ]
