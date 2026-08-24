@@ -189,7 +189,7 @@ export function Navbar() {
           >
             <span className={cn(locale === "en" ? "text-stone-950" : "text-stone-400")}>EN</span>
             <span className="h-3 w-px bg-stone-900/12" />
-            <span className={cn(locale === "zh" ? "text-stone-950" : "text-stone-400")}>ZH</span>
+            <span className={cn(locale === "zh" ? "text-stone-950" : "text-stone-400")}>中文</span>
           </button>
           <button
             type="button"
@@ -251,7 +251,7 @@ export function Navbar() {
                 >
                   <span className={cn(locale === "en" ? "font-semibold text-stone-950" : "text-stone-400")}>EN</span>
                   <span className="mx-2 text-stone-300">/</span>
-                  <span className={cn(locale === "zh" ? "font-semibold text-stone-950" : "text-stone-400")}>ZH</span>
+                  <span className={cn(locale === "zh" ? "font-semibold text-stone-950" : "text-stone-400")}>中文</span>
                 </button>
                 <button
                   type="button"
