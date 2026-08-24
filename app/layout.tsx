@@ -10,27 +10,22 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteMeta.title,
   description: siteMeta.description,
+  applicationName: "郑国华｜AI Builder",
+  authors: [{ name: "郑国华" }],
+  creator: "郑国华",
+  keywords: ["郑国华", "Guohua Zheng", "AI Builder", "AI 产品", "AI Agent", "AIGC"],
   openGraph: {
     title: siteMeta.title,
     description: siteMeta.description,
     url: siteUrl,
-    siteName: "郑国华个人网站",
+    siteName: "郑国华｜AI Builder",
     locale: "zh_CN",
-    type: "website",
-    images: [
-      {
-        url: siteMeta.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteMeta.title
-      }
-    ]
+    type: "website"
   },
   twitter: {
     card: "summary_large_image",
     title: siteMeta.title,
-    description: siteMeta.description,
-    images: [siteMeta.ogImage]
+    description: siteMeta.description
   }
 };
 

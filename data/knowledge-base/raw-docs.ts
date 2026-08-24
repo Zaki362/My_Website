@@ -3,7 +3,7 @@ export const rawProfileDocs = [
     id: "raw-profile-summary",
     title: "个人站基础资料",
     content:
-      "郑国华，AI 产品经理 / AI Product Builder。关注 AI 产品、Agent 工作流、AIGC 应用与 Vibe Coding，强调把模型能力、用户价值与业务落地连接起来。"
+      "郑国华，AI Builder。关注如何通过 AI 拓展产品边界，将模型能力转化为可用产品与增量价值。"
   },
   {
     id: "raw-education",

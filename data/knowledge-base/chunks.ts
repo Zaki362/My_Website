@@ -24,8 +24,8 @@ export const knowledgeChunks: KnowledgeChunk[] = [
     title: "个人身份",
     category: "identity",
     text:
-      "郑国华是一名 AI 产品经理 / AI Product Builder，关注 AI 产品、Agent 工作流、AIGC 应用与 Vibe Coding，强调把模型能力、用户价值与业务落地连接起来。",
-    keywords: ["郑国华", "是谁", "身份", "title", "AI 产品经理", "AI Product Builder"],
+      "郑国华是一名 AI Builder，关注如何通过 AI 拓展产品边界，将模型能力转化为可用产品与增量价值。",
+    keywords: ["郑国华", "是谁", "身份", "title", "AI Builder", "AI 产品经理"],
     tags: ["AI 产品", "Agent", "AIGC", "Vibe Coding"]
   },
   {

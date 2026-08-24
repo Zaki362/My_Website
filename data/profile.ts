@@ -1,8 +1,7 @@
 export const siteMeta = {
-  title: "郑国华｜北京大学经济学硕士 / AI 产品经理",
+  title: "郑国华｜AI Builder",
   description:
-    "郑国华的个人网站，聚焦教育背景、工作经历、科研竞赛、Vibe Coding 项目展示。",
-  ogImage: "/images/profile.jpg"
+    "郑国华的个人网站。作为 AI Builder，关注如何通过 AI 拓展产品边界，将模型能力转化为可用产品与增量价值。"
 };
 
 export const navigation = [
@@ -18,7 +17,7 @@ export const navigation = [
 export const heroData = {
   name: "郑国华",
   title: "北京大学 27 届经济学硕士 / 中国人民大学本科",
-  tagline: "AI 产品经理｜聚焦 Agent、Workflow、Vibe Coding 与 AIGC 应用",
+  tagline: "AI Builder｜通过AI拓展产品边界，带来增量价值",
   intro:
     "现于字节跳动 TikTok Search 参与 Tako 个性化 AI 策略，过往在 TikTok Shop、百度和美团聚焦 AIGC、AI Coding 与分析 Agent，熟悉个性化策略、Agent 系统设计、评测与 AI 业务落地。",
   eyebrow: [],

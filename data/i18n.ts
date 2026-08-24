@@ -241,7 +241,7 @@ export const dictionary = {
       name: "Guohua Zheng",
       romanName: "Guohua Zheng",
       title: "Peking University M.A. 2027 / Renmin University B.A.",
-      tagline: "AI Product Builder focused on Agent, Workflow, Vibe Coding and AIGC applications.",
+      tagline: "AI Builder | Expanding product boundaries with AI to create incremental value.",
       intro:
         "I currently work on personalized AI strategy for Tako at ByteDance TikTok Search. Earlier roles across TikTok Shop, Baidu and Meituan covered AIGC, AI Coding and analysis Agents, with a focus on personalization, evaluation and real-world AI product delivery.",
       location: "Beijing",

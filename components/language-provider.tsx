@@ -14,14 +14,14 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 const pageMeta = {
   en: {
-    title: "Guohua Zheng | AI Product Builder",
+    title: "Guohua Zheng | AI Builder",
     description:
-      "Personal website of Guohua Zheng, focused on AI product work, research training, Vibe Coding projects and collaboration."
+      "Guohua Zheng is an AI Builder expanding product boundaries with AI and turning model capabilities into usable products and incremental value."
   },
   zh: {
-    title: "郑国华｜北京大学经济学硕士 / AI 产品经理",
+    title: "郑国华｜AI Builder",
     description:
-      "郑国华的个人网站，聚焦教育背景、工作经历、科研竞赛、Vibe Coding 项目展示。"
+      "郑国华的个人网站。作为 AI Builder，关注如何通过 AI 拓展产品边界，将模型能力转化为可用产品与增量价值。"
   }
 } as const;
 
