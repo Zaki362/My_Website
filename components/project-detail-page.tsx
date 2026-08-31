@@ -199,6 +199,12 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                       <ArrowUpRight className="h-4 w-4" />
                     </ButtonLink>
                   ) : null}
+                  {project.video && project.liveUrl ? (
+                    <ButtonLink href={project.liveUrl} variant="secondary" external>
+                      {copy.externalDemoLabel ?? (locale === "zh" ? "在线体验 Demo" : "Try live demo")}
+                      <ExternalLink className="h-4 w-4" />
+                    </ButtonLink>
+                  ) : null}
                   {project.githubUrl && project.githubUrl !== project.liveUrl ? (
                     <ButtonLink href={project.githubUrl} variant="secondary" external>
                       GitHub
@@ -285,10 +291,18 @@ export function ProjectDetailPage({ project }: { project: PortfolioProject }) {
                 <NumberedList items={copy.impact} />
                 <p className="mt-6 text-xs leading-6 text-stone-500">{copy.tags.join(" / ")}</p>
                 {project.video ? (
-                  <ButtonLink href="#product-demo" variant="primary" className="mt-7" onClick={playVideoDemo}>
-                    {copy.liveLabel}
-                    <PlayCircle className="h-4 w-4" />
-                  </ButtonLink>
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <ButtonLink href="#product-demo" variant="primary" onClick={playVideoDemo}>
+                      {copy.liveLabel}
+                      <PlayCircle className="h-4 w-4" />
+                    </ButtonLink>
+                    {project.liveUrl ? (
+                      <ButtonLink href={project.liveUrl} variant="secondary" external>
+                        {copy.externalDemoLabel ?? (locale === "zh" ? "在线体验 Demo" : "Try live demo")}
+                        <ExternalLink className="h-4 w-4" />
+                      </ButtonLink>
+                    ) : null}
+                  </div>
                 ) : project.liveUrl ? (
                   <ButtonLink href={project.liveUrl} variant="primary" external className="mt-7">
                     {copy.liveLabel}

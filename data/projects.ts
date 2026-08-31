@@ -33,6 +33,7 @@ export type ProjectCopy = {
   }>;
   tags: string[];
   liveLabel: string;
+  externalDemoLabel?: string;
   detailLabel: string;
 };
 
@@ -54,116 +55,116 @@ export const portfolioProjects: PortfolioProject[] = [
     year: "2026",
     cover: "/projects/xiaohongshu-creator-workbench-cover.png",
     video: "/projects/xhs-agent-flow-annotated-30s-v3-1080p.mp4",
-    videoDurationSeconds: 30,
+    videoDurationSeconds: 59,
     previewMode: "video",
     locales: {
       zh: {
-        category: "Vibe Coding / AI Agent",
-        status: "Video Demo",
-        title: "小红书自动化运营 Agent",
-        summary: "为“阿华学长”构建的小红书自主运营 Agent，自动完成素材采集、选题决策和图文内容生产，最后由我审核并发布。",
+        category: "Vibe Coding / Content Agent",
+        status: "59 秒视频 Demo",
+        title: "RedFlow｜小红书内容运营 Agent",
+        summary: "从真实素材到可发布图文的内容运营 Agent：DeepSeek 生成文案与视觉规划，Qwen-Image-3.0 生成组图，用户保留选题、审核与发布决定。",
         cardIntro:
-          "自动收集素材、确定选题并生成图文内容，把日常运营推进到最后的人工审核与发布。",
+          "把素材发现、AI 文案与配图、审核修订和发布材料准备收进同一流程，人只做三次关键决定。",
         detailIntro:
-          "小红书自动化运营 Agent 不是一个单独的工作台，而是一套用 vibe coding 持续搭建的自主内容运营系统。它服务“阿华学长”账号，自动收集和筛选公开素材、判断值得生产的选题、生成原创文案与视觉内容，并把完成结果送到我面前审核；最终发布仍由我亲自确认和执行。工作台只是这套自动化闭环的控制界面。",
+          "RedFlow｜小红书内容运营 Agent 是我用 vibe coding 持续构建的内容运营工作台。它把一手素材发现、选题确认、DeepSeek 文案与视觉规划、Qwen-Image-3.0 组图生成、审核修订和发布材料准备串成同一条可追溯流程。AI 承担中间执行，用户只需选择选题、审核结果并决定是否发布；最终发布始终由用户在自己的账号内完成。",
         audienceTitle: "为谁设计",
-        audience: "希望减少日常选题和内容制作重复劳动，同时保留最终质量判断与账号发布权的个人创作者。",
+        audience: "没有完整运营团队、但希望稳定更新内容的个人博主、内容运营者和 AI 产品从业者。",
         problemTitle: "核心痛点",
-        problem: "运营一个知识账号需要每天反复找素材、判断选题、写文案、做图片和整理发布内容，链路长且高度依赖人工。单点生成工具只能解决其中一步，无法持续完成从素材发现到发布前成品的完整运营流程。",
+        problem: "素材、文案、图片、修改意见和发布材料散落在不同工具里，每次内容生产都要重新组织上下文。真正消耗人的不是某一步生成，而是让整条链路稳定、可信地连续跑完。",
         principlesTitle: "核心产品设计",
         principles: [
-          "让 Agent 持续完成素材采集、选题判断和图文生产，把人工参与压缩到最后的成品审核与发布。",
-          "素材信号必须回链到可信一手证据；证据不足时进入待补队列，自动化不以牺牲内容质量换取产量。",
-          "所有自动步骤都可观察、可恢复、可人工接管；账号权限和最终发布始终保留在创作者手中。"
+          "AI 承担素材整理、文案与视觉规划、组图生成和版本保存，人保留选题、审核与最终发布三次关键决定。",
+          "每条内容都从真实素材和一手来源出发，事实证据、生成版本与审核状态留在同一条任务里。",
+          "文案、单图或整组图片都可修订并保留版本；生成结果必须经过人工审核，系统不会自动越过发布边界。"
         ],
         buildTitle: "我在 Vibe Coding 中做了什么",
         buildHighlights: [
-          "从长期自主运营目标出发，定义素材、选题、内容、视觉、审核和发布交接的完整状态机。",
-          "搭建自动素材雷达与证据核验链路，让 Agent 能持续发现候选并自主判断值得生产的选题。",
-          "串联原创文案、三套视觉方向、图片生成、资产验真和版本保留，自动产出可审核的发布内容。",
-          "设计失败恢复、人工接管和发布门禁，让系统能连续运行，同时把最终账号操作留给我。"
+          "定义“确认选题 → 生成内容 → 审核预览 → 发布确认”的四步状态机和完整人机分工。",
+          "搭建素材雷达与来源核验，把事实摘要、推荐理由和原始证据组织成可选择的内容机会。",
+          "接入 DeepSeek 与 Qwen-Image-3.0，把标题、正文、标签、视觉规划和连续组图生成串成一条生产链。",
+          "实现会话隔离、调用限额、版本追踪、人工审核与发布门禁，让公开体验可用但不触碰用户账号。"
         ],
-        previewTitle: "30 秒完整视频 Demo",
-        previewDescription: "视频以脱敏界面展示从素材首页、选题确认、后台生图、右侧预览到打开创作者后台的完整流程；不包含账号凭据、内部地址或真实发布操作。",
+        previewTitle: "59 秒完整视频 Demo",
+        previewDescription: "视频展示从素材雷达、选题确认、内容生成、组图审核与修订到发布确认的完整流程；不包含账号凭据，也不会执行真实发布。",
         contextTitle: "背景",
         context:
-          "知识类账号真正消耗时间的是日复一日的运营链路，而不是偶尔生成一篇文案。我希望让系统主动完成素材发现、选题判断和内容生产，把自己的精力集中在最后的质量判断与发布决策上。因此，这个项目从一次性脚本逐步演化为可连续运行、可审计、可恢复的自主运营 Agent。",
+          "个人创作者缺的往往不是灵感，而是一条能持续跑起来的内容生产链。RedFlow 把原本分散的素材、文案、配图、修改和发布准备收进同一工作台，让 AI 执行重复步骤，同时保留人的判断与账号控制。",
         contributionTitle: "设计与构建",
         contribution:
-          "我负责定义自主运营目标、拆解人机分工、设计全链路状态与端到端验收，并借助 AI 编程助手实现素材雷达、选题决策、内容生产、视觉生成、审核和发布交接模块。工作台用于观察和接管这套系统，而不是产品本身的全部。",
+          "我负责产品定位、人机分工、四步工作流、数据与权限边界和端到端验收，并借助 AI 编程助手落地素材雷达、DeepSeek 内容规划、Qwen 组图生成、版本修订、人工审核和发布材料准备。",
         impactTitle: "成果",
         impact: [
-          "跑通从公开素材自动采集、选题决策到原创图文生成的连续运营链路。",
-          "自动产出包含文案和三套视觉候选的发布前内容包，支持修改、重生成与版本保留。",
-          "将人工参与收敛到最终审核与发布，并把事实核验、失败恢复和账号权限落实为可验证的门禁。"
+          "跑通从真实素材雷达到可发布图文材料的连续内容生产流程。",
+          "支持文案、单图或整组修订，保留生成版本、来源证据和人工审核状态。",
+          "把用户参与收敛为选题、审核和是否发布三次关键决定，同时保持最终账号操作在人手中。"
         ],
         metrics: [
-          { value: "Auto", label: "运营链路" },
-          { value: "3", label: "视觉方向" },
-          { value: "Human", label: "最终审发" }
+          { value: "3", label: "关键决定" },
+          { value: "4", label: "核心步骤" },
+          { value: "0", label: "自动发布" }
         ],
         workflow: [
-          { label: "自动收集素材", icon: "book" },
-          { label: "自动确定选题", icon: "database" },
-          { label: "自动生成内容", icon: "bot" },
-          { label: "人工审核发布", icon: "file" }
+          { label: "素材雷达与证据", icon: "book" },
+          { label: "人工确认选题", icon: "database" },
+          { label: "AI 生成文案与组图", icon: "bot" },
+          { label: "审核后自主发布", icon: "file" }
         ],
-        tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
+        tags: ["RedFlow", "AI Agent", "Vibe Coding", "DeepSeek", "Qwen-Image-3.0", "Evidence Workflow", "Human-in-the-loop"],
         liveLabel: "观看视频 Demo",
         detailLabel: "查看详情"
       },
       en: {
-        category: "Vibe Coding / AI Agent",
-        status: "Video Demo",
-        title: "Xiaohongshu AI Ops Agent",
-        summary: "An autonomous operations agent for the Ahua Xuezhang account that collects material, selects topics and produces posts before my final review and publishing.",
+        category: "Vibe Coding / Content Agent",
+        status: "59-sec Video Demo",
+        title: "RedFlow | Xiaohongshu Content Ops Agent",
+        summary: "A content-operations agent that turns sourced material into publish-ready posts: DeepSeek plans copy and visuals, Qwen-Image-3.0 creates image sets, and people retain topic, review and publishing decisions.",
         cardIntro:
-          "It collects material, chooses topics and creates complete posts automatically, leaving only final review and publishing to me.",
+          "It unifies material discovery, AI copy and images, revision and publish preparation while leaving people just three key decisions.",
         detailIntro:
-          "Xiaohongshu AI Ops Agent is not simply a workbench. It is an autonomous content-operations system I have continuously built through vibe coding for the Ahua Xuezhang account. It automatically collects and filters public material, decides which topics are worth producing, generates original copy and visual content, and sends the finished package to me for review. I retain the final publishing decision and action; the workbench is only the control surface for this operating loop.",
+          "RedFlow is a content-operations workbench I have continuously built through vibe coding. It connects primary-source discovery, human topic confirmation, DeepSeek copy and visual planning, Qwen-Image-3.0 image generation, review, revision and publish-material preparation in one traceable workflow. AI handles the middle execution; the user chooses the topic, reviews the result and decides whether to publish. Final publishing always stays in the user's own account.",
         audienceTitle: "Designed for",
-        audience: "Independent creators who want to remove repetitive topic and production work while retaining final quality judgment and publishing control.",
+        audience: "Independent creators, content operators and AI product practitioners who need consistent output without a full operations team.",
         problemTitle: "Core problem",
-        problem: "Running a knowledge account requires repetitive daily work across sourcing, topic selection, copywriting, visuals and publish preparation. Point generation tools solve only one step and cannot sustain the complete operating loop from discovery to a publish-ready package.",
+        problem: "Sources, copy, images, feedback and publish materials live in separate tools, forcing creators to rebuild context every time. The real cost is making the whole workflow run continuously and credibly, not generating one isolated asset.",
         principlesTitle: "Core product decisions",
         principles: [
-          "Let the agent continuously handle material collection, topic decisions and post production, reducing human involvement to final review and publishing.",
-          "Require content signals to link back to trusted primary evidence; weakly supported opportunities stay pending rather than trading quality for volume.",
-          "Keep every automated step observable, recoverable and interruptible while preserving account permissions and final publishing for the creator."
+          "Let AI handle material processing, copy and visual planning, image generation and versioning while people retain topic, review and publishing decisions.",
+          "Start every post from real material and primary sources, keeping evidence, generated versions and review state in one task.",
+          "Allow copy, single-image or full-set revisions with history; every generation requires human review and the system never crosses the publishing boundary automatically."
         ],
         buildTitle: "What I owned in Vibe Coding",
         buildHighlights: [
-          "Defined the complete operating state machine across material, topic, content, visuals, review and publishing handoff.",
-          "Built an automated material radar and evidence pipeline so the agent can continuously discover candidates and decide what deserves production.",
-          "Connected original copy, three visual directions, image generation, asset validation and version history into a publish-ready output flow.",
-          "Designed recovery, human takeover and publishing gates so the system can keep running while leaving final account actions to me."
+          "Defined the four-step state machine: confirm topic, generate content, review preview and confirm publishing.",
+          "Built a material radar and source-verification layer that turns facts, reasons and evidence into selectable content opportunities.",
+          "Connected DeepSeek and Qwen-Image-3.0 into one pipeline for titles, copy, tags, visual plans and coherent image sets.",
+          "Implemented session isolation, usage limits, version history, human review and publishing gates so public use never touches a visitor's account."
         ],
-        previewTitle: "30-second product demo",
-        previewDescription: "This redacted walkthrough covers the material homepage, topic confirmation, background image generation, the right-side preview and the final handoff to Creator Center. It contains no account credentials, internal URLs or real publishing action.",
+        previewTitle: "59-second product demo",
+        previewDescription: "This walkthrough covers the material radar, topic confirmation, content and image generation, review, revision and publishing confirmation. It contains no account credentials and performs no real publishing action.",
         contextTitle: "Context",
         context:
-          "The real cost of a knowledge account is the operating loop repeated every day, not generating an occasional post. I wanted the system to proactively discover material, choose topics and produce content so I could focus on final quality judgment and publishing decisions. The project therefore evolved from a one-off script into a continuously running, auditable and recoverable operations agent.",
+          "Independent creators rarely lack ideas; they lack a content-production chain that can run consistently. RedFlow brings material, copy, images, revisions and publish preparation into one workbench so AI can execute repetitive steps while people retain judgment and account control.",
         contributionTitle: "Design & Build",
         contribution:
-          "I defined the autonomous operating goal, human-agent division of labor, end-to-end state model and acceptance criteria, then used an AI coding assistant to implement the radar, topic decision, content production, visual generation, review and handoff modules. The workbench helps observe and take over the system; it is not the whole product.",
+          "I owned the positioning, human-agent split, four-step workflow, data and permission boundaries and end-to-end acceptance, then used an AI coding assistant to implement the material radar, DeepSeek planning, Qwen image generation, revision history, human review and publish-material preparation.",
         impactTitle: "Impact",
         impact: [
-          "Completed a continuous operating loop from automated public-material collection and topic decisions to original post generation.",
-          "Automatically produces publish-ready packages with copy and three visual candidates, including revision, regeneration and version history.",
-          "Reduced human involvement to final review and publishing while turning evidence quality, recovery and account permissions into verifiable gates."
+          "Completed a continuous content-production flow from real-source radar to publish-ready post materials.",
+          "Supports copy, single-image and full-set revisions while preserving generation versions, source evidence and human review state.",
+          "Reduced human involvement to topic choice, review and the publishing decision while keeping final account actions in human hands."
         ],
         metrics: [
-          { value: "Auto", label: "Operating loop" },
-          { value: "3", label: "Visual directions" },
-          { value: "Human", label: "Final review" }
+          { value: "3", label: "Key decisions" },
+          { value: "4", label: "Core steps" },
+          { value: "0", label: "Auto publishing" }
         ],
         workflow: [
-          { label: "Collect material", icon: "book" },
-          { label: "Choose topics", icon: "database" },
-          { label: "Generate content", icon: "bot" },
-          { label: "Human review & post", icon: "file" }
+          { label: "Material radar & evidence", icon: "book" },
+          { label: "Human confirms topic", icon: "database" },
+          { label: "AI creates copy & images", icon: "bot" },
+          { label: "Review, then self-publish", icon: "file" }
         ],
-        tags: ["AI Agent", "Vibe Coding", "Autonomous Operations", "Content Pipeline", "Evidence Workflow", "Human-in-the-loop"],
+        tags: ["RedFlow", "AI Agent", "Vibe Coding", "DeepSeek", "Qwen-Image-3.0", "Evidence Workflow", "Human-in-the-loop"],
         liveLabel: "Watch video demo",
         detailLabel: "View details"
       }
@@ -173,118 +174,121 @@ export const portfolioProjects: PortfolioProject[] = [
     slug: "scenecart-ai",
     year: "2026",
     cover: "/projects/scenecart-ai-cover.png",
+    liveUrl: "https://scenecart-public-demo.vercel.app/",
     video: "/projects/scenecart-full-demo-hq-v3-bgm.mp4",
-    videoDurationSeconds: 44,
+    videoDurationSeconds: 101,
     previewMode: "video",
     locales: {
       zh: {
         category: "Vibe Coding / Shopping Agent",
-        status: "Video Demo",
-        title: "淘宝场景化购物 Agent",
-        summary: "真实连接淘宝 MCP 的场景化购物 Agent，自主理解需求、规划任务、搜索商品并在确认后加购，降低复杂场景下的购物决策成本。",
+        status: "视频 + 在线 Demo",
+        title: "场景购｜场景化购物 Agent",
+        summary: "把模糊生活目标转成购物模块、优先级、预算、候选和清单；正式产品通过本地执行器连接淘宝，公开 Demo 用冻结样本安全复现完整流程。",
         cardIntro:
-          "真实连接淘宝 MCP 完成商品搜索与确认后加购；Agent 自主理解场景、规划步骤并比较候选，解决场景化购物决策成本高的问题。",
+          "先帮用户想清楚买什么、先买什么和如何分配预算，再把确认后的规划推进到搜索、推荐与购物清单。",
         detailIntro:
-          "淘宝场景化购物 Agent 是我用 vibe coding 持续构建的任务型购物产品。它真实连接淘宝 MCP：用户描述场景、预算和偏好后，Agent 会自主理解需求、规划任务、分配预算、串行搜索并比较候选，在用户确认后执行加购。它解决的不是“搜不到商品”，而是复杂场景下不知道先买什么、如何取舍与组合所带来的高决策成本；下单和支付仍由用户完成。",
+          "场景购是我用 vibe coding 持续构建的场景化购物 Agent。用户只要描述生活场景、预算与偏好，系统就会澄清需求、拆分购物模块、安排优先级与预算、分模块搜索并解释推荐，最后整理成可调整的购物清单。当前开放新车选购、露营准备、房间装饰、宿舍入学和搬家置办五类场景。正式产品通过用户电脑上的本地执行器连接淘宝；公开 Demo 使用冻结样本，不连接账号、模型或真实购物车。",
         audienceTitle: "为谁设计",
-        audience: "面对新车用品等复杂首购任务、知道生活目标却不清楚应该先买什么和如何分配预算的用户。",
+        audience: "有明确生活或消费场景，却还没有形成具体购买清单、优先级和预算方案的人。",
         problemTitle: "核心痛点",
-        problem: "电商平台擅长搜索已知商品，却很少帮助用户完成场景拆解、优先级排序、预算分配和跨品类取舍。用户必须先在脑中完成整套决策，场景化购物的决策成本因此很高。",
+        problem: "电商平台擅长承接明确单品搜索，但场景型购物仍要求用户自己拆模块、排优先级、分预算并跨品类比较。商品供给很多，不等于购物任务已经被组织好。",
         principlesTitle: "核心产品设计",
         principles: [
-          "把购物任务拆成需求理解、计划确认、串行搜索、候选复盘和清单确认，每个关键阶段都允许用户校对。",
-          "用场景模板保证结构稳定，让模型只负责理解、个性化与受约束决策；商品、预算和动作继续由业务规则校验。",
-          "通过淘宝 MCP 执行真实商品搜索与加购；加购前必须由用户显式确认，系统不会自动下单或支付。"
+          "把复杂购物任务拆成澄清场景、生成规划、分配优先级与预算、分模块搜索、推荐解释、动态调整和购物清单。",
+          "让 DeepSeek 负责理解与受约束决策，业务规则继续校验模块覆盖、预算守恒、商品证据和可执行动作。",
+          "云端负责任务与状态，本地执行器连接淘宝桌面版工具；真实加购逐件确认，系统不会自动下单或支付。"
         ],
         buildTitle: "我在 Vibe Coding 中做了什么",
         buildHighlights: [
-          "从新车用品首购的真实决策链出发，定义场景化购物 Agent 的核心任务、阶段状态与人机边界。",
-          "搭建模板、DeepSeek 决策与业务 Guardrail 协作的 Agent 编排层，让预算、模块和候选结果可解释、可校验。",
-          "实现持久 Session、任务队列、SSE 续传、断线恢复和跨实例串行化，让长流程能够持续推进。",
-          "接入淘宝 MCP，将 Agent 的自主规划与真实商品搜索、确认后加购串联起来，并用权限门和失败恢复守住账号安全。"
+          "从新车首购扩展出五个配置驱动场景，让不同生活任务复用同一套需求、规划、搜索、推荐和清单工作流。",
+          "搭建 DeepSeek 决策与业务 Guardrail 协作的编排层，让预算、模块、候选和停止原因可解释、可校验。",
+          "实现持久 Session、任务队列、SSE 续传、断线恢复和幂等回填，让长流程在页面关闭后仍可继续。",
+          "设计正式产品与公开 Demo 的隔离边界：共享 UI 与稳定逻辑，但冻结数据绝不连接正式数据库、模型、淘宝账号或真实购物车。"
         ],
-        previewTitle: "44 秒完整视频 Demo",
-        previewDescription: "当前产品依赖本机淘宝环境，暂不开放在线体验。下方视频展示 Agent 从理解场景、自主规划到通过淘宝 MCP 搜索、确认后加购的完整流程；不包含账号、地址、订单或密钥。",
+        previewTitle: "101 秒完整视频 Demo",
+        previewDescription: "视频展示从需求澄清、规划确认、分模块推荐到演示清单的完整流程；也可打开公开 Demo 手动体验同一套流程。Demo 使用冻结数据，不连接正式账号或淘宝。",
         contextTitle: "背景",
         context:
-          "新车用品首购不是一次简单搜索。用户既要判断安全必需、清洁维护、车内实用和舒适升级之间的优先级，又要在总预算内跨品类取舍。我希望让 Agent 先帮助用户组织决策，再把已经确认的计划推进到商品候选与执行清单。",
+          "新车置办、露营、装修、宿舍入学和搬家都不是一次简单搜索。用户往往知道要完成什么，却不清楚完整清单、购买顺序和预算取舍。场景购先组织决策，再把确认后的方案推进到商品候选与购物清单。",
         contributionTitle: "设计与构建",
         contribution:
-          "我负责产品定位、阶段式用户路径、Agent 与确定性规则的边界、预算和候选质量门、云端与本地执行分层，以及真实加购前的权限设计。实现上覆盖 Next.js 前端、服务端编排、DeepSeek 路由、PostgreSQL 持久化、任务队列、SSE 和本地执行器。",
+          "我负责产品定位、五类场景配置、阶段式用户路径、Agent 与确定性规则边界、预算和候选质量门、云端与本地执行分层，以及正式产品和公开 Demo 的数据隔离。实现覆盖 Next.js、DeepSeek、PostgreSQL、持久任务队列、SSE 与本地执行器。",
         impactTitle: "成果",
         impact: [
-          "把模糊的新车用品需求转化为有优先级、有预算约束的模块化购物计划。",
-          "形成从自主规划到淘宝 MCP 搜索、候选复盘和预算安全组合的可恢复 Agent 工作流。",
-          "在用户确认后完成真实加购，并以能力权限和失败状态避免伪成功或自动交易。"
+          "把模糊生活目标转化为有优先级、有预算约束的模块化购物方案。",
+          "形成从需求理解到搜索比选、证据解释、动态调整和购物清单的可恢复 Agent 工作流。",
+          "提供与正式产品隔离的公开 Demo，让外部访客无需登录即可安全体验流程和决策方法。"
         ],
         metrics: [
-          { value: "9", label: "核心阶段" },
-          { value: "3", label: "候选档位" },
+          { value: "5", label: "已开放场景" },
+          { value: "7", label: "核心能力" },
           { value: "0", label: "自动下单 / 支付" }
         ],
         workflow: [
           { label: "描述购物场景", icon: "book" },
-          { label: "Agent 生成规划", icon: "bot" },
-          { label: "淘宝 MCP 搜索", icon: "database" },
-          { label: "人工确认清单", icon: "file" }
+          { label: "Agent 规划预算", icon: "bot" },
+          { label: "分模块搜索推荐", icon: "database" },
+          { label: "调整并确认清单", icon: "file" }
         ],
-        tags: ["AI Agent", "Vibe Coding", "Taobao MCP", "Scene Commerce", "DeepSeek", "Human-in-the-loop", "Safety Guardrails"],
+        tags: ["场景购", "AI Agent", "Vibe Coding", "Scene Commerce", "DeepSeek", "Local Executor", "Safety Guardrails"],
         liveLabel: "观看视频 Demo",
+        externalDemoLabel: "在线体验 Demo",
         detailLabel: "查看详情与 Demo"
       },
       en: {
         category: "Vibe Coding / Shopping Agent",
-        status: "Video Demo",
-        title: "Taobao Scenario Shopping Agent",
-        summary: "A scenario-shopping agent connected to Taobao MCP that autonomously plans, searches and adds confirmed products to cart, reducing complex shopping decision costs.",
+        status: "Video + Live Demo",
+        title: "SceneCart | Scenario Shopping Agent",
+        summary: "Turns fuzzy life goals into shopping modules, priorities, budgets, candidates and a checklist. The formal product connects to Taobao through a local executor, while the public demo safely replays the full flow with frozen samples.",
         cardIntro:
-          "Connected to Taobao MCP for real product search and confirmed cart actions, the agent autonomously understands scenarios, plans steps and compares candidates to reduce shopping decision costs.",
+          "It helps users decide what to buy, what comes first and how to allocate a budget before moving the confirmed plan into search, recommendations and a checklist.",
         detailIntro:
-          "The Taobao Scenario Shopping Agent is a task-oriented shopping product I continuously built through vibe coding. It connects to Taobao MCP: after the user describes a scenario, budget and preferences, the agent autonomously understands the need, plans the task, allocates budget, searches sequentially and compares candidates, then adds confirmed items to cart. It addresses the high decision cost of deciding what to buy, prioritize and combine in complex scenarios; checkout and payment remain with the user.",
+          "SceneCart is a scenario-shopping agent I have continuously built through vibe coding. After a user describes a life scenario, budget and preferences, it clarifies the need, splits the task into shopping modules, assigns priorities and budgets, searches by module, explains recommendations and produces an adjustable checklist. It currently supports new-car setup, camping, room decor, dorm move-in and moving. The formal product connects to Taobao through a local executor on the user's computer; the public demo uses frozen samples and never connects to accounts, models or a real cart.",
         audienceTitle: "Designed for",
-        audience: "People facing a complex first-time purchase who know the life goal but are unsure what to buy first or how to allocate their budget.",
+        audience: "People with a clear life or spending scenario who have not yet formed a concrete shopping list, priority order or budget plan.",
         problemTitle: "Core problem",
-        problem: "Commerce platforms are strong at searching for known products, but rarely help users decompose a scenario, rank priorities, allocate budget and make cross-category trade-offs, leaving users with a high decision cost before search even begins.",
+        problem: "Commerce platforms handle known-item search well, but scenario shopping still leaves users to define modules, rank priorities, allocate budgets and compare across categories. Abundant supply does not mean the shopping task is organized.",
         principlesTitle: "Core product decisions",
         principles: [
-          "Break the shopping task into understanding, plan confirmation, sequential search, candidate review and checklist confirmation, with user correction at every key stage.",
-          "Use scenario templates for structural stability while constraining the model to understanding and personalization; business rules continue validating products, budgets and actions.",
-          "Use Taobao MCP for real product search and cart actions. Cart additions require explicit confirmation, and the system never places orders or pays automatically."
+          "Break complex shopping into scenario clarification, planning, priority and budget allocation, module search, recommendation reasoning, dynamic adjustment and a checklist.",
+          "Let DeepSeek handle understanding and constrained decisions while business rules validate coverage, budget conservation, product evidence and allowed actions.",
+          "Keep tasks and state in the cloud while a local executor connects to Taobao desktop tools; real cart actions require item-by-item confirmation, and the system never orders or pays automatically."
         ],
         buildTitle: "What I owned in Vibe Coding",
         buildHighlights: [
-          "Defined the product job, staged workflow and human-agent boundary from the real decision path of setting up a new car.",
-          "Built an orchestration layer across templates, DeepSeek decisions and business guardrails so budgets, modules and candidates stay explainable and validatable.",
-          "Implemented persistent sessions, a job queue, SSE continuation, recovery and cross-instance serialization for long-running workflows.",
-          "Connected Taobao MCP so autonomous planning leads into real search and confirmed cart actions, protected by capability permissions and failure recovery."
+          "Expanded the original new-car case into five configuration-driven scenarios that share one needs, planning, search, recommendation and checklist workflow.",
+          "Built an orchestration layer across DeepSeek decisions and business guardrails so budgets, modules, candidates and stopping reasons stay explainable and validatable.",
+          "Implemented persistent sessions, a job queue, SSE continuation, recovery and idempotent callbacks so long-running workflows survive page closure.",
+          "Designed the formal-product/public-demo boundary: shared UI and stable logic, but frozen demo data can never reach the production database, model, Taobao account or real cart."
         ],
-        previewTitle: "44-second product demo",
-        previewDescription: "The product currently depends on a local Taobao environment and is not available as a public live experience. This video shows the complete flow from scenario understanding and autonomous planning to Taobao MCP search and confirmed cart actions, with no account, address, order or secret data exposed.",
+        previewTitle: "101-second product demo",
+        previewDescription: "The video covers scenario clarification, plan confirmation, module recommendations and the demo checklist. You can also open the public demo to explore the same flow. It uses frozen data and never connects to a production account or Taobao.",
         contextTitle: "Context",
         context:
-          "A first-time new-car setup is not a simple search. Users must prioritize safety essentials, maintenance, utility and comfort while making trade-offs across categories within one budget. I wanted the agent to organize this decision first, then move the confirmed plan into product candidates and an execution checklist.",
+          "New-car setup, camping, room decoration, dorm move-in and moving are not single searches. Users know the outcome they want but not the full list, sequence or budget trade-offs. SceneCart organizes that decision first, then moves the confirmed plan into product candidates and a checklist.",
         contributionTitle: "Design & Build",
         contribution:
-          "I owned the positioning, staged journey, boundary between agent reasoning and deterministic rules, budget and candidate quality gates, cloud/local execution split and permission model before real cart actions. The implementation spans a Next.js frontend, server orchestration, DeepSeek routing, PostgreSQL persistence, job queues, SSE and a local executor.",
+          "I owned the positioning, five scenario configurations, staged journey, boundary between agent reasoning and deterministic rules, budget and candidate quality gates, cloud/local split and isolation between the formal product and public demo. The implementation spans Next.js, DeepSeek, PostgreSQL, persistent queues, SSE and a local executor.",
         impactTitle: "Impact",
         impact: [
-          "Turns a vague new-car setup request into a prioritized modular shopping plan with explicit budget constraints.",
-          "Creates a recoverable workflow from autonomous planning through Taobao MCP search, candidate review and a budget-safe bundle.",
-          "Completes real cart additions after user confirmation while capability permissions and honest failure states prevent false success or automatic transactions."
+          "Turns fuzzy life goals into prioritized modular shopping plans with explicit budget constraints.",
+          "Creates a recoverable workflow from needs understanding through search, evidence-backed recommendations, adjustment and a shopping checklist.",
+          "Provides an isolated public demo so visitors can safely experience the workflow and decision method without logging in."
         ],
         metrics: [
-          { value: "9", label: "Core stages" },
-          { value: "3", label: "Candidate tiers" },
+          { value: "5", label: "Live scenarios" },
+          { value: "7", label: "Core capabilities" },
           { value: "0", label: "Automatic orders / payment" }
         ],
         workflow: [
           { label: "Describe the scenario", icon: "book" },
-          { label: "Agent builds the plan", icon: "bot" },
-          { label: "Search via Taobao MCP", icon: "database" },
-          { label: "Human confirms the list", icon: "file" }
+          { label: "Agent plans the budget", icon: "bot" },
+          { label: "Search & recommend by module", icon: "database" },
+          { label: "Adjust and confirm the list", icon: "file" }
         ],
-        tags: ["AI Agent", "Vibe Coding", "Taobao MCP", "Scene Commerce", "DeepSeek", "Human-in-the-loop", "Safety Guardrails"],
+        tags: ["SceneCart", "AI Agent", "Vibe Coding", "Scene Commerce", "DeepSeek", "Local Executor", "Safety Guardrails"],
         liveLabel: "Watch video demo",
+        externalDemoLabel: "Try live demo",
         detailLabel: "View details & demo"
       }
     }
