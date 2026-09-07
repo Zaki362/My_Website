@@ -18,7 +18,8 @@ const STOP_WORDS = [
   "他的",
   "这个",
   "可以",
-  "一下"
+  "一下",
+  "what", "which", "does", "have", "has", "his", "the", "about", "tell", "with", "built"
 ];
 
 export function normalizeText(input: string) {
@@ -108,8 +109,9 @@ function scoreChunk(question: string, chunk: KnowledgeChunk) {
   return score;
 }
 
-export function retrieveRelevantChunks(question: string, limit = 8) {
+export function retrieveRelevantChunks(question: string, limit = 5, locale: "zh" | "en" = "zh") {
   const ranked = siteKnowledgeChunks
+    .filter((chunk) => !/site-project-.*-(zh|en)$/.test(chunk.id) || chunk.id.endsWith(`-${locale}`))
     .map((chunk) => ({
       chunk,
       score: scoreChunk(question, chunk)
@@ -117,7 +119,13 @@ export function retrieveRelevantChunks(question: string, limit = 8) {
     .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score);
 
-  return ranked.slice(0, limit);
+  const seen = new Set<string>();
+  return ranked.filter(({ chunk }) => {
+    const key = normalizeText(chunk.title).replace(/\s/g, "");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, limit);
 }
 
 export function getRetrievalConfidence(items: { score: number }[]) {
@@ -136,10 +144,11 @@ export function getRetrievalConfidence(items: { score: number }[]) {
 }
 
 export function formatChunksForPrompt(items: { chunk: KnowledgeChunk; score: number }[]) {
-  return items
-    .map(
-      ({ chunk }, index) =>
-        `[${index + 1}] ${chunk.title}\n分类：${chunk.category}\n内容：${chunk.text}\n标签：${chunk.tags.join(" / ")}`
-    )
-    .join("\n\n");
+  let remaining = 5000;
+  return items.map(({ chunk }, index) => {
+    if (remaining <= 0) return "";
+    const excerpt = `[${index + 1}] ${chunk.title}\n分类：${chunk.category}\n内容：${chunk.text.slice(0, 900)}`.slice(0, remaining);
+    remaining -= excerpt.length + 2;
+    return excerpt;
+  }).filter(Boolean).join("\n\n");
 }

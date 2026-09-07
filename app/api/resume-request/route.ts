@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createRateLimiter } from "@/lib/rate-limit";
 
 type Locale = "en" | "zh";
 
@@ -6,12 +7,13 @@ const MAX_REASON_LENGTH = 600;
 const RATE_LIMIT_WINDOW_MS = 10 * 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const rateLimitStore = new Map<string, number[]>();
+const consumeRateLimit = createRateLimiter({ windowMs: RATE_LIMIT_WINDOW_MS, maxRequests: RATE_LIMIT_MAX_REQUESTS });
 
 const copy = {
   zh: {
     invalidEmail: "请输入有效邮箱。",
     invalidReason: "请填写简短的查看原因。",
+    invalidRequest: "请求格式不正确。",
     rateLimited: "提交过于频繁，请稍后再试。",
     notConfigured: "Formspree 表单转发暂未配置。",
     failed: "表单转发失败，请稍后再试。",
@@ -20,6 +22,7 @@ const copy = {
   en: {
     invalidEmail: "Please enter a valid email.",
     invalidReason: "Please enter a brief reason.",
+    invalidRequest: "Invalid request format.",
     rateLimited: "Too many submissions. Please try again later.",
     notConfigured: "Formspree forwarding is not configured yet.",
     failed: "Form forwarding failed. Please try again later.",
@@ -42,22 +45,6 @@ function getClientId(request: NextRequest) {
   }
 
   return request.headers.get("x-real-ip") ?? "anonymous";
-}
-
-function isRateLimited(clientId: string) {
-  const now = Date.now();
-  const windowStart = now - RATE_LIMIT_WINDOW_MS;
-  const requests = rateLimitStore.get(clientId) ?? [];
-  const recent = requests.filter((timestamp) => timestamp > windowStart);
-
-  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
-    rateLimitStore.set(clientId, recent);
-    return true;
-  }
-
-  recent.push(now);
-  rateLimitStore.set(clientId, recent);
-  return false;
 }
 
 function buildFormspreePayload({
@@ -113,18 +100,24 @@ export async function POST(request: NextRequest) {
   const localeCopy = copy[locale];
   const clientId = getClientId(request);
 
-  if (isRateLimited(clientId)) {
-    return NextResponse.json({ error: localeCopy.rateLimited, code: "RATE_LIMITED" }, { status: 429 });
+  const rateLimit = consumeRateLimit(clientId);
+  if (rateLimit.limited) {
+    return NextResponse.json({ error: localeCopy.rateLimited, code: "RATE_LIMITED" }, {
+      status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) }
+    });
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: localeCopy.invalidRequest, code: "INVALID_REQUEST" }, { status: 400 });
   }
 
   const email = cleanText(body?.email, 120).toLowerCase();
   const reason = cleanText(body?.reason, MAX_REASON_LENGTH);
 
-  if (!emailPattern.test(email)) {
+  if (typeof body.email !== "string" || body.email.length > 120 || !emailPattern.test(email)) {
     return NextResponse.json({ error: localeCopy.invalidEmail, code: "INVALID_EMAIL" }, { status: 400 });
   }
 
-  if (reason.length < 4) {
+  if (typeof body.reason !== "string" || body.reason.length > MAX_REASON_LENGTH || reason.length < 4) {
     return NextResponse.json({ error: localeCopy.invalidReason, code: "INVALID_REASON" }, { status: 400 });
   }
 
@@ -137,19 +130,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(buildFormspreePayload({ email, reason, locale, request }))
-  });
-
-  if (!response.ok) {
-    const providerError = await response.text().catch(() => "");
-    console.error("Failed to forward resume request through Formspree", providerError);
-    return NextResponse.json({ error: localeCopy.failed, code: "FORMSPREE_FAILED" }, { status: 502 });
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify(buildFormspreePayload({ email, reason, locale, request }))
+    });
+    if (!response.ok) {
+      console.error("resume_request_forward_failed", { status: response.status });
+      return NextResponse.json({ error: localeCopy.failed, code: "FORMSPREE_FAILED" }, { status: 502 });
+    }
+  } catch (error) {
+    const timedOut = error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+    console.error("resume_request_forward_failed", { reason: timedOut ? "timeout" : "network" });
+    return NextResponse.json({ error: localeCopy.failed, code: "FORMSPREE_FAILED" }, { status: timedOut ? 504 : 502 });
   }
 
   return NextResponse.json({ ok: true });

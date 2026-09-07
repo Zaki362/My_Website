@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Minus, RotateCcw, Send, X } from "lucide-react";
+import { Minus, RotateCcw, Send, Square, X } from "lucide-react";
 import { agentProfiles } from "@/data/knowledge-base/profile";
 import { ChatMessage } from "@/components/agent/ChatMessage";
 import { SuggestedQuestions } from "@/components/agent/SuggestedQuestions";
@@ -15,6 +15,7 @@ import type { AgentAction, AgentResponse } from "@/lib/agent/types";
 type Message = {
   role: "user" | "assistant";
   content: string;
+  error?: boolean;
 } & Partial<Pick<AgentResponse, "mode" | "sections" | "sources" | "actions" | "followups" | "refused" | "fallback" | "casual">>;
 
 type AgentDialogProps = {
@@ -24,41 +25,52 @@ type AgentDialogProps = {
 };
 
 const MAX_INPUT_LENGTH = 500;
+const REQUEST_TIMEOUT_MS = 35_000;
 const RESUME_REQUEST_EVENT = "resume-request:open";
 
 const agentDialogCopy = {
   zh: {
     unavailable: "助手暂时不可用。",
-    noAnswer:
-      "这个我掌握的信息不多，只能先简单说到这里。",
-    genericError: "助手暂时卡了一下。",
+    genericError: "暂时没能连接到助手，请检查网络或稍后重试。",
+    timeout: "这次回复等待过久，请重试。",
+    cancelled: "已停止这次回复。你可以重试，或换个问题。",
+    retry: "重试这条问题",
+    stopLabel: "停止回复",
+    inputLabel: "给国华的 AI 助手提问",
+    errorStatus: "回复未完成 · 可重试",
+    fallbackStatus: "已从网站资料回答",
     windowLabel: "国华的 AI 助手聊天窗口",
     minimizeLabel: "最小化 AI 助手",
     closeLabel: "关闭 AI 助手",
-    loading: "正在想一下...",
-    helper: "公开资料 RAG · 简短回答",
+    loading: "正在准备回复…",
+    helper: "回答供参考 · 仅使用公开资料",
     placeholder: "问经历、项目，也可以随便聊聊",
     sendLabel: "发送",
     clearLabel: "开始新对话",
-    eyebrow: "PROFILE COPILOT",
-    capability: "检索 · 归纳 · 回答",
+    eyebrow: "个人网站助手",
+    capability: "聊经历、项目与想法",
     starterTitle: "从一个问题开始"
   },
   en: {
     unavailable: "The assistant is temporarily unavailable.",
-    noAnswer:
-      "I do not have much information on that, so I can only keep it brief.",
-    genericError: "The assistant got stuck for a moment.",
+    genericError: "Could not connect. Check your connection or try again shortly.",
+    timeout: "This reply took too long. Please try again.",
+    cancelled: "Reply stopped. You can retry or ask something else.",
+    retry: "Retry this question",
+    stopLabel: "Stop reply",
+    inputLabel: "Ask Guohua's AI assistant a question",
+    errorStatus: "Reply incomplete · try again",
+    fallbackStatus: "Answered from website info",
     windowLabel: "Guohua's AI assistant chat window",
     minimizeLabel: "Minimize AI assistant",
     closeLabel: "Close AI assistant",
-    loading: "Thinking briefly...",
-    helper: "Public-site RAG · concise replies",
+    loading: "Preparing a reply…",
+    helper: "Public information · check important details",
     placeholder: "Ask about work, projects, or anything light",
     sendLabel: "Send",
     clearLabel: "Start a new conversation",
     eyebrow: "PROFILE COPILOT",
-    capability: "Retrieve · synthesize · answer",
+    capability: "Work, projects, and ideas",
     starterTitle: "Start with a question"
   }
 } as const;
@@ -78,6 +90,8 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const thinkingTimerRef = useRef<number | null>(null);
+  const requestRef = useRef<AbortController | null>(null);
+  const requestIdRef = useRef(0);
   const reduceMotion = useReducedMotion();
 
   const canSend = input.trim().length > 0 && input.trim().length <= MAX_INPUT_LENGTH && !loading;
@@ -120,7 +134,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !event.isComposing) {
         onClose();
       }
     };
@@ -131,6 +145,8 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
 
   useEffect(() => {
     return () => {
+      requestIdRef.current += 1;
+      requestRef.current?.abort();
       if (thinkingTimerRef.current) {
         window.clearTimeout(thinkingTimerRef.current);
       }
@@ -144,16 +160,23 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
     });
   }, [messages, loading, reduceMotion]);
 
-  async function submitQuestion(question: string) {
+  async function submitQuestion(question: string, retryIndex?: number) {
     const trimmed = question.trim();
 
-    if (!trimmed || trimmed.length > MAX_INPUT_LENGTH || loading) {
+    if (!trimmed || trimmed.length > MAX_INPUT_LENGTH || requestRef.current) {
       return;
     }
 
-    const nextMessages = [...messages, { role: "user" as const, content: trimmed }];
+    const nextMessages = retryIndex === undefined
+      ? [...messages, { role: "user" as const, content: trimmed }]
+      : messages.slice(0, retryIndex);
+    const controller = new AbortController();
+    const requestId = ++requestIdRef.current;
+    requestRef.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     setMessages(nextMessages);
     setInput("");
+    if (inputRef.current) inputRef.current.style.height = "auto";
     setLoading(true);
     setThinkingPhase("retrieving");
     thinkingTimerRef.current = window.setTimeout(() => setThinkingPhase("composing"), 850);
@@ -161,30 +184,34 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
     try {
       const response = await fetch("/api/agent", {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          messages: nextMessages,
+          messages: nextMessages
+            .filter((message) => !message.error && !message.fallback &&
+              !Object.values(agentProfiles).some((item) => item.welcomeMessage === message.content))
+            .slice(-8)
+            .map(({ role, content }) => ({ role, content })),
           locale
         })
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
+      if (requestId !== requestIdRef.current) return;
 
       if (!response.ok) {
-        throw new Error(data?.reply || copy.unavailable);
+        throw new Error(typeof data?.reply === "string" ? data.reply : copy.unavailable);
       }
+      if (typeof data?.reply !== "string" || !data.reply.trim()) throw new Error(copy.unavailable);
 
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
           mode: data?.mode === "general" ? "general" : "profile",
-          content:
-            typeof data?.reply === "string" && data.reply.trim()
-              ? data.reply.trim()
-              : copy.noAnswer,
+          content: data.reply.trim(),
           sections: Array.isArray(data?.sections) ? data.sections : undefined,
           sources: Array.isArray(data?.sources) ? data.sources : undefined,
           actions: Array.isArray(data?.actions) ? data.actions : undefined,
@@ -195,8 +222,10 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
         }
       ]);
     } catch (submissionError) {
+      if (requestId !== requestIdRef.current) return;
       const message =
-        submissionError instanceof Error
+        controller.signal.aborted ? copy.timeout : submissionError instanceof TypeError
+          ? copy.genericError : submissionError instanceof Error
           ? submissionError.message
           : copy.genericError;
 
@@ -205,21 +234,36 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
         {
           role: "assistant",
           content: message,
-          sections: [{ type: "summary", content: message }]
+          error: true
         }
       ]);
     } finally {
-      if (thinkingTimerRef.current) {
-        window.clearTimeout(thinkingTimerRef.current);
-        thinkingTimerRef.current = null;
+      window.clearTimeout(timeout);
+      if (requestId === requestIdRef.current) {
+        if (thinkingTimerRef.current) {
+          window.clearTimeout(thinkingTimerRef.current);
+          thinkingTimerRef.current = null;
+        }
+        requestRef.current = null;
+        setLoading(false);
       }
-      setLoading(false);
     }
   }
 
+  function cancelRequest() {
+    requestIdRef.current += 1;
+    requestRef.current?.abort();
+    requestRef.current = null;
+    if (thinkingTimerRef.current) window.clearTimeout(thinkingTimerRef.current);
+    thinkingTimerRef.current = null;
+    setLoading(false);
+  }
+
   function resetConversation() {
+    cancelRequest();
     setMessages([{ role: "assistant", content: profile.welcomeMessage }]);
     setInput("");
+    if (inputRef.current) inputRef.current.style.height = "auto";
     window.setTimeout(() => inputRef.current?.focus(), 0);
   }
 
@@ -268,6 +312,9 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
 
   const quickQuestions = useMemo(() => profile.suggestedQuestions, [profile.suggestedQuestions]);
   const hasConversation = messages.some((message) => message.role === "user");
+  const lastMessage = messages.at(-1);
+  const status = loading ? copy.loading : lastMessage?.error ? copy.errorStatus
+    : lastMessage?.fallback ? copy.fallbackStatus : copy.capability;
 
   const dialog = (
     <AnimatePresence>
@@ -282,44 +329,33 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           aria-label={copy.windowLabel}
           role="dialog"
         >
-          <header className="relative overflow-hidden border-b border-violet-200/60 bg-[#f7f5fc] px-4 py-4">
+          <header className="relative shrink-0 overflow-hidden border-b border-violet-200/60 bg-[#f7f5fc] px-3 py-3 md:px-4">
             <span className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-violet-400" />
             <span className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[#eef7f5] opacity-70" />
             <div className="flex items-center justify-between gap-3">
-              <div className="flex min-w-0 items-center gap-3">
-                <span className="relative flex h-14 w-14 shrink-0 items-center justify-center">
+              <div className="flex min-w-0 items-center gap-2">
+                <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
                   <AgentSprite state={loading ? "thinking" : "curious"} />
                 </span>
                 <div className="min-w-0">
                   <p className="text-[9px] font-semibold uppercase text-violet-600/70">
                     {copy.eyebrow}
                   </p>
-                  <p className="mt-0.5 font-display text-base font-[620] leading-6 text-stone-950">
+                  <p className="mt-0.5 truncate font-display text-sm font-[620] leading-6 text-stone-950 md:text-base">
                     {profile.agentName}
                   </p>
-                  <p className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-4 text-stone-500">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    {copy.capability}
+                  <p className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-4 text-stone-600" role="status">
+                    <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${lastMessage?.error ? "bg-amber-500" : "bg-violet-400"}`} />
+                    <span className="truncate">{status}</span>
                   </p>
                 </div>
               </div>
 
               <div className="flex shrink-0 items-center gap-1.5">
-                {hasConversation ? (
-                  <button
-                    type="button"
-                    onClick={resetConversation}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
-                    aria-label={copy.clearLabel}
-                    title={copy.clearLabel}
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                  </button>
-                ) : null}
                 <button
                   type="button"
                   onClick={onMinimize}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                   aria-label={copy.minimizeLabel}
                 >
                   <Minus className="h-4 w-4" />
@@ -327,7 +363,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-violet-200/70 bg-white/75 text-stone-500 transition hover:border-violet-300 hover:bg-white hover:text-violet-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30"
                   aria-label={copy.closeLabel}
                 >
                   <X className="h-4 w-4" />
@@ -336,7 +372,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             </div>
           </header>
 
-          <div ref={scrollRef} className="flex-1 space-y-5 overflow-y-auto px-4 py-5 md:px-5" aria-live="polite">
+          <div ref={scrollRef} className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 md:px-5" role="log" aria-label={locale === "zh" ? "对话记录" : "Conversation"} aria-live="polite">
             {messages.map((message, index) => {
               const suggestions =
                 index === 0 && !hasConversation
@@ -352,11 +388,19 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                     content={message.content}
                     locale={locale}
                     mode={message.mode}
+                    fallback={message.fallback}
+                    error={message.error}
+                    sources={message.sources}
                     sections={message.sections}
                     actions={message.actions}
                     copiedActionId={copiedActionId}
                     onAction={handleAgentAction}
                   />
+                  {message.error && index === messages.length - 1 && messages[index - 1]?.role === "user" ? (
+                    <button type="button" disabled={loading} onClick={() => void submitQuestion(messages[index - 1].content, index)} className="mt-3 inline-flex min-h-9 items-center gap-1.5 rounded-md border border-violet-200 bg-violet-50 px-3 text-xs font-medium text-violet-700 hover:bg-violet-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500 disabled:opacity-50">
+                      <RotateCcw className="h-3.5 w-3.5" />{copy.retry}
+                    </button>
+                  ) : null}
                   {suggestions.length ? (
                   <div className="mt-3">
                     {index === 0 ? (
@@ -382,15 +426,16 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           </div>
 
           <form
-            className="border-t border-violet-200/60 bg-[#fbfaff] px-4 py-3.5 md:px-5"
+            className="shrink-0 border-t border-violet-200/60 bg-[#fbfaff] px-4 py-3.5 md:px-5"
             onSubmit={(event) => {
               event.preventDefault();
               void submitQuestion(input);
             }}
           >
-            <div className="mb-2 flex items-center justify-between text-[10px] text-stone-400">
+            <div className="mb-2 flex min-h-5 items-center justify-between gap-2 text-[10px] text-stone-500">
               <span>{copy.helper}</span>
-              <span>{remaining}</span>
+              {hasConversation ? <button type="button" onClick={resetConversation} className="inline-flex shrink-0 items-center gap-1 rounded py-1 text-violet-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500" aria-label={copy.clearLabel}><RotateCcw className="h-3 w-3" />{locale === "zh" ? "新对话" : "New chat"}</button> : null}
+              {remaining < 100 ? <span>{remaining}</span> : null}
             </div>
             <div className="flex items-end gap-2 rounded-lg border border-violet-200/70 bg-white p-1.5 transition focus-within:border-violet-400 focus-within:shadow-[0_8px_24px_rgba(70,55,120,0.08)]">
               <textarea
@@ -403,7 +448,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   target.style.height = `${Math.min(target.scrollHeight, 112)}px`;
                 }}
                 onKeyDown={(event) => {
-                  if (event.key === "Enter" && !event.shiftKey) {
+                  if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
                     event.preventDefault();
                     if (canSend) {
                       void submitQuestion(input);
@@ -411,16 +456,20 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                   }
                 }}
                 rows={1}
+                aria-label={copy.inputLabel}
+                maxLength={MAX_INPUT_LENGTH}
                 placeholder={copy.placeholder}
-                className="min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-sm leading-6 text-stone-800 outline-none placeholder:text-stone-400"
+                className="min-h-[44px] min-w-0 flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 text-stone-800 outline-none placeholder:text-stone-400 md:text-sm"
               />
               <button
-                type="submit"
-                disabled={!canSend}
+                type={loading ? "button" : "submit"}
+                disabled={!loading && !canSend}
+                onClick={loading ? () => { cancelRequest(); setMessages((current) => [...current, { role: "assistant", content: copy.cancelled, error: true }]); } : undefined}
                 className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-violet-600 text-white shadow-[0_8px_20px_rgba(109,91,208,0.2)] transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-violet-200 disabled:shadow-none"
-                aria-label={copy.sendLabel}
+                aria-label={loading ? copy.stopLabel : copy.sendLabel}
+                title={loading ? copy.stopLabel : copy.sendLabel}
               >
-                <Send className="h-4 w-4" />
+                {loading ? <Square className="h-3.5 w-3.5" /> : <Send className="h-4 w-4" />}
               </button>
             </div>
           </form>

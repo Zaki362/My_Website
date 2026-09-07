@@ -10,10 +10,10 @@ import {
   buildModePrompt
 } from "@/lib/agent/systemPrompt";
 import type { AgentAction, AgentResponse, AgentSection, AgentSource } from "@/lib/agent/types";
+import { createRateLimiter } from "@/lib/rate-limit";
 import { contactData } from "@/data/profile";
 import {
   generateAgentReply,
-  hasConfiguredAgentModel,
   type ModelMessage
 } from "@/lib/agent/model";
 
@@ -41,7 +41,8 @@ const MAX_HISTORY_MESSAGES = 8;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
 
-const rateLimitStore = new Map<string, number[]>();
+export const maxDuration = 60;
+const consumeRateLimit = createRateLimiter({ windowMs: RATE_LIMIT_WINDOW_MS, maxRequests: RATE_LIMIT_MAX_REQUESTS });
 
 const routeCopy = {
   zh: {
@@ -124,7 +125,10 @@ const GENERAL_CONCEPT_HINTS = [
   "how does",
   "explain",
   "difference between",
-  "tutorial"
+  "tutorial",
+  "怎么找工作",
+  "如何找工作",
+  "求职建议"
 ];
 
 function normalizeCasualInput(input: string) {
@@ -151,22 +155,20 @@ function buildCasualReply(question: string, locale: Locale) {
       : "你好，我在。你可以问我关于国华的教育、工作、项目、科研或联系方式。";
   }
 
-  if (["谢谢", "感谢", "thank", "thanks", "thx"].some((item) => normalized.includes(item))) {
+  if (["谢谢", "谢谢你", "感谢", "thankyou", "thanks", "thx"].includes(normalized)) {
     return locale === "en"
       ? "You're welcome. I can also help you quickly find details from Guohua's site profile."
       : "不客气。需要的话，我也可以继续帮你快速定位国华的网站信息。";
   }
 
-  if (["你是谁", "你是啥", "你是什么", "whoareyou"].some((item) => normalized.includes(item))) {
+  if (["你是谁", "你是啥", "你是什么", "你叫什么", "介绍一下你自己", "whoareyou", "whatareyou"].includes(normalized)) {
     return locale === "en"
       ? "I'm the AI assistant on Guohua's personal website, here to help you understand his background, work, projects and contact information."
       : "我是国华个人网站里的 AI 助手，主要帮你快速了解他的背景、经历、项目和联系方式。";
   }
 
   if (
-    ["你能做什么", "你会什么", "怎么用", "help", "帮助"].some((item) =>
-      normalized.includes(item)
-    )
+    ["你能做什么", "你会什么", "怎么用", "help", "帮助", "whatcanyoudo"].includes(normalized)
   ) {
     return locale === "en"
       ? "I can briefly answer questions about Guohua's education, work, projects, research, skills and contact information. Light greetings are fine too."
@@ -230,12 +232,12 @@ function questionIncludes(question: string, hints: string[]) {
 }
 
 function hasProfileIntent(question: string, sources: AgentSource[] = []) {
-  void sources;
-  return questionIncludes(question, PROFILE_INTENT_HINTS);
+  return sources.length > 0 || questionIncludes(question, PROFILE_INTENT_HINTS);
 }
 
 function isGeneralConceptQuestion(question: string) {
-  return questionIncludes(question, GENERAL_CONCEPT_HINTS) && !hasProfileIntent(question);
+  const explicitProfile = /国华|guohua|zheng|他的|他在|他做|候选人|your (work|project|experience)|\bhis\b|tako|redflow|scenecart|场景购|小红书|fitlog|练一下|随手记|codex widget/i.test(question);
+  return questionIncludes(question, GENERAL_CONCEPT_HINTS) && !explicitProfile;
 }
 
 function addAction(actions: AgentAction[], action: AgentAction) {
@@ -484,49 +486,9 @@ function parseStructuredSections(rawReply: string, locale: Locale) {
   }
 }
 
-function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, question: string) {
+function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale) {
   if (rankedChunks.length === 0) {
     const sections: AgentSection[] = [{ type: "summary", content: routeCopy[locale].noEvidence }];
-    return {
-      reply: buildReplyFromSections(sections),
-      sections
-    };
-  }
-
-  if (questionIncludes(question, ["agent", "智能体", "代理"])) {
-    const sections: AgentSection[] =
-      locale === "en"
-        ? [
-            {
-              type: "summary",
-              content: "His Agent experience spans personalized conversational AI, business-analysis Agents and Coding Agents."
-            },
-            {
-              type: "bullets",
-              title: "Quick view",
-              items: [
-                "ByteDance Tako: focuses on personalized AI, Memory strategy and evaluation for more relevant long-term conversations.",
-                "Meituan: focused on business-analysis Agents, knowledge retrieval and report-generation workflows.",
-                "Baidu: focused on Coding Agent evaluation, strategy iteration and Builder product work.",
-              ]
-            }
-          ]
-        : [
-            {
-              type: "summary",
-              content: "他的 Agent 经验覆盖个性化对话、经营分析和 Coding Agent 三条线。"
-            },
-            {
-              type: "bullets",
-              title: "简短版",
-              items: [
-                "字节 Tako：偏个性化 AI，关注 Memory 策略与评测如何服务长期对话体验。",
-                "美团：偏经营分析 Agent，关注知识召回、业务知识库和报告生成工作流。",
-                "百度：偏 Coding Agent，关注评测、策略迭代和 Builder 类产品体验。",
-              ]
-            }
-          ];
-
     return {
       reply: buildReplyFromSections(sections),
       sections
@@ -582,8 +544,8 @@ function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale, que
 function buildGeneralFallback(locale: Locale) {
   const content =
     locale === "zh"
-      ? "可以简单聊。现在模型服务暂时不可用，我先给一个轻量建议：选一个 20 分钟内能开始、没负担的小活动，比如散步、听一张专辑或整理一下桌面。"
-      : "Sure. The model service is temporarily unavailable, so here is a light suggestion: choose something low-friction you can start within 20 minutes, like a walk, one album, or a quick desk reset.";
+      ? "暂时没能连接到 AI，无法可靠回答这个问题。可以重试；关于国华的经历、项目和联系方式，我仍能从公开资料中帮你查找。"
+      : "I couldn’t connect to the AI to answer this reliably. Please retry. I can still look up Guohua’s work, projects and contact details from the public site.";
   const sections: AgentSection[] = [{ type: "summary", content }];
 
   return {
@@ -601,20 +563,13 @@ function getClientId(request: NextRequest) {
   return request.headers.get("x-real-ip") ?? "anonymous";
 }
 
-function isRateLimited(clientId: string) {
-  const now = Date.now();
-  const windowStart = now - RATE_LIMIT_WINDOW_MS;
-  const requests = rateLimitStore.get(clientId) ?? [];
-  const recent = requests.filter((timestamp) => timestamp > windowStart);
-
-  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
-    rateLimitStore.set(clientId, recent);
-    return true;
-  }
-
-  recent.push(now);
-  rateLimitStore.set(clientId, recent);
-  return false;
+function retrievalQuestion(messages: ChatMessage[]) {
+  const question = messages.at(-1)!.content;
+  if (question.length > 100 || !/^(那|它|这个|这些|再|具体|详细|展开|还有|为什么|what about|how (does|did) (it|he)|tell me more|more detail|and |why)/i.test(question)) return question;
+  const previous = messages.slice(0, -1).reverse().find((message) =>
+    message.role === "user" && hasProfileIntent(message.content) && !isGeneralConceptQuestion(message.content)
+  );
+  return previous ? `${previous.content}\n追问：${question}` : question;
 }
 
 function sanitizeHistory(messages: unknown): ChatMessage[] {
@@ -648,85 +603,56 @@ export async function POST(request: NextRequest) {
   let requestLocale: Locale = "zh";
 
   try {
-    const body = await request.json();
+    const raw = await request.text();
+    if (raw.length > 16_000) return NextResponse.json({ reply: "Request too large." }, { status: 413 });
+    let body;
+    try { body = JSON.parse(raw); } catch { return NextResponse.json({ reply: "Invalid JSON." }, { status: 400 }); }
+    if (!body || typeof body !== "object" || !Array.isArray(body.messages)) {
+      return NextResponse.json({ reply: "Invalid messages." }, { status: 400 });
+    }
     const locale = normalizeLocale(body.locale);
     requestLocale = locale;
     const copy = routeCopy[locale];
-    const clientId = getClientId(request);
-
-    if (isRateLimited(clientId)) {
-      return NextResponse.json(
-        {
-          reply: copy.rateLimited
-        },
-        { status: 429 }
-      );
+    const latest = body.messages.at(-1);
+    if (!latest || latest.role !== "user" || typeof latest.content !== "string" || !latest.content.trim()) {
+      return NextResponse.json({ reply: copy.emptyQuestion }, { status: 400 });
     }
-
-    const messages = sanitizeHistory(body.messages);
-    const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
-
-    if (!latestUserMessage) {
-      return NextResponse.json(
-        { reply: copy.emptyQuestion },
-        { status: 400 }
-      );
+    if (latest.content.trim().length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json({ reply: copy.tooLong }, { status: 400 });
     }
-
-    if (latestUserMessage.content.length > MAX_MESSAGE_LENGTH) {
-      return NextResponse.json(
-        { reply: copy.tooLong },
-        { status: 400 }
-      );
+    const limit = consumeRateLimit(getClientId(request));
+    if (limit.limited) {
+      return NextResponse.json({ reply: copy.rateLimited }, { status: 429, headers: { "Retry-After": String(limit.retryAfter) } });
     }
-
-    const retrievedChunks = retrieveRelevantChunks(latestUserMessage.content);
+    const sanitized = sanitizeHistory(body.messages);
+    const firstUserIndex = sanitized.findIndex((message) => message.role === "user");
+    const messages = sanitized.slice(firstUserIndex);
+    const latestUserMessage = messages.at(-1)!;
+    const casualReply = buildCasualReply(latestUserMessage.content, locale);
+    if (casualReply) {
+      return NextResponse.json({ reply: casualReply, casual: true, mode: "general", sections: [{ type: "summary", content: casualReply }] } satisfies AgentResponse);
+    }
+    const query = retrievalQuestion(messages);
+    const retrievedChunks = retrieveRelevantChunks(query, 5, locale);
     const retrievalConfidence = getRetrievalConfidence(retrievedChunks);
-    const isProfileQuestion =
-      !isGeneralConceptQuestion(latestUserMessage.content) &&
-      (hasProfileIntent(latestUserMessage.content) || retrievalConfidence !== "low");
+    const isProfileQuestion = !isGeneralConceptQuestion(latestUserMessage.content) &&
+      (hasProfileIntent(query) || retrievalConfidence !== "low");
     const rankedChunks = isProfileQuestion ? retrievedChunks : [];
     const sources = toSources(rankedChunks);
     const mode = isProfileQuestion ? "profile" : "general";
 
-    if (!hasConfiguredAgentModel()) {
-      const casualReply = buildCasualReply(latestUserMessage.content, locale);
-      const fallback = casualReply
-        ? { reply: casualReply, sections: [{ type: "summary" as const, content: casualReply }] }
-        : isProfileQuestion
-          ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
-          : buildGeneralFallback(locale);
-      return NextResponse.json({
-        reply: fallback.reply,
-        mode,
-        refused: false,
-        casual: Boolean(casualReply),
-        fallback: true,
-        sections: fallback.sections,
-        sources,
-        actions: buildActions(latestUserMessage.content, sources, locale),
-        followups: buildFollowups(latestUserMessage.content, sources, locale)
-      } satisfies AgentResponse);
-    }
-
     const context = isProfileQuestion ? formatChunksForPrompt(rankedChunks) : "";
     const modelMessages: ModelMessage[] = [
-      { role: "system", content: AGENT_SYSTEM_PROMPT },
-      { role: "system", content: copy.languagePrompt },
-      { role: "system", content: copy.structuredPrompt },
-      { role: "system", content: buildModePrompt(mode, locale) },
-      { role: "system", content: buildContextPrompt(context) },
-      ...messages.map((message) => ({
-        role: message.role,
-        content: message.content
-      }))
+      { role: "system", content: [AGENT_SYSTEM_PROMPT, copy.languagePrompt, copy.structuredPrompt,
+        buildModePrompt(mode, locale), buildContextPrompt(context)].join("\n\n") },
+      ...messages.map(({ role, content }) => ({ role, content }))
     ];
 
     const modelResult = await generateAgentReply(modelMessages);
 
     if (!modelResult) {
       const fallback = isProfileQuestion
-        ? buildRetrievalFallback(rankedChunks, locale, latestUserMessage.content)
+        ? buildRetrievalFallback(rankedChunks, locale)
         : buildGeneralFallback(locale);
       return NextResponse.json(
         {
@@ -734,11 +660,11 @@ export async function POST(request: NextRequest) {
           mode,
           sections: fallback.sections,
           fallback: true,
-          sources,
+          sources: sources.slice(0, 3),
           actions: buildActions(latestUserMessage.content, sources, locale),
           followups: buildFollowups(latestUserMessage.content, sources, locale)
         } satisfies AgentResponse,
-        { status: 200 }
+        { status: isProfileQuestion ? 200 : 503 }
       );
     }
 
@@ -751,7 +677,7 @@ export async function POST(request: NextRequest) {
           reply: copy.noAnswer,
           mode,
           sections,
-          sources,
+          sources: sources.slice(0, 3),
           actions: buildActions(latestUserMessage.content, sources, locale),
           followups: buildFollowups(latestUserMessage.content, sources, locale)
         } satisfies AgentResponse,

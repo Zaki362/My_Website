@@ -2,7 +2,7 @@
 
 import { ArrowUpRight, Check, Copy, FileText, Mail } from "lucide-react";
 import { cn } from "@/components/agent/cn";
-import type { AgentAction, AgentSection } from "@/lib/agent/types";
+import type { AgentAction, AgentSection, AgentSource } from "@/lib/agent/types";
 
 type ChatMessageProps = {
   role: "user" | "assistant";
@@ -11,6 +11,9 @@ type ChatMessageProps = {
   sections?: AgentSection[];
   actions?: AgentAction[];
   mode?: "profile" | "general";
+  fallback?: boolean;
+  error?: boolean;
+  sources?: AgentSource[];
   copiedActionId?: string | null;
   onAction?: (action: AgentAction) => void;
 };
@@ -69,7 +72,7 @@ function AssistantSections({ sections, content }: { sections?: AgentSection[]; c
                 {section.items.map((item) => (
                   <li key={item} className="flex gap-2.5 text-stone-600">
                     <span className="mt-[0.72em] h-1 w-1 shrink-0 rounded-full bg-violet-400" />
-                    <span>{item}</span>
+                    <span className="min-w-0">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -118,6 +121,9 @@ export function ChatMessage({
   sections,
   actions,
   mode,
+  fallback,
+  error,
+  sources,
   copiedActionId,
   onAction
 }: ChatMessageProps) {
@@ -127,22 +133,33 @@ export function ChatMessage({
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "whitespace-pre-wrap text-sm",
+          "min-w-0 whitespace-pre-wrap text-sm [overflow-wrap:anywhere]",
           isUser
             ? "max-w-[84%] rounded-lg border border-violet-200/80 bg-[#f0edfb] px-4 py-2.5 leading-6 text-stone-800 shadow-[0_8px_20px_rgba(83,68,135,0.06)]"
-            : "w-full border-l border-violet-300 pl-3.5 pr-1 text-stone-700"
+            : "w-full border-l border-violet-300 pl-3.5 pr-1 text-stone-700",
+          error && "border-amber-300"
         )}
       >
         {isUser ? (
           content
         ) : (
           <div className="space-y-3.5">
-            {mode ? (
-              <p className="text-[10px] font-semibold uppercase text-stone-400">
-                {mode === "profile" ? "Profile read" : "Quick thought"}
+            {mode || error || fallback ? (
+              <p className={cn("text-[10px] font-medium", error || fallback ? "text-amber-700" : "text-stone-500")}>
+                {error ? (locale === "zh" ? "回复未完成" : "Reply incomplete")
+                  : fallback ? (locale === "zh" ? "网站资料回答 · AI 暂不可用" : "Website information · AI unavailable")
+                  : mode === "profile" ? (locale === "zh" ? "基于公开资料" : "From public information")
+                  : (locale === "zh" ? "助手回复" : "Assistant reply")}
               </p>
             ) : null}
             <AssistantSections sections={sections} content={content} />
+
+            {sources?.length ? (
+              <details className="text-[11px] leading-5 text-stone-500">
+                <summary className="w-fit cursor-pointer rounded text-violet-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500">{locale === "zh" ? `参考资料 · ${sources.length}` : `Sources · ${sources.length}`}</summary>
+                <ul className="mt-1.5 list-inside list-disc space-y-1">{sources.map((source) => <li key={source.id}>{source.title}</li>)}</ul>
+              </details>
+            ) : null}
 
             {actions?.length ? (
               <div className="flex flex-wrap gap-2 pt-0.5">
