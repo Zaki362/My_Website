@@ -112,7 +112,8 @@ const PROFILE_INTENT_HINTS = [
   "resume",
   "contact",
   "candidate",
-  "interview"
+  "interview",
+  "projects", "portfolio", "education", "internship", "work experience", "research", "skills"
 ];
 
 const GENERAL_CONCEPT_HINTS = [
@@ -128,7 +129,8 @@ const GENERAL_CONCEPT_HINTS = [
   "tutorial",
   "怎么找工作",
   "如何找工作",
-  "求职建议"
+  "求职建议",
+  "推荐", "建议", "帮我", "给我", "我想", "recommend", "suggest", "help me", "advice"
 ];
 
 function normalizeCasualInput(input: string) {
@@ -487,6 +489,12 @@ function parseStructuredSections(rawReply: string, locale: Locale) {
 }
 
 function buildRetrievalFallback(rankedChunks: RankedChunk[], locale: Locale) {
+  if (rankedChunks[0]?.chunk.category === "contact") {
+    const reply = locale === "zh"
+      ? `可以通过邮箱 ${contactData.email} 联系国华。${contactData.github ? ` GitHub：${contactData.github}` : ""}`
+      : `You can contact Guohua at ${contactData.email}.${contactData.github ? ` GitHub: ${contactData.github}` : ""}`;
+    return { reply, sections: [{ type: "summary" as const, content: reply }] };
+  }
   if (rankedChunks.length === 0) {
     const sections: AgentSection[] = [{ type: "summary", content: routeCopy[locale].noEvidence }];
     return {
@@ -563,13 +571,15 @@ function getClientId(request: NextRequest) {
   return request.headers.get("x-real-ip") ?? "anonymous";
 }
 
-function retrievalQuestion(messages: ChatMessage[]) {
+function retrievalQuestion(messages: ChatMessage[]): string {
   const question = messages.at(-1)!.content;
-  if (question.length > 100 || !/^(那|它|这个|这些|再|具体|详细|展开|还有|为什么|what about|how (does|did) (it|he)|tell me more|more detail|and |why)/i.test(question)) return question;
-  const previous = messages.slice(0, -1).reverse().find((message) =>
-    message.role === "user" && hasProfileIntent(message.content) && !isGeneralConceptQuestion(message.content)
-  );
-  return previous ? `${previous.content}\n追问：${question}` : question;
+  const refersBack = /^(那|它|这个|这些|再|具体|详细|展开|还有|为什么|what about|how (does|did) (it|he)|tell me more|more detail|and |why)/i.test(question);
+  const newTopic = /国华|guohua|zheng|场景购|scenecart|redflow|小红书|fitlog|练一下|随手记|codex widget|tako|联系|邮箱|教育|学校|科研|论文|天气|音乐|滑雪|contact|email|weather|education|research/i.test(question);
+  if (question.length > 100 || !refersBack || newTopic) return question;
+  const previousIndex = messages.findLastIndex((message, index) => index < messages.length - 1 && message.role === "user");
+  if (previousIndex < 0) return question;
+  const previous = retrievalQuestion(messages.slice(0, previousIndex + 1));
+  return hasProfileIntent(previous) && !isGeneralConceptQuestion(previous) ? `${previous}\n追问：${question}` : question;
 }
 
 function sanitizeHistory(messages: unknown): ChatMessage[] {
@@ -635,7 +645,7 @@ export async function POST(request: NextRequest) {
     const query = retrievalQuestion(messages);
     const retrievedChunks = retrieveRelevantChunks(query, 5, locale);
     const retrievalConfidence = getRetrievalConfidence(retrievedChunks);
-    const isProfileQuestion = !isGeneralConceptQuestion(latestUserMessage.content) &&
+    const isProfileQuestion = !isGeneralConceptQuestion(query) &&
       (hasProfileIntent(query) || retrievalConfidence !== "low");
     const rankedChunks = isProfileQuestion ? retrievedChunks : [];
     const sources = toSources(rankedChunks);

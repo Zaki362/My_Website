@@ -1,6 +1,6 @@
 # 郑国华｜中文个人网站
 
-一个基于 Next.js App Router、TypeScript、Tailwind CSS 和 Framer Motion 构建的中文个人品牌站。整体风格偏向克制的深色未来感，适合用于展示 AI 产品、Agent、AIGC 与研究背景。
+一个基于 Next.js App Router、TypeScript、Tailwind CSS 和 Framer Motion 构建的中文个人品牌站。整体采用浅色背景、紫色交互强调与清晰的内容层级，适合用于展示 AI 产品、Agent、AIGC 与研究背景。
 
 ## 技术栈
 
@@ -30,6 +30,7 @@ npm run dev
 npm run build
 npm run start
 npm run lint
+npm test
 ```
 
 ## 项目结构
@@ -156,6 +157,16 @@ DEEPSEEK_MODEL=deepseek-chat
 
 Agent 通过 [app/api/agent/route.ts](/Users/guohuaz/My_Website/app/api/agent/route.ts) 在服务端调用 DeepSeek，不会在前端暴露 API Key。
 
+## Agent 故障检查
+
+- 身份、问候、能力介绍直接回复，不依赖模型服务。资料问答在模型故障时返回站内资料摘录，并显示来源；普通问题无法可靠回答时返回可重试错误。
+- DeepSeek 优先；若已配置 OpenAI，主服务失败后会尝试备用服务。空值和模板密钥不会被当成有效配置。
+- 单服务最多等待 20 秒，模型调用总预算 30 秒；浏览器 35 秒超时。JSON 输出为空、截断或格式不合法时，在同一预算内最多尝试一次兼容请求。
+- 查看服务端 `[agent:model]` 日志：`authentication` 为鉴权失败，`quota` 为额度问题，`rate_limit` 为上游限流，`timeout` 为超时，`not_configured` 为没有有效配置。日志仅记录故障分类、服务商、状态码与耗时，不记录密钥或聊天内容。
+- `npm test` 使用模拟服务覆盖断网、鉴权、超时、空输出、追问、话题切换、输入边界和表单转发异常，不会调用真实模型或发送简历申请。
+- 两个接口的内存限流均设有容量和有效期，仅提供单实例保护；需要跨实例统一配额时，应另接共享存储。
+- 本地环境与 Vercel Production 环境分别配置。修改本地代码或 `.env.local` 不会改变线上服务；发布按项目授权流程进行。
+
 ## 部署到 Vercel
 
 1. 将代码推送到 GitHub 仓库。
@@ -177,7 +188,7 @@ Agent 通过 [app/api/agent/route.ts](/Users/guohuaz/My_Website/app/api/agent/ro
 
 ## 设计说明
 
-- 整体采用深色背景、冷白文字、电光蓝与青紫渐变点缀
+- 整体采用暖白背景、深色正文与紫色交互强调
 - 使用轻度玻璃拟态、微光边框、局部模糊光斑与低调网格纹理
 - 动效以淡入、上移、滚动 reveal、卡片 hover 和顺滑展开为主
 - 文案以“产品思维 + 研究表达 + AI-native 气质”为核心，不做模板化简历铺陈

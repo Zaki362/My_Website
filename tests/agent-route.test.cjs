@@ -37,7 +37,7 @@ test("failure gives relevant public evidence or an honest retryable error", asyn
   const h = harness();
   const profile = await h.send("怎么联系国华？"); const data = await profile.json();
   assert.equal(profile.status, 200); assert.equal(data.fallback, true); assert.ok(data.sources.length);
-  assert.match(data.reply, /邮箱|163.com/); assert.doesNotMatch(data.reply, /散步/);
+  assert.ok(data.reply.includes(h.load(path.join(root, "data/profile.ts")).contactData.email)); assert.doesNotMatch(data.reply, /散步/);
   for (const q of ["什么是RAG", "什么是个性化推荐？", "怎么找工作", "今天天气怎么样"]) {
     const response = await h.send(q); assert.equal(response.status, 503);
     const failure = await response.json(); assert.equal(failure.mode, "general"); assert.equal(failure.sources.length, 0); assert.doesNotMatch(failure.reply, /散步/);
@@ -53,6 +53,9 @@ test("follow-ups retain their project and context stays bounded and single-langu
     const chunks = retrieval.retrieveRelevantChunks("What projects has Guohua built?", 8, locale);
     assert.ok(!chunks.some(({ chunk }) => chunk.id.endsWith(locale === "zh" ? "-en" : "-zh")));
     assert.ok(retrieval.formatChunksForPrompt(chunks).length <= 5000);
+    const work = retrieval.retrieveRelevantChunks("国华的 Agent 实习经历", 8, locale);
+    const ids = work.map(({ chunk }) => chunk.id.match(/^(?:site-)?experience-(\d+)(?:-overview)?$/)?.[1]).filter(Boolean);
+    assert.equal(new Set(ids).size, ids.length);
   }
 });
 test("malformed and overlong input is rejected before generation; 429 includes cooldown", async () => {
@@ -63,4 +66,16 @@ test("malformed and overlong input is rejected before generation; 429 includes c
   const body = JSON.stringify({ messages: [{ role: "user", content: "你好" }] });
   for (let i = 0; i < 10; i++) assert.equal((await h.POST(raw(body))).status, 200);
   const limit = await h.POST(raw(body)); assert.equal(limit.status, 429); assert.ok(Number(limit.headers.get("Retry-After")) > 0);
+});
+
+test("changing topics breaks profile context while direct contact questions remain focused", async () => {
+  const h = harness();
+  const history = [{ role: "user", content: "介绍国华的场景购项目" }, { role: "assistant", content: "项目简介" }, { role: "user", content: "今天天气怎么样" }];
+  const changed = await h.send("那明天呢？", "zh", history);
+  assert.equal(changed.status, 503); assert.equal((await changed.json()).mode, "general");
+  const contact = await (await h.send("那怎么联系国华？", "zh", history.slice(0, 2))).json();
+  assert.ok(contact.reply.includes(h.load(path.join(root, "data/profile.ts")).contactData.email)); assert.equal(contact.sources[0].category, "contact");
+  const music = await h.send("推荐几首适合跑步听的音乐"); assert.equal(music.status, 503);
+  const followup = await h.send("How does it work?", "en", [{ role: "user", content: "Tell me about Guohua's SceneCart project" }]);
+  assert.equal((await followup.json()).mode, "profile");
 });
