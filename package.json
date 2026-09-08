@@ -14,7 +14,8 @@
     "lucide-react": "^0.511.0",
     "next": "^15.5.21",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.185.1"
   },
   "overrides": {
     "next": {
@@ -27,6 +28,7 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
+    "@types/three": "^0.185.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.1",
     "eslint-config-next": "^15.3.1",

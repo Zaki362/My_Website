@@ -11,6 +11,8 @@ import { AgentSprite } from "@/components/agent/AgentSprite";
 import { AgentThinking } from "@/components/agent/AgentThinking";
 import { useLanguage } from "@/components/language-provider";
 import type { AgentAction, AgentResponse } from "@/lib/agent/types";
+import { cn } from "@/components/agent/cn";
+import styles from "./studio-agent.module.css";
 
 type Message = {
   role: "user" | "assistant";
@@ -22,6 +24,8 @@ type AgentDialogProps = {
   open: boolean;
   onClose: () => void;
   onMinimize: () => void;
+  appearance?: "default" | "studio";
+  night?: boolean;
 };
 
 const MAX_INPUT_LENGTH = 500;
@@ -75,7 +79,7 @@ const agentDialogCopy = {
   }
 } as const;
 
-export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
+export function AgentDialog({ open, onClose, onMinimize, appearance = "default", night = false }: AgentDialogProps) {
   const { locale } = useLanguage();
   const profile = agentProfiles[locale];
   const copy = agentDialogCopy[locale];
@@ -93,6 +97,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
   const requestRef = useRef<AbortController | null>(null);
   const requestIdRef = useRef(0);
   const reduceMotion = useReducedMotion();
+  const isStudio = appearance === "studio";
 
   const canSend = input.trim().length > 0 && input.trim().length <= MAX_INPUT_LENGTH && !loading;
   const remaining = MAX_INPUT_LENGTH - input.trim().length;
@@ -325,33 +330,35 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
           exit={reduceMotion ? undefined : { opacity: 0, y: 18, scale: 0.92 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: "100% 100%" }}
-          className="fixed inset-x-3 bottom-3 z-[80] flex h-[min(680px,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-xl border border-violet-200/70 bg-[#fffefd] shadow-[0_28px_80px_rgba(72,58,120,0.16)] md:inset-x-auto md:bottom-6 md:right-6 md:h-[min(620px,calc(100dvh-3rem))] md:w-[430px]"
+          className={cn("fixed inset-x-3 bottom-3 z-[80] flex h-[min(680px,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-xl border border-violet-200/70 bg-[#fffefd] shadow-[0_28px_80px_rgba(72,58,120,0.16)] md:inset-x-auto md:bottom-6 md:right-6 md:h-[min(620px,calc(100dvh-3rem))] md:w-[430px]", isStudio && styles.studio)}
+          data-studio-agent={isStudio || undefined}
+          data-night={isStudio ? night : undefined}
           aria-label={copy.windowLabel}
           role="dialog"
         >
-          <header className="relative shrink-0 overflow-hidden border-b border-violet-200/60 bg-[#f7f5fc] px-3 py-3 md:px-4">
-            <span className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-violet-400" />
-            <span className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[#eef7f5] opacity-70" />
+          <header data-agent-part="header" className="relative shrink-0 overflow-hidden border-b border-violet-200/60 bg-[#f7f5fc] px-3 py-3 md:px-4">
+            <span data-agent-part="stripe" className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-violet-400" />
+            <span data-agent-part="header-glow" className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[#eef7f5] opacity-70" />
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-2">
                 <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
                   <AgentSprite state={loading ? "thinking" : "curious"} />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[9px] font-semibold uppercase text-violet-600/70">
-                    {copy.eyebrow}
+                  <p data-agent-part="eyebrow" className="text-[9px] font-semibold uppercase text-violet-600/70">
+                    {isStudio ? "STUDIO COMPANION" : copy.eyebrow}
                   </p>
-                  <p className="mt-0.5 truncate font-display text-sm font-[620] leading-6 text-stone-950 md:text-base">
+                  <p data-agent-part="name" className="mt-0.5 truncate font-display text-sm font-[620] leading-6 text-stone-950 md:text-base">
                     {profile.agentName}
                   </p>
-                  <p className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-4 text-stone-600" role="status">
-                    <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${lastMessage?.error ? "bg-amber-500" : "bg-violet-400"}`} />
+                  <p data-agent-part="capability" className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-4 text-stone-600" role="status">
+                    <span data-agent-part="status-dot" data-error={lastMessage?.error || undefined} className={`h-1.5 w-1.5 shrink-0 rounded-full ${lastMessage?.error ? "bg-amber-500" : "bg-violet-400"}`} />
                     <span className="truncate">{status}</span>
                   </p>
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center gap-1.5">
+              <div data-agent-part="controls" className="flex shrink-0 items-center gap-1.5">
                 <button
                   type="button"
                   onClick={onMinimize}
@@ -372,7 +379,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             </div>
           </header>
 
-          <div ref={scrollRef} className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 md:px-5" role="log" aria-label={locale === "zh" ? "对话记录" : "Conversation"} aria-live="polite">
+          <div ref={scrollRef} data-agent-part="messages" className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 md:px-5" role="log" aria-label={locale === "zh" ? "对话记录" : "Conversation"} aria-live="polite">
             {messages.map((message, index) => {
               const suggestions =
                 index === 0 && !hasConversation
@@ -382,7 +389,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                     : [];
 
               return (
-                <div key={`${message.role}-${index}`}>
+                <div key={`${message.role}-${index}`} data-agent-part="message" data-message-role={message.role}>
                   <ChatMessage
                     role={message.role}
                     content={message.content}
@@ -402,9 +409,9 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                     </button>
                   ) : null}
                   {suggestions.length ? (
-                  <div className="mt-3">
+                  <div data-agent-part="suggestions" data-variant={index === 0 ? "starter" : "followup"} className="mt-3">
                     {index === 0 ? (
-                      <p className="mb-2 text-[10px] font-semibold uppercase text-stone-400">
+                      <p data-agent-part="starter-title" className="mb-2 text-[10px] font-semibold uppercase text-stone-400">
                         {copy.starterTitle}
                       </p>
                     ) : null}
@@ -421,23 +428,24 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
             })}
 
             {loading ? (
-              <AgentThinking phase={thinkingPhase} locale={locale} />
+              <div data-agent-part="thinking"><AgentThinking phase={thinkingPhase} locale={locale} /></div>
             ) : null}
           </div>
 
           <form
+            data-agent-part="composer"
             className="shrink-0 border-t border-violet-200/60 bg-[#fbfaff] px-4 py-3.5 md:px-5"
             onSubmit={(event) => {
               event.preventDefault();
               void submitQuestion(input);
             }}
           >
-            <div className="mb-2 flex min-h-5 items-center justify-between gap-2 text-[10px] text-stone-500">
+            <div data-agent-part="helper" className="mb-2 flex min-h-5 items-center justify-between gap-2 text-[10px] text-stone-500">
               <span>{copy.helper}</span>
               {hasConversation ? <button type="button" onClick={resetConversation} className="inline-flex shrink-0 items-center gap-1 rounded py-1 text-violet-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500" aria-label={copy.clearLabel}><RotateCcw className="h-3 w-3" />{locale === "zh" ? "新对话" : "New chat"}</button> : null}
               {remaining < 100 ? <span>{remaining}</span> : null}
             </div>
-            <div className="flex items-end gap-2 rounded-lg border border-violet-200/70 bg-white p-1.5 transition focus-within:border-violet-400 focus-within:shadow-[0_8px_24px_rgba(70,55,120,0.08)]">
+            <div data-agent-part="input-shell" className="flex items-end gap-2 rounded-lg border border-violet-200/70 bg-white p-1.5 transition focus-within:border-violet-400 focus-within:shadow-[0_8px_24px_rgba(70,55,120,0.08)]">
               <textarea
                 ref={inputRef}
                 value={input}
@@ -462,6 +470,7 @@ export function AgentDialog({ open, onClose, onMinimize }: AgentDialogProps) {
                 className="min-h-[44px] min-w-0 flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 text-stone-800 outline-none placeholder:text-stone-400 md:text-sm"
               />
               <button
+                data-agent-part="send"
                 type={loading ? "button" : "submit"}
                 disabled={!loading && !canSend}
                 onClick={loading ? () => { cancelRequest(); setMessages((current) => [...current, { role: "assistant", content: copy.cancelled, error: true }]); } : undefined}
