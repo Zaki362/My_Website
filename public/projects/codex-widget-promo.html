@@ -1,0 +1,1528 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Codex Quota 是一款 macOS 菜单栏应用与桌面小组件，让 Codex 的五小时额度、周额度、重置时间和消耗趋势始终可见。"
+    />
+    <meta name="theme-color" content="#101512" />
+    <title>Codex Quota — 桌面上的 Codex 额度油表</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #101512;
+        --ink-soft: #3f4a43;
+        --muted: #667169;
+        --paper: #f3f6f1;
+        --surface: #fbfdf9;
+        --surface-strong: #ffffff;
+        --line: #ccd5cd;
+        --line-strong: #aeb9b0;
+        --green: #35d58a;
+        --green-dark: #126f45;
+        --green-deep: #0c4f32;
+        --cyan: #70d9e3;
+        --graphite: #101512;
+        --graphite-soft: #19201c;
+        --focus: #0969da;
+        --page: min(1180px, calc(100vw - 48px));
+        --display: "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+        --body: "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 96px;
+      }
+
+      body {
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: var(--green);
+        color: #07140d;
+      }
+
+      ::-webkit-scrollbar {
+        width: 11px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #e4e9e3;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border: 3px solid #e4e9e3;
+        border-radius: 999px;
+        background: #78847b;
+      }
+
+      a,
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 4px;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      img,
+      svg {
+        display: block;
+      }
+
+      .scroll-progress {
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        transform: scaleX(0);
+        transform-origin: left;
+        background: var(--green);
+      }
+
+      .site-nav {
+        position: sticky;
+        z-index: 90;
+        top: 0;
+        border-bottom: 1px solid rgba(16, 21, 18, 0.12);
+        background: rgba(243, 246, 241, 0.88);
+        backdrop-filter: blur(18px) saturate(140%);
+      }
+
+      .nav-inner {
+        width: var(--page);
+        min-height: 74px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        flex: 0 0 auto;
+        text-decoration: none;
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-mark {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 10px;
+        background: var(--graphite);
+        box-shadow: 0 7px 17px rgba(16, 21, 18, 0.18);
+      }
+
+      .brand-mark::before,
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+      }
+
+      .brand-mark::before {
+        inset: 8px;
+        border: 3px solid var(--green);
+        border-left-color: rgba(53, 213, 138, 0.18);
+        transform: rotate(38deg);
+      }
+
+      .brand-mark::after {
+        right: 5px;
+        bottom: 5px;
+        width: 6px;
+        height: 6px;
+        background: var(--cyan);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        margin-left: auto;
+      }
+
+      .nav-links a {
+        position: relative;
+        color: var(--ink-soft);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -9px;
+        left: 0;
+        height: 2px;
+        transform: scaleX(0);
+        background: var(--green-dark);
+        transition: transform 180ms ease-out;
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a[aria-current="true"]::after {
+        transform: scaleX(1);
+      }
+
+      .nav-github,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        padding: 0 17px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition:
+          transform 180ms ease-out,
+          box-shadow 180ms ease-out,
+          border-color 180ms ease-out,
+          background 180ms ease-out;
+      }
+
+      .nav-github,
+      .button-primary {
+        background: var(--graphite);
+        color: #f8fff9;
+        box-shadow: 0 8px 22px rgba(16, 21, 18, 0.18);
+      }
+
+      .nav-github:hover,
+      .button-primary:hover {
+        transform: translateY(-2px);
+        background: #1b251f;
+        box-shadow: 0 13px 28px rgba(16, 21, 18, 0.22);
+      }
+
+      .button-secondary {
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.66);
+        color: var(--ink);
+      }
+
+      .button-secondary:hover {
+        transform: translateY(-2px);
+        border-color: #7c897f;
+        background: var(--surface-strong);
+        box-shadow: 0 10px 24px rgba(16, 21, 18, 0.1);
+      }
+
+      .icon {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 auto;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      main {
+        overflow: hidden;
+      }
+
+      .hero {
+        width: var(--page);
+        margin: 0 auto;
+        padding: 86px 0 100px;
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
+        align-items: center;
+        gap: clamp(46px, 7vw, 92px);
+      }
+
+      .hero-copy h1 {
+        max-width: 740px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(3.35rem, 5vw, 4.5rem);
+        font-weight: 720;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .hero-copy h1 .accent {
+        color: var(--green-dark);
+      }
+
+      .hero-line {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .hero-copy > p {
+        max-width: 610px;
+        margin: 29px 0 0;
+        color: var(--ink-soft);
+        font-size: 18px;
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .hero-proof {
+        margin-top: 38px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 26px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .hero-proof span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hero-proof i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green-dark);
+      }
+
+      .desktop-stage {
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 42%),
+          radial-gradient(circle at 72% 31%, rgba(53, 213, 138, 0.18), transparent 35%),
+          radial-gradient(circle at 20% 75%, rgba(112, 217, 227, 0.11), transparent 32%),
+          #101512;
+        box-shadow: 0 34px 70px rgba(16, 21, 18, 0.25);
+        clip-path: inset(0 0 100% 0 round 30px);
+        animation: stage-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) 160ms forwards;
+      }
+
+      @keyframes stage-reveal {
+        to {
+          clip-path: inset(0 0 0 0 round 30px);
+        }
+      }
+
+      .stage-menu {
+        height: 38px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 10px;
+      }
+
+      .stage-menu-left,
+      .stage-menu-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .stage-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      .quota-widget {
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        background: rgba(249, 252, 248, 0.9);
+        color: var(--ink);
+        backdrop-filter: blur(24px) saturate(130%);
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .widget-medium {
+        top: 108px;
+        left: 50%;
+        width: min(480px, calc(100% - 54px));
+        min-height: 242px;
+        transform: translateX(-50%) rotate(-1deg);
+        border-radius: 28px;
+        padding: 23px 24px;
+      }
+
+      .widget-small {
+        right: 27px;
+        bottom: 28px;
+        width: 206px;
+        min-height: 216px;
+        transform: rotate(2.4deg);
+        border-radius: 26px;
+        padding: 19px;
+      }
+
+      .widget-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .widget-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 730;
+        letter-spacing: -0.02em;
+      }
+
+      .status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 5px rgba(53, 213, 138, 0.13);
+      }
+
+      .widget-time {
+        color: #657168;
+        font-size: 10px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-row {
+        margin-top: 18px;
+      }
+
+      .quota-row + .quota-row {
+        margin-top: 13px;
+      }
+
+      .quota-line {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .quota-label {
+        color: #414c44;
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .quota-value {
+        font-family: var(--display);
+        font-size: 19px;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #dce4dc;
+      }
+
+      .track > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--green-dark);
+      }
+
+      .quota-progress-line {
+        margin-top: 7px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .reset-label {
+        min-width: 45px;
+        color: #758078;
+        font-size: 9px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .medium-body {
+        min-height: 194px;
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        gap: 22px;
+      }
+
+      .medium-limits {
+        min-width: 0;
+      }
+
+      .medium-trend {
+        min-width: 0;
+        border-left: 1px solid #d4ddd5;
+        padding-left: 20px;
+      }
+
+      .trend-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .trend-title {
+        font-size: 12px;
+        font-weight: 720;
+      }
+
+      .trend-average {
+        color: #6b766e;
+        font-size: 9px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .trend {
+        position: relative;
+        height: 78px;
+        margin-top: 21px;
+        border-top: 1px solid #d7dfd8;
+        padding-top: 12px;
+      }
+
+      .medium-trend .trend {
+        height: 145px;
+        margin-top: 14px;
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .medium-trend .trend svg {
+        height: 120px;
+      }
+
+      .trend svg {
+        width: 100%;
+        height: 46px;
+        overflow: visible;
+      }
+
+      .small-percentage {
+        margin-top: 21px;
+        font-family: var(--display);
+        font-size: 42px;
+        font-weight: 760;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .small-label {
+        margin-top: 8px;
+        color: #566259;
+        font-size: 11px;
+      }
+
+      .stage-caption {
+        position: absolute;
+        bottom: 33px;
+        left: 30px;
+        max-width: 230px;
+        color: rgba(239, 250, 241, 0.64);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .section {
+        padding: 112px 0;
+      }
+
+      .section-inner {
+        width: var(--page);
+        margin: 0 auto;
+      }
+
+      .section-heading {
+        max-width: 790px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(2.5rem, 5vw, 4.6rem);
+        font-weight: 720;
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .section-lead {
+        max-width: 70ch;
+        margin: 26px 0 0;
+        color: var(--ink-soft);
+        font-size: 17px;
+        line-height: 1.8;
+      }
+
+      .problem-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(250px, 0.58fr) minmax(0, 1.42fr);
+        gap: 72px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .problem-note {
+        position: sticky;
+        top: 118px;
+        align-self: start;
+        padding-top: 28px;
+      }
+
+      .problem-note strong {
+        display: block;
+        max-width: 13ch;
+        font-family: var(--display);
+        font-size: 27px;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+      }
+
+      .problem-note p {
+        max-width: 33ch;
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .benefit-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .benefit-list li {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 20px;
+        padding: 27px 0 30px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .benefit-icon {
+        width: 42px;
+        height: 42px;
+        border: 1px solid #b5c1b7;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        color: var(--green-deep);
+        background: rgba(255, 255, 255, 0.48);
+      }
+
+      .benefit-list h3 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: 22px;
+        letter-spacing: -0.025em;
+      }
+
+      .benefit-list p {
+        max-width: 62ch;
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .product-section {
+        border-block: 1px solid var(--line);
+        background: #e8ede7;
+      }
+
+      .product-layout {
+        margin-top: 64px;
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 62px;
+        align-items: center;
+      }
+
+      .product-canvas {
+        position: relative;
+        min-height: 560px;
+        overflow: hidden;
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 18% 16%, rgba(112, 217, 227, 0.19), transparent 28%),
+          radial-gradient(circle at 80% 78%, rgba(53, 213, 138, 0.16), transparent 32%),
+          #d8e0d9;
+        box-shadow: 0 27px 58px rgba(16, 21, 18, 0.14);
+      }
+
+      .product-canvas .quota-widget {
+        box-shadow: 0 24px 56px rgba(37, 48, 40, 0.18);
+      }
+
+      .product-canvas .widget-medium {
+        top: 66px;
+      }
+
+      .product-canvas .widget-small {
+        bottom: 45px;
+      }
+
+      .product-facts {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .product-fact {
+        padding: 25px 0;
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .product-fact h3 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: 21px;
+        letter-spacing: -0.025em;
+      }
+
+      .product-fact p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .usage-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
+        gap: 72px;
+      }
+
+      .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: usage;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .steps li {
+        counter-increment: usage;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 18px;
+        padding: 25px 0 28px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .steps li::before {
+        content: "0" counter(usage);
+        color: var(--green-dark);
+        font-size: 12px;
+        font-weight: 750;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .steps h3 {
+        margin: -4px 0 0;
+        font-family: var(--display);
+        font-size: 21px;
+        letter-spacing: -0.025em;
+      }
+
+      .steps p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .install-panel {
+        position: sticky;
+        top: 112px;
+        align-self: start;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        background: var(--graphite);
+        color: #f3f8f4;
+        box-shadow: 0 24px 50px rgba(16, 21, 18, 0.18);
+      }
+
+      .install-titlebar {
+        min-height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: #aab8ae;
+        font-size: 11px;
+      }
+
+      .window-controls {
+        display: flex;
+        gap: 6px;
+      }
+
+      .window-controls i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #718077;
+      }
+
+      .install-code {
+        min-height: 220px;
+        padding: 26px;
+        overflow-x: auto;
+        color: #d9e8dc;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+      }
+
+      .install-code .prompt {
+        color: var(--green);
+      }
+
+      .copy-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 15px 16px;
+      }
+
+      .copy-status {
+        color: #9ead9f;
+        font-size: 11px;
+      }
+
+      .copy-button {
+        min-height: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 0 12px;
+        background: rgba(255, 255, 255, 0.07);
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .copy-button:hover {
+        border-color: rgba(255, 255, 255, 0.36);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .requirements {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.75;
+      }
+
+      .evidence-section {
+        border-top: 1px solid var(--line);
+        background: #e8ede7;
+      }
+
+      .evidence-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+        align-items: center;
+        gap: 82px;
+      }
+
+      .poster-frame {
+        position: relative;
+        padding: 15px;
+        border-radius: 28px;
+        background: #fafcf9;
+        box-shadow: 0 30px 70px rgba(16, 21, 18, 0.2);
+        transform: rotate(-1.2deg);
+      }
+
+      .poster-frame img {
+        width: 100%;
+        height: auto;
+        border-radius: 17px;
+      }
+
+      .poster-frame figcaption {
+        padding: 14px 7px 2px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .evidence-copy > p {
+        max-width: 59ch;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .evidence-metrics {
+        margin-top: 42px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .evidence-metric {
+        display: grid;
+        grid-template-columns: 135px minmax(0, 1fr);
+        gap: 28px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--line-strong);
+        align-items: baseline;
+      }
+
+      .evidence-metric strong {
+        font-family: var(--display);
+        color: var(--green-deep);
+        font-size: 28px;
+        letter-spacing: -0.035em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .evidence-metric span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .final-cta {
+        padding: 118px 0;
+        background: var(--surface);
+      }
+
+      .final-panel {
+        width: var(--page);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 50px;
+        padding-top: 48px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .final-panel h2 {
+        max-width: 800px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(2.7rem, 5.5vw, 5.3rem);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .final-panel p {
+        max-width: 60ch;
+        margin: 23px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .final-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 11px;
+        min-width: 190px;
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .footer-inner {
+        width: var(--page);
+        min-height: 84px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .footer-inner a {
+        color: var(--ink-soft);
+        text-underline-offset: 4px;
+      }
+
+      @media (max-width: 980px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 64px;
+        }
+
+        .hero-copy {
+          max-width: 760px;
+        }
+
+        .desktop-stage {
+          min-height: 520px;
+        }
+
+        .problem-layout,
+        .product-layout,
+        .usage-layout,
+        .evidence-layout {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+
+        .problem-note,
+        .install-panel {
+          position: static;
+        }
+
+        .problem-note strong {
+          max-width: 20ch;
+        }
+
+        .evidence-layout {
+          grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+          gap: 46px;
+        }
+
+        .final-panel {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .final-actions {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 720px) {
+        :root {
+          --page: min(100% - 30px, 1180px);
+        }
+
+        html {
+          scroll-padding-top: 78px;
+        }
+
+        .nav-inner {
+          min-height: 64px;
+        }
+
+        .brand {
+          font-size: 14px;
+        }
+
+        .brand-mark {
+          width: 31px;
+          height: 31px;
+          border-radius: 9px;
+        }
+
+        .nav-github {
+          min-height: 39px;
+          padding: 0 13px;
+          font-size: 12px;
+        }
+
+        .hero {
+          padding: 36px 0 58px;
+          gap: 28px;
+        }
+
+        .hero-copy h1 {
+          font-size: clamp(2.55rem, 11.5vw, 3.35rem);
+        }
+
+        .hero-copy > p {
+          margin-top: 23px;
+          font-size: 15px;
+          line-height: 1.62;
+        }
+
+        .hero-actions {
+          margin-top: 25px;
+        }
+
+        .button {
+          min-height: 46px;
+        }
+
+        .hero-proof {
+          margin-top: 26px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px 16px;
+        }
+
+        .desktop-stage {
+          min-height: 352px;
+          border-radius: 22px;
+        }
+
+        .widget-medium {
+          top: 54px;
+          width: calc(100% - 30px);
+          min-height: 205px;
+          border-radius: 22px;
+          padding: 17px;
+        }
+
+        .desktop-stage .widget-small {
+          display: none;
+        }
+
+        .medium-body {
+          min-height: 170px;
+          grid-template-columns: 0.94fr 1.06fr;
+          gap: 13px;
+        }
+
+        .medium-trend {
+          padding-left: 12px;
+        }
+
+        .widget-medium .widget-name {
+          font-size: 13px;
+        }
+
+        .widget-medium .widget-time,
+        .widget-medium .reset-label,
+        .widget-medium .trend-average {
+          display: none;
+        }
+
+        .widget-medium .quota-row {
+          margin-top: 14px;
+        }
+
+        .widget-medium .quota-row + .quota-row {
+          margin-top: 11px;
+        }
+
+        .widget-medium .quota-label,
+        .widget-medium .trend-title {
+          font-size: 10px;
+        }
+
+        .widget-medium .quota-value {
+          font-size: 16px;
+        }
+
+        .medium-trend .trend {
+          height: 125px;
+          margin-top: 8px;
+        }
+
+        .medium-trend .trend svg {
+          height: 104px;
+        }
+
+        .stage-caption {
+          right: 20px;
+          bottom: 19px;
+          left: 20px;
+          max-width: none;
+        }
+
+        .section {
+          padding: 70px 0;
+        }
+
+        .section-heading {
+          font-size: clamp(2.1rem, 9.8vw, 3rem);
+        }
+
+        .section-lead {
+          margin-top: 21px;
+          font-size: 15px;
+        }
+
+        .problem-layout,
+        .product-layout,
+        .usage-layout,
+        .evidence-layout {
+          margin-top: 45px;
+        }
+
+        .product-canvas {
+          min-height: 470px;
+        }
+
+        .product-canvas .widget-medium {
+          top: 52px;
+        }
+
+        .evidence-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .poster-frame {
+          width: min(88%, 430px);
+          margin: 0 auto;
+        }
+
+        .evidence-metric {
+          grid-template-columns: 105px minmax(0, 1fr);
+        }
+
+        .final-cta {
+          padding: 74px 0;
+        }
+
+        .final-panel {
+          gap: 38px;
+          padding-top: 36px;
+        }
+
+        .final-actions {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .footer-inner {
+          min-height: 104px;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 9px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        .desktop-stage {
+          clip-path: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      DIRECTION CONTRACT
+      THESIS: Codex Quota is the quiet production fuel gauge for people whose workday runs through Codex.
+      OWN-WORLD: native macOS utility; cold paper, deep graphite desktop, precise green quota feedback, one restrained cyan signal.
+      STORY: expose the hidden quota problem, prove real adoption, show the glanceable widget, then make installation concrete.
+      FIRST VIEWPORT: the product promise and a faithful quota widget are visible together; GitHub is the unmistakable primary action.
+      FORM: editorial product page with ruled evidence, native widget surfaces, technical pipeline, real product art, and a three-step install sequence.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+    -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <header class="site-nav">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Codex Quota 回到顶部">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Codex Quota</span>
+        </a>
+        <nav class="nav-links" aria-label="页面导航">
+          <a href="#evidence">项目成果</a>
+          <a href="#product">产品</a>
+          <a href="#usage">使用方式</a>
+        </nav>
+        <a class="nav-github" href="https://github.com/Zaki362/codex-widget" target="_blank" rel="noreferrer">
+          GitHub
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">
+            <span class="hero-line">别再打开设置</span>
+            <span class="hero-line">桌面组件直接看</span>
+            <span class="hero-line accent">还剩多少</span>
+          </h1>
+          <p>
+            Codex Quota 把五小时额度、周额度、重置时间和近五天消耗趋势放到 macOS 桌面。工作正投入时，扫一眼就能决定继续推进，还是安排下一段任务。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/Zaki362/codex-widget" target="_blank" rel="noreferrer">
+              前往 GitHub 安装
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            </a>
+            <a class="button button-secondary" href="#usage">
+              查看使用方式
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </a>
+          </div>
+          <div class="hero-proof" aria-label="产品信息">
+            <span><i aria-hidden="true"></i>macOS 14+</span>
+            <span><i aria-hidden="true"></i>菜单栏 App + 桌面 Widget</span>
+            <span><i aria-hidden="true"></i>本地优先</span>
+            <span><i aria-hidden="true"></i>开源</span>
+          </div>
+        </div>
+
+        <div class="desktop-stage" aria-label="Codex Quota 中号和小号组件示意">
+          <div class="stage-menu" aria-hidden="true">
+            <div class="stage-menu-left"><span class="stage-dot"></span><span>Finder</span><span>File</span><span>View</span></div>
+            <div class="stage-menu-right"><span>Wed Aug 30</span><span>10:09</span></div>
+          </div>
+          <div class="quota-widget widget-medium">
+            <div class="medium-body">
+              <div class="medium-limits">
+                <div class="widget-head"><div class="widget-name"><span class="status-dot"></span>Codex</div><div class="widget-time">10:08</div></div>
+                <div class="quota-row"><div class="quota-line"><span class="quota-label">5 小时</span><span class="quota-value">72%</span></div><div class="quota-progress-line"><div class="track"><span style="width: 72%"></span></div><span class="reset-label">1h 24m</span></div></div>
+                <div class="quota-row"><div class="quota-line"><span class="quota-label">周限额</span><span class="quota-value">58%</span></div><div class="quota-progress-line"><div class="track"><span style="width: 58%"></span></div><span class="reset-label">3d 18h</span></div></div>
+              </div>
+              <div class="medium-trend">
+                <div class="trend-head"><span class="trend-title">近 5 天趋势</span><span class="trend-average">日均 42.6M</span></div>
+                <div class="trend" aria-label="近五天 token 消耗趋势"><svg viewBox="0 0 220 120" role="img" aria-hidden="true"><path d="M2 104H218M2 58H218M2 12H218" stroke="#d4ddd5" stroke-width="1" /><path d="M5 99C34 94 47 105 69 84S106 74 124 54 151 20 171 28s21 55 44 58" stroke="#147a4c" stroke-width="4" fill="none" stroke-linecap="round" /><circle cx="5" cy="99" r="3" fill="#147a4c"/><circle cx="69" cy="84" r="3" fill="#147a4c"/><circle cx="124" cy="54" r="3" fill="#147a4c"/><circle cx="171" cy="28" r="3" fill="#147a4c"/><circle cx="215" cy="86" r="3" fill="#147a4c"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div class="quota-widget widget-small">
+            <div class="widget-head"><div class="widget-name"><span class="status-dot"></span>Codex</div><div class="widget-time">10:08</div></div>
+            <div class="quota-row"><div class="quota-line"><span class="quota-label">5 小时</span><span class="quota-value">72%</span></div><div class="quota-progress-line"><div class="track"><span style="width:72%"></span></div><span class="reset-label">1h 24m</span></div></div>
+            <div class="quota-row"><div class="quota-line"><span class="quota-label">周限额</span><span class="quota-value">58%</span></div><div class="quota-progress-line"><div class="track"><span style="width:58%"></span></div><span class="reset-label">3d 18h</span></div></div>
+          </div>
+          <p class="stage-caption">像系统状态一样自然地留在桌面，而不是打断工作的另一块仪表盘。</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="why-title">
+        <div class="section-inner">
+          <h2 class="section-heading" id="why-title">额度不是设置项。<br />它是工作节奏的一部分。</h2>
+          <p class="section-lead">
+            当 Codex 成为高频协作工具，隐藏在设置页里的额度会直接影响任务怎么拆、什么时候继续、何时切换工作。Codex Quota 把这段判断压缩成一次自然的桌面扫视。
+          </p>
+          <div class="problem-layout">
+            <aside class="problem-note">
+              <strong>为 macOS 上的 Codex 重度用户设计。</strong>
+              <p>少一次上下文切换，多保留一点专注。它不替你管理工作，只把真正影响工作的信息放到眼前。</p>
+            </aside>
+            <ul class="benefit-list">
+              <li>
+                <span class="benefit-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" /></svg></span>
+                <div><h3>一眼读取，而不是反复查找</h3><p>小号组件保留当下最关键的额度值；中号组件补充周限额、重置时间和近期趋势，信息深度随组件尺寸自然变化。</p></div>
+              </li>
+              <li>
+                <span class="benefit-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m5 13v-7m5 7V3" /></svg></span>
+                <div><h3>把瞬时额度变成可理解的趋势</h3><p>除了剩余百分比，还汇总最近五个已完成自然日的 token 消耗与日均值，帮助你理解真实使用节奏。</p></div>
+              </li>
+              <li>
+                <span class="benefit-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 2.7 7.8 7 10 4.3-2.2 7-5.6 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg></span>
+                <div><h3>本地读取，缩小数据边界</h3><p>菜单栏 App 负责读取官方额度接口和本机 Codex 日志，桌面 Widget 只消费脱敏后的本地快照，不直接接触认证文件。</p></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
+        <div class="section-inner">
+          <h2 class="section-heading" id="evidence-title">一个自己的痛点，做成了有人使用的产品。</h2>
+          <div class="evidence-layout">
+            <figure class="poster-frame">
+              <img src="/projects/codex-widget-promo/codex-quota-promo-v1.png" alt="Codex Quota 深色产品宣传图，中央展示额度组件与消耗趋势" width="1122" height="1402" />
+              <figcaption>基于真实功能的产品宣传图 · 源文件、生成提示词与来源记录随项目保留</figcaption>
+            </figure>
+            <div class="evidence-copy">
+              <p>这个项目先解决我每天使用 Codex 时的额度焦虑，再把源码、安装脚本和更新流程整理成其他人也能使用的版本。公开结果不替代产品价值，但证明了这不是只停留在概念里的界面练习。</p>
+              <div class="evidence-metrics" aria-label="项目公开成果">
+                <div class="evidence-metric"><strong>200+ 点赞收藏</strong><span>来自小红书公开发布后的真实反馈。</span></div>
+                <div class="evidence-metric"><strong>10 Star</strong><span>可从 GitHub 公开仓库继续核验源码与版本。</span></div>
+                <div class="evidence-metric"><strong>10+ 用户</strong><span>把桌面额度查看变成日常工作的一部分。</span></div>
+                <div class="evidence-metric"><strong>v1.0.28</strong><span>当前 README 记录版本；持续维护安装、更新与旧版本清理流程。</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section product-section" id="product" aria-labelledby="product-title">
+        <div class="section-inner">
+          <h2 class="section-heading" id="product-title">两种尺寸，服务两种查看深度。</h2>
+          <p class="section-lead">把产品放到桌面，意味着信息需要克制。关键状态必须先于装饰，趋势只在它确实帮助判断时出现。</p>
+          <div class="product-layout">
+            <div class="product-canvas" aria-hidden="true">
+              <div class="quota-widget widget-medium">
+                <div class="medium-body">
+                  <div class="medium-limits"><div class="widget-head"><div class="widget-name"><span class="status-dot"></span>Codex</div><div class="widget-time">10:08</div></div><div class="quota-row"><div class="quota-line"><span class="quota-label">5 小时</span><span class="quota-value">72%</span></div><div class="quota-progress-line"><div class="track"><span style="width:72%"></span></div><span class="reset-label">1h 24m</span></div></div><div class="quota-row"><div class="quota-line"><span class="quota-label">周限额</span><span class="quota-value">58%</span></div><div class="quota-progress-line"><div class="track"><span style="width:58%"></span></div><span class="reset-label">3d 18h</span></div></div></div>
+                  <div class="medium-trend"><div class="trend-head"><span class="trend-title">近 5 天趋势</span><span class="trend-average">日均 42.6M</span></div><div class="trend"><svg viewBox="0 0 220 120"><path d="M2 104H218M2 58H218M2 12H218" stroke="#d4ddd5"/><path d="M5 99C34 94 47 105 69 84S106 74 124 54 151 20 171 28s21 55 44 58" stroke="#147a4c" stroke-width="4" fill="none" stroke-linecap="round" /></svg></div></div>
+                </div>
+              </div>
+              <div class="quota-widget widget-small"><div class="widget-head"><div class="widget-name"><span class="status-dot"></span>Codex</div><div class="widget-time">10:08</div></div><div class="quota-row"><div class="quota-line"><span class="quota-label">5 小时</span><span class="quota-value">72%</span></div><div class="quota-progress-line"><div class="track"><span style="width:72%"></span></div><span class="reset-label">1h 24m</span></div></div><div class="quota-row"><div class="quota-line"><span class="quota-label">周限额</span><span class="quota-value">58%</span></div><div class="quota-progress-line"><div class="track"><span style="width:58%"></span></div><span class="reset-label">3d 18h</span></div></div></div>
+            </div>
+            <div class="product-facts">
+              <article class="product-fact"><h3>小号 · 快速扫一眼</h3><p>额度百分比、进度条和状态更新时间保持在第一视觉层，适合放在桌面或小组件抽屉。</p></article>
+              <article class="product-fact"><h3>中号 · 读懂使用节奏</h3><p>同时展示五小时额度、每周额度、重置时间、近五天消耗趋势与日均 token。</p></article>
+              <article class="product-fact"><h3>菜单栏 · 更新与诊断</h3><p>菜单栏 App 负责抓取、解析和缓存；遇到空数据、过期快照或解析异常时提供可理解的状态。</p></article>
+              <article class="product-fact"><h3>浅色与深色外观</h3><p>遵循 macOS WidgetKit 的系统外观，同时保持绿色额度反馈和清晰的数据层级。</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="usage" aria-labelledby="usage-title">
+        <div class="section-inner">
+          <h2 class="section-heading" id="usage-title">从源码安装，三步把额度放到桌面。</h2>
+          <p class="section-lead">当前版本通过 GitHub 源码安装。脚本会构建菜单栏 App 和 Widget 扩展，并放到本机应用目录。</p>
+          <div class="usage-layout">
+            <ol class="steps">
+              <li><div><h3>下载项目</h3><p>在 GitHub 克隆 Codex Widget 源码，进入项目目录。发布页与 README 会同步当前版本的要求和变更。</p></div></li>
+              <li><div><h3>运行本地安装脚本</h3><p>脚本使用完整 Xcode 构建并安装 App。完成后从应用程序中打开 Codex Quota。</p></div></li>
+              <li><div><h3>添加桌面组件</h3><p>打开 macOS 小组件编辑器，搜索 Codex Quota，选择小号或中号尺寸并放到桌面。</p></div></li>
+            </ol>
+            <aside>
+              <div class="install-panel">
+                <div class="install-titlebar"><span>Terminal — install</span><span class="window-controls" aria-hidden="true"><i></i><i></i><i></i></span></div>
+                <div class="install-code" id="install-command"><span class="prompt">$</span> git clone https://github.com/Zaki362/codex-widget.git
+<span class="prompt">$</span> cd codex-widget
+<span class="prompt">$</span> ./scripts/install-local.command</div>
+                <div class="copy-row"><span class="copy-status" id="copy-status" aria-live="polite">安装命令已准备好</span><button class="copy-button" id="copy-command" type="button">复制命令</button></div>
+              </div>
+              <p class="requirements">系统要求：macOS 14 或更高版本、完整 Xcode、本机已运行过 Codex 并产生可读取的本地数据。</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta" aria-labelledby="final-title">
+        <div class="final-panel">
+          <div>
+            <h2 id="final-title">把 Codex 的“油量”，留在你的桌面。</h2>
+            <p>查看源码、安装步骤与最新版本。如果你也在 macOS 上高频使用 Codex，可以从 GitHub 开始。</p>
+          </div>
+          <div class="final-actions">
+            <a class="button button-primary" href="https://github.com/Zaki362/codex-widget" target="_blank" rel="noreferrer">打开 GitHub<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg></a>
+            <a class="button button-secondary" href="/projects/codex-widget">返回作品详情</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner"><span>Codex Quota · macOS quota widget</span><span>由郑国华设计与构建 · <a href="/">返回作品集</a></span></div>
+    </footer>
+
+    <script>
+      const progress = document.querySelector(".scroll-progress");
+      const navItems = Array.from(document.querySelectorAll(".nav-links a"));
+      const sections = navItems.map((item) => document.querySelector(item.getAttribute("href"))).filter(Boolean);
+
+      const updateProgress = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const value = max > 0 ? window.scrollY / max : 0;
+        progress.style.transform = `scaleX(${Math.min(1, Math.max(0, value))})`;
+      };
+
+      const updateNavigation = () => {
+        let activeId = "";
+        for (const section of sections) {
+          if (section.getBoundingClientRect().top <= 150) activeId = section.id;
+        }
+        navItems.forEach((item) => item.setAttribute("aria-current", item.getAttribute("href") === `#${activeId}` ? "true" : "false"));
+      };
+
+      window.addEventListener("scroll", () => {
+        updateProgress();
+        updateNavigation();
+      }, { passive: true });
+      updateProgress();
+      updateNavigation();
+
+      const copyButton = document.querySelector("#copy-command");
+      const copyStatus = document.querySelector("#copy-status");
+      const command = "git clone https://github.com/Zaki362/codex-widget.git\ncd codex-widget\n./scripts/install-local.command";
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(command);
+          copyStatus.textContent = "已复制到剪贴板";
+          copyButton.textContent = "已复制";
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(document.querySelector("#install-command"));
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          copyStatus.textContent = "浏览器阻止复制，命令已为你选中";
+          copyButton.textContent = "命令已选中";
+        }
+      });
+    </script>
+  </body>
+</html>
