@@ -378,7 +378,17 @@ function buildFollowups(question: string, sources: AgentSource[], locale: Locale
 }
 
 function cleanString(value: unknown, maxLength = 260) {
-  return typeof value === "string" ? value.replace(/\s+/g, " ").trim().slice(0, maxLength) : "";
+  if (typeof value !== "string") return "";
+  const text = value.replace(/\s+/g, " ").trim();
+  const characters = Array.from(text);
+  if (characters.length <= maxLength) return text;
+  let excerpt = characters.slice(0, maxLength - 1).join("");
+  // Keep a visible truncation marker and avoid cutting an English word in half.
+  if (/[A-Za-z0-9]$/.test(excerpt) && /^[A-Za-z0-9]/.test(characters[maxLength - 1])) {
+    const wordBoundary = excerpt.lastIndexOf(" ");
+    if (wordBoundary > 0) excerpt = excerpt.slice(0, wordBoundary);
+  }
+  return `${excerpt.trimEnd()}…`;
 }
 
 function cleanStringList(value: unknown, maxItems: number, maxLength = 180) {
@@ -460,10 +470,10 @@ function parseStructuredSections(rawReply: string, locale: Locale) {
 
   try {
     const parsed = JSON.parse(rawReply.slice(firstBrace, lastBrace + 1)) as Record<string, unknown>;
-    const summary = cleanString(parsed.summary, locale === "zh" ? 180 : 220);
-    const bullets = cleanStringList(parsed.bullets, 3, locale === "zh" ? 120 : 150);
+    const summary = cleanString(parsed.summary, locale === "zh" ? 180 : 900);
+    const bullets = cleanStringList(parsed.bullets, 3, locale === "zh" ? 120 : 600);
     const metrics = cleanMetrics(parsed.metrics);
-    const note = cleanString(parsed.note, locale === "zh" ? 140 : 180);
+    const note = cleanString(parsed.note, locale === "zh" ? 140 : 700);
     const sections: AgentSection[] = [];
 
     if (summary) {

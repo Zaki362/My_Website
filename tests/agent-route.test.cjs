@@ -79,3 +79,14 @@ test("changing topics breaks profile context while direct contact questions rema
   const followup = await h.send("How does it work?", "en", [{ role: "user", content: "Tell me about Guohua's SceneCart project" }]);
   assert.equal((await followup.json()).mode, "profile");
 });
+
+test("English evidence keeps complete sentences while oversized output has a visible boundary", async () => {
+  const bullet = "At Meituan, he led the 0-1 build of an analysis Agent for local business scenarios, combining knowledge extraction, RAG retrieval, and report generation with grounded business evidence.";
+  const h = harness({ text: JSON.stringify({ summary: "Public Agent experience", bullets: [bullet] }), provider: "test", model: "test" });
+  const result = await (await h.send("What is Guohua's Agent experience?", "en")).json();
+  assert.equal(result.sections.find(section => section.type === "bullets").items[0], bullet);
+  const oversized = harness({ text: JSON.stringify({ summary: "Complete explanation ".repeat(60), bullets: [] }), provider: "test", model: "test" });
+  const shortened = await (await oversized.send("What is RAG?", "en")).json();
+  assert.ok(shortened.reply.length <= 900);
+  assert.match(shortened.reply, /(?:Complete|explanation)…$/);
+});
