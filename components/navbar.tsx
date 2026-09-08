@@ -156,8 +156,8 @@ export function Navbar() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="container-shell relative flex h-11 items-center justify-between">
         {pathname === "/" ? (
-          <Link href="/ai-native" prefetch={false} className="pointer-events-auto inline-flex h-11 items-center gap-2 rounded-xl border border-stone-900/10 bg-white/90 px-3.5 text-xs font-medium text-[#476d51] shadow-[0_10px_28px_rgba(23,23,23,0.06)] backdrop-blur-xl transition hover:bg-[#edf2e7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#476d51]" aria-label={locale === "zh" ? "进入 AI-native 3D 工作室" : "Enter the AI-native 3D studio"}>
-            <Box className="h-4 w-4" />AI-native<ArrowUpRight className="h-3.5 w-3.5" />
+          <Link href="/ai-native" prefetch={false} className="pointer-events-auto inline-flex h-11 items-center gap-2 rounded-xl border border-stone-900/10 bg-white/90 px-3.5 text-xs font-medium text-[#476d51] shadow-[0_10px_28px_rgba(23,23,23,0.06)] backdrop-blur-xl transition hover:bg-[#edf2e7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#476d51]" aria-label={locale === "zh" ? "进入3D数字世界" : "Enter the 3D world"}>
+            <Box className="h-4 w-4" />{locale === "zh" ? "3D数字世界" : "3D World"}<ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         ) : <div aria-hidden="true" className="pointer-events-none h-12 w-12" />}
 

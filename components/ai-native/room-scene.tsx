@@ -19,7 +19,6 @@ type RoomSceneProps = {
   onAsk?: () => void;
   onHome?: () => void;
   onToggleNight?: () => void;
-  onToggleMotion?: () => void;
   assistantOpen?: boolean;
 };
 
@@ -33,13 +32,13 @@ const destinations = [
   { id: "contact", name: "联系我", en: "Say hello", number: "07" },
   { id: "assistant", name: "和 AI 聊聊", en: "Chat with my AI", number: "08" },
   { id: "home", name: "返回经典首页", en: "Classic home", number: "" },
-  { id: "light", name: "切换日夜", en: "Change the light", number: "" },
-  { id: "motion", name: "暂停 / 继续", en: "Pause / play", number: "" }
+  { id: "light", name: "切换日夜", en: "Change the light", number: "" }
 ] as const;
 
 export default function RoomScene(props: RoomSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const clockTimeRef = useRef<HTMLTimeElement>(null);
   const npcAnchorRef = useRef<HTMLDivElement>(null);
   const buttonsRef = useRef<Record<string, HTMLButtonElement | HTMLAnchorElement | null>>({});
   const propsRef = useRef(props);
@@ -590,16 +589,38 @@ export default function RoomScene(props: RoomSceneProps) {
     const lampLight = new THREE.PointLight(0xffcd87, 2.2, 5, 2); lampLight.position.set(3.62, 2.56, -0.52); scene.add(lampLight);
     const bulbMaterial = new THREE.MeshBasicMaterial({ color: "#ffe4a5", toneMapped: false }); allMaterials.add(bulbMaterial);
     sphere(lamp, [0, 2.68, 0], [0.1, 0.15, 0.1], bulbMaterial);
-    const motion = destination("motion", [4.34, 4.97, -3.19], [4.34, 4.97, -3.15]);
-    const clockFace = cylinder(motion, 0.38, 0.38, 0.07, [4.34, 4.97, -3.23], mat.wood); clockFace.rotation.x = Math.PI / 2;
-    const clockMap = texture(512, 512, ctx => {
+    // The back sits just in front of the wall (-3.33), with a shallow case.
+    const clockDepth = -3.306;
+    const wallClock = new THREE.Group(); wallClock.position.set(4.34, 4.97, clockDepth); scene.add(wallClock);
+    const clockCase = cylinder(wallClock, 0.38, 0.38, 0.04, [0, 0, 0], mat.wood, 64); clockCase.rotation.x = Math.PI / 2;
+    // Draw all hands around one shared center on the face: no perspective offset
+    // between separate hand meshes, and no tiny self-shadow artifacts.
+    const paintClock = (ctx: CanvasRenderingContext2D, now: Date) => {
       ctx.fillStyle = "#eee8d6"; ctx.fillRect(0, 0, 512, 512);
       ctx.strokeStyle = "#5b725f"; ctx.lineWidth = 5;
       for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; ctx.beginPath(); ctx.moveTo(256 + Math.sin(a) * 188, 256 + Math.cos(a) * 188); ctx.lineTo(256 + Math.sin(a) * 207, 256 + Math.cos(a) * 207); ctx.stroke(); }
-      ctx.lineWidth = 12; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(184, 197); ctx.lineTo(256, 256); ctx.lineTo(310, 143); ctx.stroke();
-      ctx.fillStyle = "#a97451"; ctx.beginPath(); ctx.arc(256, 256, 12, 0, Math.PI * 2); ctx.fill();
-    });
-    const face = new THREE.Mesh(new THREE.CircleGeometry(0.34, 48), mappedMaterial(clockMap)); face.position.set(4.34, 4.97, -3.188); motion.add(face);
+      const seconds = now.getSeconds(), minutes = now.getMinutes() + seconds / 60;
+      const hand = (angle: number, length: number, width: number, color: string) => {
+        ctx.save(); ctx.translate(256, 256); ctx.rotate(angle);
+        ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -length); ctx.stroke(); ctx.restore();
+      };
+      hand(((now.getHours() % 12) + minutes / 60) * Math.PI / 6, 128, 12, "#476451");
+      hand(minutes * Math.PI / 30, 184, 8, "#476451");
+      hand(seconds * Math.PI / 30, 199, 3, "#b86c4e");
+      ctx.fillStyle = "#a97451"; ctx.beginPath(); ctx.arc(256, 256, 9, 0, Math.PI * 2); ctx.fill();
+    };
+    const clockMap = texture(512, 512, ctx => paintClock(ctx, new Date()));
+    const clockContext = (clockMap.image as HTMLCanvasElement).getContext("2d");
+    const face = new THREE.Mesh(new THREE.CircleGeometry(0.34, 64), mappedMaterial(clockMap)); face.position.z = 0.021; wallClock.add(face);
+    const syncWallClock = () => {
+      const now = new Date();
+      if (clockContext) { paintClock(clockContext, now); clockMap.needsUpdate = true; }
+      if (clockTimeRef.current) {
+        clockTimeRef.current.dateTime = now.toISOString();
+        clockTimeRef.current.textContent = now.toLocaleTimeString(propsRef.current.locale === "en" ? "en-GB" : "zh-CN", { hour12: false });
+      }
+    };
 
     // The existing AgentSprite becomes a small pearl-white studio companion:
     // one soft egg-shaped body, dark horizontal visor, cyan eyes and orbiting bead.
@@ -741,16 +762,26 @@ export default function RoomScene(props: RoomSceneProps) {
         if (id === "assistant") propsRef.current.onAsk?.();
         else if (id === "home") propsRef.current.onHome?.();
         else if (id === "light") propsRef.current.onToggleNight?.();
-        else if (id === "motion") propsRef.current.onToggleMotion?.();
         else if (id) propsRef.current.onSelect(id);
       }
       dragging = false; wake();
     };
     const onPointerLeave = () => { dragging = false; updateHover(null); };
     const onContextLost = (event: Event) => { event.preventDefault(); propsRef.current.onError(); };
+    // Real time is independent of the decorative animation clock. One frame per
+    // second keeps it current even with reduced motion or the AI panel open.
+    let clockTimer: ReturnType<typeof setTimeout> | undefined;
+    const tickClock = () => {
+      clearTimeout(clockTimer);
+      if (disposed || document.hidden) return;
+      syncWallClock(); requestFrame();
+      clockTimer = setTimeout(tickClock, 1000 - Date.now() % 1000);
+    };
     const onVisibilityChange = () => {
-      if (document.hidden && frame) { cancelAnimationFrame(frame); frame = 0; }
-      else { lastTime = performance.now(); wake(); }
+      clearTimeout(clockTimer);
+      if (document.hidden) {
+        if (frame) { cancelAnimationFrame(frame); frame = 0; }
+      } else { tickClock(); lastTime = performance.now(); wake(); }
     };
     const resize = () => {
       width = Math.max(1, container.clientWidth); height = Math.max(1, container.clientHeight);
@@ -771,7 +802,7 @@ export default function RoomScene(props: RoomSceneProps) {
       moveDestination("home", -wideLayout);
       moveDestination("life", 1.1 * wideLayout);
       moveDestination("light", wideLayout);
-      moveDestination("motion", 0.8 * wideLayout, -0.1 * wideLayout);
+      wallClock.position.set(4.34 + 0.8 * wideLayout, 4.97 - 0.1 * wideLayout, clockDepth);
       windowPlant.position.x = 4.35 + 0.9 * wideLayout;
       lampLight.position.x = 3.62 + wideLayout;
       welcome.position.y = 5.32 - 0.1 * wideLayout;
@@ -952,8 +983,10 @@ export default function RoomScene(props: RoomSceneProps) {
     controls.addEventListener("change", wake);
     const observer = new ResizeObserver(resize); observer.observe(container); resize();
     canvas.style.cursor = "grab";
+    tickClock();
     return () => {
       disposed = true; wakeRef.current = () => undefined;
+      clearTimeout(clockTimer);
       if (frame) cancelAnimationFrame(frame);
       observer.disconnect(); controls.removeEventListener("change", wake); controls.dispose();
       canvas.removeEventListener("pointermove", onPointerMove);
@@ -973,6 +1006,7 @@ export default function RoomScene(props: RoomSceneProps) {
   const hover = (id: string | null) => { hoverRef.current = id; propsRef.current.onHover(id); wakeRef.current(); };
   return (
     <div ref={containerRef} className="room-scene" data-room-scene="true" data-night={props.night}>
+      <time ref={clockTimeRef} className="sr-only" aria-label={props.locale === "en" ? "Local time" : "当地时间"} />
       <canvas ref={canvasRef} aria-label={props.locale === "en" ? "Interactive 3D studio. Drag to look around or explore the labeled objects." : "可以拖动视角的三维工作室，使用物品标签探索内容"} />
       <div
         ref={npcAnchorRef}
@@ -1011,12 +1045,12 @@ export default function RoomScene(props: RoomSceneProps) {
             type="button"
             data-room-hotspot={id}
             aria-label={props.locale === "en" ? `Explore ${en}` : `探索${name}`}
-            aria-pressed={id === "motion" ? props.paused : id === "light" ? props.night : props.selected === id}
+            aria-pressed={id === "light" ? props.night : props.selected === id}
             onMouseEnter={() => hover(id)}
             onMouseLeave={() => hover(null)}
             onFocus={event => { if (event.currentTarget.matches(":focus-visible")) keyboardFocusRef.current = id; hover(id); }}
             onBlur={() => { keyboardFocusRef.current = null; hover(null); }}
-            onClick={() => { if (id === "assistant") propsRef.current.onAsk?.(); else if (id === "light") propsRef.current.onToggleNight?.(); else if (id === "motion") propsRef.current.onToggleMotion?.(); else propsRef.current.onSelect(id); }}
+            onClick={() => { if (id === "assistant") propsRef.current.onAsk?.(); else if (id === "light") propsRef.current.onToggleNight?.(); else propsRef.current.onSelect(id); }}
           >
             <span className="hotspot-dot" aria-hidden="true" />
             <span className="hotspot-line" aria-hidden="true" />
