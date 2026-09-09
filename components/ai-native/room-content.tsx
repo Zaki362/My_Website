@@ -16,13 +16,13 @@ type RoomContentProps = {
 };
 
 const sectionDetails = {
-  about: { index: "01", label: "ABOUT", zh: "关于我", en: "A little about me", href: "/#home" },
-  projects: { index: "02", label: "PROJECTS", zh: "把想法做出来", en: "Ideas, made real", href: "/projects" },
-  education: { index: "03", label: "EDUCATION", zh: "知识的来处", en: "Where I learned", href: "/#education" },
-  research: { index: "04", label: "RESEARCH", zh: "把问题想深入", en: "Looking deeper", href: "/#research" },
-  experience: { index: "05", label: "EXPERIENCE", zh: "在真实场景里", en: "Built in practice", href: "/#experience" },
-  life: { index: "06", label: "BEYOND WORK", zh: "窗外，还有世界", en: "A world outside", href: "/beyond-work" },
-  contact: { index: "07", label: "CONTACT", zh: "从一句你好开始", en: "Start with hello", href: "/#contact" }
+  about: { index: "01", label: "ABOUT", zh: "关于我", en: "About Me", href: "/#home" },
+  projects: { index: "02", label: "PROJECTS", zh: "我的项目", en: "Projects", href: "/projects" },
+  education: { index: "03", label: "EDUCATION", zh: "教育经历", en: "Education", href: "/#education" },
+  research: { index: "04", label: "RESEARCH", zh: "科研经历", en: "Research", href: "/#research" },
+  experience: { index: "05", label: "EXPERIENCE", zh: "工作经历", en: "Work Experience", href: "/#experience" },
+  life: { index: "06", label: "BEYOND WORK", zh: "生活", en: "Beyond Work", href: "/beyond-work" },
+  contact: { index: "07", label: "CONTACT", zh: "联系我", en: "Contact", href: "/#contact" }
 } as const;
 
 export default function RoomContent({ section, onClose, onAsk }: RoomContentProps) {
