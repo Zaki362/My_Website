@@ -201,14 +201,14 @@ export const projectPlaceholders = [
     eyebrow: "Featured Project",
     title: "练一下 / FitLog Minimal",
     shortDescription:
-      "用 vibe coding 方式完成的个人健身记录 PWA，围绕快速开练、轻量记录与持续复盘设计。",
+      "用 vibe coding 方式完成的个人健身记录 PWA，无需账号、本地优先，支持快速开练与可选跨设备同步。",
     description:
-      "练一下 / FitLog Minimal 是我用 vibe coding 方式完成的个人健身记录 PWA。项目从自己的训练习惯出发，围绕“快速开练、轻量记录、持续复盘”设计。",
+      "练一下 / FitLog Minimal 是我用 vibe coding 方式完成的个人健身记录 PWA，围绕“快速开练、轻量记录、持续复盘”设计。无需账号，数据默认保存在本地，可选通过同步码跨设备上传与恢复。",
     details:
-      "动作库、训练中记录、历史统计、数据导入导出都运行在本地浏览器中，无需登录和后端。整个过程通过与 AI 编程助手协作完成，从产品结构、交互细节到动作配图和移动端体验持续迭代，是一次把个人需求快速变成可用工具的实践。",
+      "动作库、训练中记录、历史统计、数据导入导出以本地浏览器存储为基础，无需账号；可选通过同步码上传到云端并在其他设备恢复。与 AI 编程助手协作持续迭代产品结构和移动端体验，补齐训练日期选择与未完成训练的草稿恢复。",
     highlights: [
       "围绕真实训练习惯设计首页状态、开始训练、历史记录与动作库模块。",
-      "训练数据保存在本地浏览器，支持数据导入导出，无需登录和后端。",
+      "无需账号，训练数据默认保存在本地浏览器，支持导入导出和可选同步码跨设备同步。",
       "通过 AI 编程助手持续迭代产品结构、交互细节、动作配图和移动端体验。",
       "把个人需求快速转化为可使用、可复盘、可持续维护的轻量工具。"
     ],
@@ -217,12 +217,12 @@ export const projectPlaceholders = [
       "覆盖动作库、训练中记录、历史统计、数据导入导出等核心功能。",
       "验证了 vibe coding 从个人需求到可用工具的快速闭环。"
     ],
-    note: "线上版本可直接访问，数据默认保存在本地浏览器。",
+    note: "线上版本可直接访问，无需账号；数据默认保存在本地浏览器，可选同步码跨设备同步。",
     stack: ["PWA", "Vibe Coding", "Local-first", "Fitness Tracker", "Mobile UX", "Data Export"],
-    metrics: ["0 登录 / 后端", "4 个核心模块", "PWA 本地优先"],
+    metrics: ["同步码 · 可选跨设备同步", "4 个核心模块", "PWA 本地优先"],
     projectUrl: "https://fitlog-minimal.vercel.app/",
     githubUrl: "",
-    cover: "/projects/fitlog-minimal-cover.png"
+    cover: "/projects/fitlog-product-20260916.png"
   },
   {
     eyebrow: "Vibe Coding Project",

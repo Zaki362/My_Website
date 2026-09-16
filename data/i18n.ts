@@ -285,16 +285,16 @@ export const dictionary = {
       kicker: "Featured Project",
       title: "FitLog Minimal",
       description:
-        "A personal fitness tracking PWA built with vibe coding: fast workout start, lightweight logging and continuous review.",
+        "An account-free, local-first fitness PWA built with vibe coding for quick workouts and optional cross-device sync.",
       action: "View projects",
       cardTitle: "FitLog Minimal",
       cardDescription:
-        "A local-first personal fitness tracker that keeps exercise library, workout logging, history statistics and import/export inside the browser, with no login or backend.",
+        "A personal fitness tracker with no account required. Exercise, workout and history data stays in the browser by default, with import/export and optional sync codes for cross-device upload and restore.",
       cardBadge: "Vibe Coding / PWA / Local-first",
       cover: featuredProject.cover,
       explore: "Explore project",
       metrics: [
-        { value: "0", label: "Login / backend" },
+        { value: "Sync code", label: "Optional device sync" },
         { value: "4", label: "Core modules" },
         { value: "PWA", label: "Local-first tool" }
       ],
@@ -389,18 +389,18 @@ export const dictionary = {
         "Small, public project cards. Each one focuses on UI, product thinking and a concise build story.",
       featuredKicker: "Featured Project",
       featuredDescription:
-        "Exercise library, in-workout logging, history statistics and data import/export all run locally in the browser, without login or backend.",
+        "The exercise library, workout logging, history statistics and import/export use local browser storage with no account required, plus optional sync codes for cross-device upload and restore.",
       featured: {
         title: "FitLog Minimal",
         label: "Vibe Coding / PWA",
         status: "Live PWA",
         context:
-          "FitLog Minimal is a personal fitness tracking PWA built from my own training habits, designed around fast workout start, lightweight logging and continuous review.",
+          "FitLog Minimal is a personal fitness tracking PWA built from my own training habits for quick workouts, lightweight logging and continuous review. No account is required; data stays local by default, with optional sync codes for use across devices.",
         contribution:
-          "I collaborated with an AI coding assistant to iterate the product structure, interaction details, exercise visuals and mobile experience, turning a personal need into a usable local-first tool.",
+          "I collaborated with an AI coding assistant to build the local data model, import/export and optional cloud sync, then added workout date selection and recovery of unfinished workout drafts.",
         impact: [
           "Built a usable fitness tracking PWA for real personal training.",
-          "Covered exercise library, in-workout logging, history statistics and data import/export.",
+          "Covered exercise library, workout logging, history statistics and import/export, with optional sync codes for cross-device use.",
           "Validated a vibe coding workflow from personal demand to shippable product."
         ],
         tags: featuredProject.stack,
@@ -547,7 +547,7 @@ export const dictionary = {
       cover: featuredProject.cover,
       explore: "查看项目",
       metrics: [
-        { value: "0", label: "登录 / 后端" },
+        { value: "同步码", label: "可选跨设备同步" },
         { value: "4", label: "核心模块" },
         { value: "PWA", label: "本地优先" }
       ],

@@ -1,7 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { Suspense, createContext, useContext, useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { defaultLocale, dictionary, type Locale } from "@/data/i18n";
+import { syncLocalizedPageMetadata } from "@/lib/page-metadata";
 
 type LanguageContextValue = {
   locale: Locale;
@@ -12,18 +14,13 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-const pageMeta = {
-  en: {
-    title: "Guohua Zheng | AI Builder",
-    description:
-      "Guohua Zheng is an AI Builder expanding product boundaries with AI and turning model capabilities into usable products and incremental value."
-  },
-  zh: {
-    title: "郑国华｜AI Builder",
-    description:
-      "郑国华的个人网站。作为 AI Builder，关注如何通过 AI 拓展产品边界，将模型能力转化为可用产品与增量价值。"
-  }
-} as const;
+function LocalizedPageMetadata({ locale }: { locale: Locale }) {
+  const pathname = usePathname();
+
+  useEffect(() => syncLocalizedPageMetadata(pathname, locale), [pathname, locale]);
+
+  return null;
+}
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
@@ -44,12 +41,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
-    document.title = pageMeta[locale].title;
-
-    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (description) {
-      description.content = pageMeta[locale].description;
-    }
   }, [locale]);
 
   const value = useMemo<LanguageContextValue>(
@@ -62,7 +53,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     [locale]
   );
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  return (
+    <LanguageContext.Provider value={value}>
+      <Suspense fallback={null}>
+        <LocalizedPageMetadata locale={locale} />
+      </Suspense>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
 
 export function useLanguage() {

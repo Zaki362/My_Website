@@ -296,7 +296,7 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "fitlog-minimal",
     year: "2026",
-    cover: "/projects/fitlog-minimal-cover.png",
+    cover: "/projects/fitlog-product-20260916.png",
     liveUrl: "https://fitlog-minimal.vercel.app/",
     previewMode: "interactive",
     locales: {
@@ -304,11 +304,11 @@ export const portfolioProjects: PortfolioProject[] = [
         category: "Vibe Coding / PWA",
         status: "Live PWA",
         title: "练一下 / FitLog Minimal",
-        summary: "个人健身记录 PWA，围绕快速开练、轻量记录与持续复盘设计。",
+        summary: "无需账号、本地优先的个人健身记录 PWA，支持快速开练、轻量记录与可选跨设备同步。",
         cardIntro:
-          "从自己的训练习惯出发，用 AI 编程助手协作完成的轻量健身记录工具。",
+          "从自己的训练习惯出发，用 AI 编程助手协作完成；无需账号、本地优先，可通过同步码跨设备同步。",
         detailIntro:
-          "练一下 / FitLog Minimal 是我用 vibe coding 方式完成的个人健身记录 PWA。项目从自己的训练习惯出发，围绕“快速开练、轻量记录、持续复盘”设计。",
+          "练一下 / FitLog Minimal 是我用 vibe coding 方式完成的个人健身记录 PWA，围绕“快速开练、轻量记录、持续复盘”设计。无需账号，训练数据默认保存在本地，也可通过同步码在不同设备间上传和恢复。",
         audienceTitle: "为谁设计",
         audience: "有固定力量训练习惯、希望自己掌控训练节奏，又不想被复杂健身 App 打断的人。",
         problemTitle: "核心痛点",
@@ -317,13 +317,13 @@ export const portfolioProjects: PortfolioProject[] = [
         principles: [
           "首页把“开始训练”放在最强视觉位置，并结合历史记录给出今日训练建议。",
           "用动作库、训练中记录、历史复盘串成一条连续路径，减少页面间反复跳转。",
-          "坚持本地优先、无需登录，让训练数据掌握在用户自己手里。"
+          "坚持无需账号、本地优先，保留导入导出，并用可选同步码支持跨设备上传与恢复。"
         ],
         buildTitle: "我在 Vibe Coding 中做了什么",
         buildHighlights: [
           "从个人训练流程出发定义信息架构、核心任务和 MVP 边界。",
           "设计移动端训练流程、动作库、记录反馈与历史复盘交互。",
-          "建立本地数据结构与导入导出能力，并持续做真机触控和离线体验优化。",
+          "建立本地数据结构、导入导出与可选云同步，补齐训练日期选择和未完成训练的草稿恢复。",
           "用 AI 编程助手完成快速实现，但由我负责需求判断、体验取舍和验收迭代。"
         ],
         previewTitle: "直接体验产品",
@@ -333,15 +333,15 @@ export const portfolioProjects: PortfolioProject[] = [
           "日常训练记录往往会被复杂健身 App、表格和临时备忘录切碎。我希望有一个打开就能开练、训练中能快速记录、之后能复盘频率和部位状态的小工具。",
         contributionTitle: "设计与构建",
         contribution:
-          "动作库、训练中记录、历史统计、数据导入导出都运行在本地浏览器中，无需登录和后端。整个过程通过与 AI 编程助手协作完成，从产品结构、交互细节到动作配图和移动端体验持续迭代。",
+          "动作库、训练中记录、历史统计和数据导入导出以本地浏览器存储为基础，无需账号。需要换设备时，可通过同步码将数据上传到云端，再在另一台设备恢复；也可开启保存修改后自动上传。训练日期选择与草稿恢复进一步支持补记和中断后继续训练。",
         impactTitle: "成果",
         impact: [
           "完成一个可直接使用的个人健身记录 PWA。",
-          "覆盖动作库、训练中记录、历史统计、数据导入导出等核心功能。",
+          "覆盖动作库、训练中记录、历史统计和数据导入导出，并支持可选同步码跨设备同步。",
           "验证了 vibe coding 从个人需求到可用工具的快速闭环。"
         ],
         metrics: [
-          { value: "0", label: "登录 / 后端" },
+          { value: "同步码", label: "可选跨设备同步" },
           { value: "4", label: "核心模块" },
           { value: "PWA", label: "本地优先" }
         ],
@@ -359,11 +359,11 @@ export const portfolioProjects: PortfolioProject[] = [
         category: "Vibe Coding / PWA",
         status: "Live PWA",
         title: "FitLog Minimal",
-        summary: "A personal fitness tracking PWA for fast workout start, lightweight logging and review.",
+        summary: "An account-free, local-first fitness PWA for quick workouts, lightweight logging and optional cross-device sync.",
         cardIntro:
-          "A lightweight fitness tracker built from my own training habits with an AI coding assistant.",
+          "Built from my own training habits with an AI coding assistant: no account required, local-first storage and optional sync codes for other devices.",
         detailIntro:
-          "FitLog Minimal is a personal fitness tracking PWA built with vibe coding. It starts from my own training habits and centers on fast workout start, lightweight logging and continuous review.",
+          "FitLog Minimal is a personal fitness tracking PWA built with vibe coding for quick workout starts, lightweight logging and continuous review. No account is required: data stays on the device by default, with an optional sync code to upload and restore it across devices.",
         audienceTitle: "Designed for",
         audience: "Regular strength-training users who want control over their routine without the overhead of a complex fitness app.",
         problemTitle: "Core problem",
@@ -372,13 +372,13 @@ export const portfolioProjects: PortfolioProject[] = [
         principles: [
           "Make Start Workout the strongest action and use history to suggest today's training focus.",
           "Connect exercise library, in-session logging and history review into one continuous flow.",
-          "Stay local-first and login-free so users retain control of their training data."
+          "Require no account, keep data local by default and support import/export, with optional sync codes for cross-device upload and restore."
         ],
         buildTitle: "What I owned in Vibe Coding",
         buildHighlights: [
           "Defined the information architecture, core jobs and MVP boundary from my own training workflow.",
           "Designed the mobile workout flow, exercise library, logging feedback and history review.",
-          "Built the local data model and import/export path, then refined touch and offline behavior on real devices.",
+          "Built local storage, import/export and optional cloud sync, then added workout date selection and recovery of unfinished workout drafts.",
           "Used an AI coding assistant for implementation while owning product judgment, trade-offs and acceptance."
         ],
         previewTitle: "Try the product",
@@ -388,15 +388,15 @@ export const portfolioProjects: PortfolioProject[] = [
           "Daily training records can easily get scattered across heavy fitness apps, spreadsheets and quick notes. I wanted a small tool that opens quickly, helps me log during training and supports later review of frequency and muscle group status.",
         contributionTitle: "Design & Build",
         contribution:
-          "The exercise library, in-workout logging, history statistics and data import/export all run in the local browser without login or backend. I collaborated with an AI coding assistant to iterate product structure, interaction details, exercise visuals and the mobile experience.",
+          "The exercise library, in-workout logging, history statistics and import/export use local browser storage with no account required. A sync code can optionally upload data to the cloud and restore it on another device, with automatic upload after local changes available. Workout date selection and draft recovery support backdated entries and resuming interrupted sessions.",
         impactTitle: "Impact",
         impact: [
           "Built a usable fitness tracking PWA for real personal training.",
-          "Covered exercise library, in-workout logging, history statistics and data import/export.",
+          "Covered exercise library, in-workout logging, history statistics and import/export, with optional sync codes for cross-device use.",
           "Validated a vibe coding workflow from personal demand to shippable product."
         ],
         metrics: [
-          { value: "0", label: "Login / backend" },
+          { value: "Sync code", label: "Optional device sync" },
           { value: "4", label: "Core modules" },
           { value: "PWA", label: "Local-first" }
         ],
@@ -552,19 +552,19 @@ export const portfolioProjects: PortfolioProject[] = [
     slug: "codex-widget",
     year: "2026",
     cover: "/projects/codex-widget-cover.png",
-    liveUrl: "https://github.com/Zaki362/codex-widget",
+    liveUrl: "/projects/codex-widget-promo.html",
     githubUrl: "https://github.com/Zaki362/codex-widget",
     previewMode: "image",
     locales: {
       zh: {
         category: "Vibe Coding / macOS Widget",
         status: "GitHub",
-        title: "Codex Widget",
+        title: "Codex Quota",
         summary: "一个 macOS 桌面小组件，用来快速查看 Codex 额度与消耗趋势；发布后获得小红书 200+ 点赞收藏、GitHub 10 Stars，已有数十位用户使用。",
         cardIntro:
           "给 Codex 做的桌面“赛博油表”：发布到小红书后获得 200+ 点赞收藏，GitHub 10 Stars，目前已有数十位用户使用。",
         detailIntro:
-          "Codex Widget 是我自己开发的 macOS 桌面小组件，用来解决每次查看 Codex 额度都要点进设置的麻烦。它可以直接添加到桌面，也可以放进左滑的小组件抽屉，快速展示额度剩余、刷新时间、进度条和近 5 天 token 消耗趋势。",
+          "Codex Quota（Codex Widget）是我开发的 macOS 菜单栏应用与桌面小组件，让 Codex 额度状态随时可见。小号组件展示额度剩余与重置时间，中号组件增加最近 5 个完整自然日的 token 趋势，优先采用 Codex 官方每日用量汇总。",
         audienceTitle: "为谁设计",
         audience: "在 macOS 上高频使用 Codex，希望随时知道额度状态、又不想反复打开设置的开发者和 AI 重度用户。",
         problemTitle: "核心痛点",
@@ -572,14 +572,14 @@ export const portfolioProjects: PortfolioProject[] = [
         principlesTitle: "核心产品设计",
         principles: [
           "用小号与中号两种 Widget 尺寸适配“快速扫一眼”和“查看趋势”两种场景。",
-          "把 5 小时额度、周限额、刷新时间和近 5 天趋势压缩成可快速扫描的信息层级。",
-          "菜单栏 App 解析本地日志，Widget 只读取脱敏缓存，明确隔离认证信息和展示数据。"
+          "把 5 小时额度、周限额和重置时间放在首层；趋势只展示最近 5 个完整自然日，不计入当天尚未稳定的数据。",
+          "菜单栏 App 获取官方每日用量并从本地日志读取额度窗口，Widget 只读取脱敏缓存，隔离认证信息与展示数据。"
         ],
         buildTitle: "我在 Vibe Coding 中做了什么",
         buildHighlights: [
           "定义桌面油表的核心任务、信息优先级和小号 / 中号组件布局。",
-          "设计本地日志解析、额度换算、趋势聚合与缓存快照的数据链路。",
-          "处理 WidgetKit 刷新延迟、空数据、数据过期、解析异常和浅深色模式。",
+          "将趋势数据切换为 Codex 官方每日汇总，按最近 5 个完整自然日对齐，避免不同模型通道重复累加。",
+          "官方查询失败时保留上次成功趋势，仅在首次尚无官方数据时回退本地日志；处理 WidgetKit 延迟与空数据、过期和异常状态。",
           "完善源码安装、更新脚本与旧版本清理流程，让 Codex 也能协助用户完成安装。"
         ],
         previewTitle: "真实产品截图",
@@ -589,11 +589,11 @@ export const portfolioProjects: PortfolioProject[] = [
           "高频使用 Codex 时，额度状态其实很像生产力工具里的“油表”。但原本每次都需要打开设置查看，路径偏深，也不适合随手瞄一眼。我希望把这个信息变成桌面上的轻量状态组件。",
         contributionTitle: "设计与构建",
         contribution:
-          "项目围绕 macOS 小组件的日常可见性设计，将 5 小时额度、周限额、刷新时间和近 5 天 token 趋势组织成紧凑面板。视觉上保留类似系统小组件的圆角、浅色毛玻璃和绿色进度反馈，让信息可以被快速扫描。",
+          "围绕桌面上随手查看的场景，将额度、重置时间和趋势组织成紧凑面板。趋势优先读取 Codex 官方每日汇总，以昨天为终点展示 5 个完整自然日，并据此计算日均；查询失败保留上次成功数据，首次尚无官方趋势才回退日志。菜单栏 App 负责刷新和写入脱敏快照，Widget 只读缓存，不直接扫描日志。",
         impactTitle: "成果",
         impact: [
           "完成一个可添加到 macOS 桌面或小组件抽屉的 Codex 额度小组件。",
-          "支持额度百分比、刷新时间、进度条与近 5 天 token 消耗趋势展示。",
+          "支持额度百分比、刷新与重置时间，以及最近 5 个完整自然日的官方 token 趋势和日均消耗。",
           "发布到小红书后获得 200+ 点赞收藏，GitHub 获得 10 Stars，目前已有数十位用户使用。"
         ],
         metrics: [
@@ -615,19 +615,19 @@ export const portfolioProjects: PortfolioProject[] = [
           "Token Usage",
           "GitHub"
         ],
-        liveLabel: "查看 GitHub",
+        liveLabel: "产品介绍与安装指南",
         detailLabel: "查看详情"
       },
       en: {
         category: "Vibe Coding / macOS Widget",
         status: "GitHub",
-        title: "Codex Widget",
+        title: "Codex Quota",
         summary:
           "A macOS widget for checking Codex quota and usage trends, with 200+ Xiaohongshu likes and saves, 10 GitHub Stars and dozens of current users.",
         cardIntro:
           "A desktop fuel gauge for Codex quota that earned 200+ Xiaohongshu likes and saves, 10 GitHub Stars and is now used by dozens of people.",
         detailIntro:
-          "Codex Widget is a macOS desktop widget I built for checking Codex quota without opening settings every time. It can sit on the desktop or in the widget drawer, showing remaining quota, refresh time, progress bars and a five-day token usage trend.",
+          "Codex Quota (Codex Widget) is a macOS menu bar app and desktop widget I built to keep quota status visible. The small widget shows remaining quota and reset times; the medium widget adds token trends for the latest five complete calendar days, prioritizing Codex's official daily usage totals.",
         audienceTitle: "Designed for",
         audience: "Developers and heavy AI users who use Codex frequently on macOS and need quota status without repeatedly opening settings.",
         problemTitle: "Core problem",
@@ -635,14 +635,14 @@ export const portfolioProjects: PortfolioProject[] = [
         principlesTitle: "Core product decisions",
         principles: [
           "Offer small and medium WidgetKit layouts for quick status checks and deeper trend reading.",
-          "Compress five-hour quota, weekly limit, reset timing and five-day trends into a scan-friendly hierarchy.",
-          "Let the menu bar app parse local logs while the widget reads only a sanitized cache, separating credentials from display data."
+          "Prioritize five-hour quota, weekly limits and reset times; show only the latest five complete calendar days, excluding today's unsettled usage.",
+          "Let the menu bar app fetch official daily usage and read quota windows from local logs; the widget reads only a sanitized cache, keeping credentials separate."
         ],
         buildTitle: "What I owned in Vibe Coding",
         buildHighlights: [
           "Defined the desktop fuel-gauge job, information priority and small / medium widget layouts.",
-          "Designed the local log parsing, quota conversion, trend aggregation and snapshot cache pipeline.",
-          "Handled WidgetKit refresh latency, empty, stale and error states, plus light and dark appearance.",
+          "Switched trends to Codex's official daily totals across five complete calendar days, avoiding duplicate counts across model channels.",
+          "Preserved the last successful official trend when queries fail, falling back to local logs only before official data is first available; handled WidgetKit latency and empty, stale and error states.",
           "Built source installation, update and legacy-cleanup scripts so Codex can also help users install it."
         ],
         previewTitle: "Real product screenshot",
@@ -652,11 +652,11 @@ export const portfolioProjects: PortfolioProject[] = [
           "When Codex becomes a high-frequency work tool, quota status starts to feel like a productivity fuel gauge. The original path through settings was too deep for quick checks, so I wanted a lightweight widget that keeps this state visible at a glance.",
         contributionTitle: "Design & Build",
         contribution:
-          "The widget organizes five-hour quota, weekly quota, refresh timing and recent token usage into a compact panel. The visual style follows macOS widget conventions with soft corners, a light glassy surface and green progress feedback for fast scanning.",
+          "The compact panel keeps quota, reset times and trends visible at a glance. Trends prioritize Codex's official daily totals for five complete calendar days ending yesterday, which also determine the daily average. Failed queries retain the last successful data; local logs are a fallback only before the first official trend is available. The menu bar app refreshes and writes sanitized snapshots, while the widget reads the cache without scanning logs.",
         impactTitle: "Impact",
         impact: [
           "Built a Codex quota widget that can be added to the macOS desktop or widget drawer.",
-          "Shows quota percentages, refresh time, progress bars and five-day token usage trends.",
+          "Shows quota percentages, refresh and reset times, plus official token trends and daily averages for the latest five complete calendar days.",
           "Earned 200+ likes and saves on Xiaohongshu, reached 10 GitHub Stars and is now used by dozens of people."
         ],
         metrics: [
@@ -678,7 +678,7 @@ export const portfolioProjects: PortfolioProject[] = [
           "Token Usage",
           "GitHub"
         ],
-        liveLabel: "Open GitHub",
+        liveLabel: "Product & installation guide",
         detailLabel: "View details"
       }
     }

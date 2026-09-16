@@ -1,0 +1,8 @@
+{
+  "source": "https://fitlog-minimal.vercel.app/",
+  "capturedAt": "2026-09-16",
+  "method": "browser-screenshot",
+  "viewport": { "width": 1000, "height": 720 },
+  "context": "Fresh anonymous browser session using the product's default demo records; no personal account or cloud data was loaded.",
+  "purpose": "Replace the portfolio cover that contained outdated no-backend wording."
+}
