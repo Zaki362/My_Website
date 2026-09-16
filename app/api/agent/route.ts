@@ -98,6 +98,8 @@ const PROFILE_INTENT_HINTS = [
   "个性化",
   "personalization",
   "项目",
+  "来玩",
+  "laiwan",
   "科研",
   "论文",
   "简历",
@@ -238,7 +240,7 @@ function hasProfileIntent(question: string, sources: AgentSource[] = []) {
 }
 
 function isGeneralConceptQuestion(question: string) {
-  const explicitProfile = /国华|guohua|zheng|他的|他在|他做|候选人|your (work|project|experience)|\bhis\b|tako|redflow|scenecart|场景购|小红书|fitlog|练一下|随手记|codex widget/i.test(question);
+  const explicitProfile = /国华|guohua|zheng|他的|他在|他做|候选人|your (work|project|experience)|\bhis\b|tako|redflow|scenecart|场景购|小红书|fitlog|练一下|随手记|codex widget|来玩|laiwan/i.test(question);
   return questionIncludes(question, GENERAL_CONCEPT_HINTS) && !explicitProfile;
 }
 
@@ -584,7 +586,7 @@ function getClientId(request: NextRequest) {
 function retrievalQuestion(messages: ChatMessage[]): string {
   const question = messages.at(-1)!.content;
   const refersBack = /^(那|它|这个|这些|再|具体|详细|展开|还有|为什么|what about|how (does|did) (it|he)|tell me more|more detail|and |why)/i.test(question);
-  const newTopic = /国华|guohua|zheng|场景购|scenecart|redflow|小红书|fitlog|练一下|随手记|codex widget|tako|联系|邮箱|教育|学校|科研|论文|天气|音乐|滑雪|contact|email|weather|education|research/i.test(question);
+  const newTopic = /国华|guohua|zheng|场景购|scenecart|redflow|小红书|fitlog|练一下|随手记|codex widget|来玩|laiwan|tako|联系|邮箱|教育|学校|科研|论文|天气|音乐|滑雪|contact|email|weather|education|research/i.test(question);
   if (question.length > 100 || !refersBack || newTopic) return question;
   const previousIndex = messages.findLastIndex((message, index) => index < messages.length - 1 && message.role === "user");
   if (previousIndex < 0) return question;

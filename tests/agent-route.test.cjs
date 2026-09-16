@@ -80,6 +80,27 @@ test("changing topics breaks profile context while direct contact questions rema
   assert.equal((await followup.json()).mode, "profile");
 });
 
+test("Laiwan questions and topic changes retrieve the new project in either language", async () => {
+  const h = harness();
+  for (const [question, locale] of [["什么是来玩？", "zh"], ["What is Laiwan?", "en"]]) {
+    const response = await h.send(question, locale);
+    const data = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(data.mode, "profile");
+    assert.equal(data.sources[0].id, `site-project-laiwan-weekend-${locale}`);
+  }
+  const changed = await (await h.send("那来玩呢？", "zh", [
+    { role: "user", content: "介绍国华的场景购项目" },
+    { role: "assistant", content: "场景购的购物规划流程。" }
+  ])).json();
+  assert.equal(changed.sources[0].id, "site-project-laiwan-weekend-zh");
+  const followup = await (await h.send("再详细点", "zh", [
+    { role: "user", content: "来玩能做什么？" },
+    { role: "assistant", content: "从发现活动到安排行程的探索原型。" }
+  ])).json();
+  assert.equal(followup.sources[0].id, "site-project-laiwan-weekend-zh");
+});
+
 test("English evidence keeps complete sentences while oversized output has a visible boundary", async () => {
   const bullet = "At Meituan, he led the 0-1 build of an analysis Agent for local business scenarios, combining knowledge extraction, RAG retrieval, and report generation with grounded business evidence.";
   const h = harness({ text: JSON.stringify({ summary: "Public Agent experience", bullets: [bullet] }), provider: "test", model: "test" });

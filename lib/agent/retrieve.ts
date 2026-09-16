@@ -55,7 +55,7 @@ function inferIntentCategories(question: string): KnowledgeChunk["category"][] {
     { hints: ["教育", "学校", "北大", "人大", "本科", "硕士", "education", "school", "university", "degree", "gpa", "成绩", "雅思", "托福"], categories: ["education"] },
     { hints: ["工作", "实习", "经历", "字节", "百度", "美团", "agent", "aigc", "coding", "comate", "tiktok", "tako", "memory", "个性化", "personalization", "chatbot"], categories: ["experience", "skills"] },
     { hints: ["适合", "匹配", "候选人", "招聘", "面试", "优势", "亮点", "candidate", "interview", "hire", "fit"], categories: ["identity", "experience", "skills", "project", "research"] },
-    { hints: ["projects", "portfolio", "项目", "作品", "fitlog", "练一下", "随手记", "codex widget", "pwa", "vibe"], categories: ["project"] },
+    { hints: ["projects", "portfolio", "项目", "作品", "fitlog", "练一下", "随手记", "codex widget", "来玩", "laiwan", "pwa", "vibe"], categories: ["project"] },
     { hints: ["research", "paper", "科研", "论文", "jeem", "研究", "doi", "期刊"], categories: ["research"] },
     { hints: ["技能", "能力", "工具", "擅长", "方向"], categories: ["skills", "experience"] },
     { hints: ["生活", "兴趣", "旅行", "旅游", "滑雪", "潜水", "音乐", "徒步", "爱好"], categories: ["beyond"] },

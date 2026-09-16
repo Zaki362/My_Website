@@ -682,6 +682,118 @@ export const portfolioProjects: PortfolioProject[] = [
         detailLabel: "View details"
       }
     }
+  },
+  {
+    slug: "laiwan-weekend",
+    year: "2026",
+    cover: "/projects/laiwan-weekend-cover.png",
+    liveUrl: "https://laiwan-weekend.vercel.app/",
+    githubUrl: "https://github.com/Zaki362/laiwan-weekend",
+    previewMode: "image",
+    locales: {
+      zh: {
+        category: "Vibe Coding / 城市探索",
+        status: "在线交互原型",
+        title: "来玩｜周末城市探索指南",
+        summary: "面向大学生的周末探索产品，把附近发现、想去、同行沟通、行程安排和到访记录串成完整流程；提供上海真实场所路线与可交互社交演示。",
+        cardIntro: "好玩的地方，一起去。按预算、距离和天气找到好去处，再把想去的地方安排成一个周末。",
+        detailIntro: "来玩是我用 vibe coding 构建的城市探索产品原型，面向时间和预算有限、希望找到好去处与同伴的大学生。它从六条上海真实场所路线出发，把筛选推荐、想去、消息、行程安排、邀请分享和到访记录串在一起。天气接入 Open-Meteo；社交人物与回复为示例，消息和个人记录保存在当前浏览器。",
+        audienceTitle: "为谁设计",
+        audience: "周末时间和预算有限，希望发现本地活动、找到同好并与朋友安排出行的大学生。",
+        problemTitle: "核心痛点",
+        problem: "好去处收藏了很多，真正出门却还要分别查预算、看天气、找同伴和排行程。信息发现、同行沟通与个人安排缺少衔接，让“想去”停留在收藏里。",
+        principlesTitle: "核心产品设计",
+        principles: [
+          "先帮助用户找到符合预算、距离和天气条件的活动，再展开社交与行程规划；推荐理由直接显示在卡片上。",
+          "把“想去”、加入行程和发消息设计成独立动作，让兴趣表达不会被误解为报名或出行承诺。",
+          "真实地点、规划估算与示例互动清楚区分；演示使用独立数据，退出后恢复用户原有现场。"
+        ],
+        buildTitle: "我在 Vibe Coding 中做了什么",
+        buildHighlights: [
+          "定义发现、想去、消息、行程和足迹之间的用户路径，围绕一次周末出行组织功能。",
+          "整理六条有地址、地图和官方来源的上海路线，接入逐日天气并实现可解释的规则推荐。",
+          "实现多份行程、时间与预算编辑、重叠和超支提醒，以及活动和行程快照分享。",
+          "构建八步连续操作演示，支持暂停、倍速和章节回看，并在退出时恢复数据、草稿与页面状态。"
+        ],
+        previewTitle: "真实产品界面",
+        previewDescription: "点击“在线体验”打开完整产品，可手动探索或播放八步自动演示。社交互动为本地演示，不向真实用户发送消息；邀请导入独立行程副本。",
+        contextTitle: "背景",
+        context: "周末探索不只是寻找一个地点，还包括判断是否合适、找到同行的人和组织具体安排。来玩把这些连续决定放在同一产品里，让一次出行从灵感走到计划与记录。",
+        contributionTitle: "设计与构建",
+        contribution: "我负责目标用户、完整探索流程、信息层级、推荐与筛选规则，以及兴趣、社交和行程之间的交互边界；借助 AI 编程助手完成原生 HTML/CSS/JavaScript 实现、天气接入、行程快照、演示播放器与响应式验收。",
+        impactTitle: "成果",
+        impact: [
+          "完成从活动发现、兴趣表达和同行沟通，到行程规划、分享与到访记录的可交互流程。",
+          "提供六条上海真实场所路线，结合预算、距离和逐日天气解释推荐。",
+          "上线无需登录的公开原型，支持手动体验与八步连续操作演示。"
+        ],
+        metrics: [
+          { value: "6", label: "上海探索路线" },
+          { value: "8", label: "连续演示步骤" },
+          { value: "0", label: "登录门槛" }
+        ],
+        workflow: [
+          { label: "发现合适的活动", icon: "book" },
+          { label: "想去与同行沟通", icon: "database" },
+          { label: "安排和分享行程", icon: "file" },
+          { label: "记录到访与感受", icon: "book" }
+        ],
+        tags: ["来玩", "产品设计", "Vibe Coding", "城市探索", "Open-Meteo", "交互原型"],
+        liveLabel: "在线体验",
+        detailLabel: "查看详情"
+      },
+      en: {
+        category: "Vibe Coding / City Exploration",
+        status: "Interactive Prototype",
+        title: "Laiwan | Weekend City Explorer",
+        summary: "A weekend exploration product for college students, connecting discovery, saved places, conversations, trip planning and visit records through real Shanghai routes and interactive social demos.",
+        cardIntro: "Find somewhere worth going, together. Discover places that fit your budget, distance and weather, then turn saved ideas into a weekend plan.",
+        detailIntro: "Laiwan is a city exploration prototype I built through vibe coding for college students with limited time and budgets. Starting with six routes through real Shanghai places, it connects discovery, saved activities, conversations, trip planning, invitations and visit records. Weather comes from Open-Meteo; people and replies are examples, while messages and personal records stay in the current browser.",
+        audienceTitle: "Designed for",
+        audience: "College students who want to discover local activities, find people with shared interests and plan outings with friends within limited weekend time and budgets.",
+        problemTitle: "Core problem",
+        problem: "Saving a place is easy; going there still requires checking costs and weather, finding company and building an itinerary across separate tools. The gap between discovery, conversation and planning keeps good ideas in a saved list.",
+        principlesTitle: "Core product decisions",
+        principles: [
+          "Help people find activities that fit their constraints before introducing social features and planning; show recommendation reasons directly on each card.",
+          "Keep saving an activity, adding it to a trip and sending a message independent, so expressing interest never implies booking or commitment.",
+          "Clearly distinguish real places, planning estimates and sample interactions; isolate demo data and restore the user's previous state on exit."
+        ],
+        buildTitle: "What I owned in Vibe Coding",
+        buildHighlights: [
+          "Defined the journey across discovery, saved places, messages, trips and visit records around one weekend outing.",
+          "Curated six Shanghai routes with addresses, maps and official sources, then connected daily forecasts to explainable rule-based recommendations.",
+          "Built multiple itineraries, editable times and budgets, conflict and overspending notices, and activity and trip snapshot sharing.",
+          "Created an eight-step continuous walkthrough with pause, speed controls and chapter replay that restores data, drafts and page state on exit."
+        ],
+        previewTitle: "Real product interface",
+        previewDescription: "Choose “Try it live” to explore the full product or play the eight-step walkthrough. Social interactions are local demos and send no messages to real people; invitations import independent trip copies.",
+        contextTitle: "Context",
+        context: "Exploring a city involves more than finding a place: people must decide whether it fits, find company and organize the outing. Laiwan brings these connected decisions into one product, taking a weekend idea through planning and reflection.",
+        contributionTitle: "Design & Build",
+        contribution: "I owned the audience, exploration journey, information hierarchy, recommendation and filtering rules, and interaction boundaries between interest, conversation and planning. With an AI coding assistant, I implemented the product in vanilla HTML/CSS/JavaScript, including weather integration, trip snapshots, the walkthrough player and responsive verification.",
+        impactTitle: "Impact",
+        impact: [
+          "Delivered an interactive journey from discovery and shared interests to conversations, trip planning, sharing and visit records.",
+          "Connected six routes through real Shanghai places with recommendations explained through budget, distance and daily weather.",
+          "Published a prototype that requires no login and supports both hands-on exploration and an eight-step continuous walkthrough."
+        ],
+        metrics: [
+          { value: "6", label: "Shanghai routes" },
+          { value: "8", label: "Walkthrough steps" },
+          { value: "0", label: "Login required" }
+        ],
+        workflow: [
+          { label: "Discover suitable activities", icon: "book" },
+          { label: "Save places & connect", icon: "database" },
+          { label: "Plan & share a trip", icon: "file" },
+          { label: "Record visits & reflections", icon: "book" }
+        ],
+        tags: ["Laiwan", "Product Design", "Vibe Coding", "City Exploration", "Open-Meteo", "Interactive Prototype"],
+        liveLabel: "Try it live",
+        detailLabel: "View details"
+      }
+    }
   }
 ];
 

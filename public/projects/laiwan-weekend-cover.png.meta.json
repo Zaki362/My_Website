@@ -1,0 +1,9 @@
+{
+  "source": "https://laiwan-weekend.vercel.app/",
+  "capturedAt": "2026-09-16",
+  "productVersion": "2.6.0",
+  "method": "browser-screenshot",
+  "viewport": { "width": 1280, "height": 800 },
+  "context": "Fresh anonymous browser session showing the default discovery page, public activity photos and live Open-Meteo weather. No personal account or saved trip data was loaded.",
+  "purpose": "Portfolio cover and product preview for the Laiwan weekend exploration prototype."
+}
