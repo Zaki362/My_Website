@@ -25,6 +25,11 @@ function getHomeSectionId(href: string) {
   return null;
 }
 
+function resolveHomeHref(href: string) {
+  const sectionId = getHomeSectionId(href);
+  return sectionId ? `/#${sectionId}` : href;
+}
+
 function isRouteActive(pathname: string, href: string) {
   if (href === "#projects" || href === "/projects") {
     return pathname.startsWith("/projects");
@@ -136,22 +141,6 @@ export function Navbar() {
     return () => window.removeEventListener(RESUME_REQUEST_EVENT, openResumeRequest);
   }, []);
 
-  function resolveHomeHref(href: string) {
-    if (pathname === "/" && href === "/projects") {
-      return "#projects";
-    }
-
-    if (pathname === "/" && href === "/beyond-work") {
-      return "#beyond";
-    }
-
-    if (href.startsWith("/")) {
-      return href;
-    }
-
-    return pathname === "/" ? href : `/${href}`;
-  }
-
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="container-shell relative flex h-11 items-center justify-between">
@@ -178,9 +167,9 @@ export function Navbar() {
             );
 
             return (
-              <a key={item.label} href={resolveHomeHref(item.href)} className={className}>
+              <Link key={item.label} href={resolveHomeHref(item.href)} className={className}>
                 {item.label}
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -234,7 +223,7 @@ export function Navbar() {
                     const isActive = pathname === "/" && sectionId ? activeSection === sectionId : isRouteActive(pathname, item.href);
 
                     return (
-                      <a
+                      <Link
                         key={item.label}
                         href={resolveHomeHref(item.href)}
                         onClick={() => setOpen(false)}
@@ -244,7 +233,7 @@ export function Navbar() {
                         )}
                       >
                         {item.label}
-                      </a>
+                      </Link>
                     );
                   })()
                 ))}

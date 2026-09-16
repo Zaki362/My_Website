@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="zh-CN" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className="bg-background font-sans text-foreground antialiased">
         <LanguageProvider>
           {children}
