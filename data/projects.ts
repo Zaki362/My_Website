@@ -53,118 +53,168 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "xiaohongshu-creator-workbench",
     year: "2026",
-    cover: "/projects/xiaohongshu-creator-workbench-cover.png",
-    video: "/projects/xhs-agent-flow-annotated-30s-v3-1080p.mp4",
-    videoDurationSeconds: 59,
+    cover: "/projects/redflow-creative-cover-20260923.png",
+    video: "/projects/redflow-dual-workflow-demo-20260923.mp4",
+    videoDurationSeconds: 116,
     previewMode: "video",
     locales: {
       zh: {
-        category: "Vibe Coding / Content Agent",
-        status: "59 秒视频 Demo",
-        title: "RedFlow｜小红书内容运营 Agent",
-        summary: "从真实素材到可发布图文的内容运营 Agent：DeepSeek 生成文案与视觉规划，Qwen-Image-3.0 生成组图，用户保留选题、审核与发布决定。",
-        cardIntro:
-          "把素材发现、AI 文案与配图、审核修订和发布材料准备收进同一流程，人只做三次关键决定。",
-        detailIntro:
-          "RedFlow｜小红书内容运营 Agent 是我用 vibe coding 持续构建的内容运营工作台。它把一手素材发现、选题确认、DeepSeek 文案与视觉规划、Qwen-Image-3.0 组图生成、审核修订和发布材料准备串成同一条可追溯流程。AI 承担中间执行，用户只需选择选题、审核结果并决定是否发布；最终发布始终由用户在自己的账号内完成。",
+        category: "Vibe Coding / AI Creation",
+        status: "双路径创作 · 视频 Demo",
+        title: "RedFlow｜AI 图文创作助手",
+        summary: "面向个人创作者的 AI 图文创作助手：通过语音或文字追问梳理灵感，也可从灵感广场选题直接制作，形成可预览、编辑和导出的图文作品。",
+        cardIntro: "从一句想法、几张照片开始，通过引导追问整理成稿；也可从灵感广场选择主题，直接生成文案与配图。",
+        detailIntro: "RedFlow 是面向个人创作者的 AI 图文创作助手。它通过语音或文字中的引导追问，帮助用户明确表达角度、补充细节，将零散想法与照片整理成图文；也支持从灵感广场选择主题，直接生成文案与配图。两条路径都支持预览、修改和发布准备，最终由用户自行发布。",
         audienceTitle: "为谁设计",
-        audience: "没有完整运营团队、但希望稳定更新内容的个人博主、内容运营者和 AI 产品从业者。",
+        audience: "已有经历、观点或照片，却难以整理成作品的个人创作者，覆盖生活记录、知识科普与经验分享。",
         problemTitle: "核心痛点",
-        problem: "素材、文案、图片、修改意见和发布材料散落在不同工具里，每次内容生产都要重新组织上下文。真正消耗人的不是某一步生成，而是让整条链路稳定、可信地连续跑完。",
-        principlesTitle: "核心产品设计",
+        problem: "AI 降低了制作门槛，但灵感仍缺少清晰的表达角度、具体细节与内容结构；选题、选图和写作之间的切换又让创作容易中断。",
+        principlesTitle: "两条创作路径",
         principles: [
-          "AI 承担素材整理、文案与视觉规划、组图生成和版本保存，人保留选题、审核与最终发布三次关键决定。",
-          "每条内容都从真实素材和一手来源出发，事实证据、生成版本与审核状态留在同一条任务里。",
-          "文案、单图或整组图片都可修订并保留版本；生成结果必须经过人工审核，系统不会自动越过发布边界。"
+          "灵感共创：从语音、文字或照片开始，通过最多五轮追问梳理角度与细节；信息充分时可提前成稿，生成标题、正文与话题，并结合用户照片形成初稿。",
+          "直接生成：从灵感广场的近期与历史精选中选题，确认文案和组图方案，再生成配图、审核与修订。当前广场以 AI 资讯为主，个人灵感共创不限定内容主题。",
+          "共同完成：在小红书式预览中检查图文，修改内容、保存草稿并继续编辑，确认后导出发布材料，由用户在自己的账号发布。"
         ],
-        buildTitle: "我在 Vibe Coding 中做了什么",
+        buildTitle: "产品判断与 AI 协作",
         buildHighlights: [
-          "定义“确认选题 → 生成内容 → 审核预览 → 发布确认”的四步状态机和完整人机分工。",
-          "搭建素材雷达与来源核验，把事实摘要、推荐理由和原始证据组织成可选择的内容机会。",
-          "接入 DeepSeek 与 Qwen-Image-3.0，把标题、正文、标签、视觉规划和连续组图生成串成一条生产链。",
-          "实现会话隔离、调用限额、版本追踪、人工审核与发布门禁，让公开体验可用但不触碰用户账号。"
+          "我负责产品定位、双创作路径与移动优先体验，把核心问题从“生成内容”推进到“帮助用户形成表达”，并确定先做图文、追问最多五轮。",
+          "通过手机试用与实际反馈打磨语音体验：进入即对话、只显示本轮字幕、上传照片不打断回应、静音不暂停会话。AI 协助拆解实现、修订并验证。",
+          "按任务分工接入模型：千问 Omni 负责语音理解与回应，DeepSeek 负责文字追问、成稿与视觉规划，千问 Image 负责直接制作链路中的 AI 配图。",
+          "串联预览编辑、草稿恢复和导出，并通过会话隔离、版本校验与调用限额保护创作进度；我主导关键取舍和体验验收，AI 协助完成工程落地。"
         ],
-        previewTitle: "59 秒完整视频 Demo",
-        previewDescription: "视频展示从素材雷达、选题确认、内容生成、组图审核与修订到发布确认的完整流程；不包含账号凭据，也不会执行真实发布。",
+        previewTitle: "1 分 56 秒 · 双路径 Demo",
+        previewDescription: "2026.09.23 最新录屏：游乐园经历的语音共创，以及灵感广场选题后的直接生成。录屏无声；固定案例演示中部分制作与发布准备状态为模拟，不实际发布。",
         contextTitle: "背景",
-        context:
-          "个人创作者缺的往往不是灵感，而是一条能持续跑起来的内容生产链。RedFlow 把原本分散的素材、文案、配图、修改和发布准备收进同一工作台，让 AI 执行重复步骤，同时保留人的判断与账号控制。",
+        context: "制作门槛降低后，从灵感到成品仍有缺口。个人创作者不仅需要文案与配图工具，也需要通过追问明确想表达什么、补充必要细节，并顺畅完成预览与修改。",
         contributionTitle: "设计与构建",
-        contribution:
-          "我负责产品定位、人机分工、四步工作流、数据与权限边界和端到端验收，并借助 AI 编程助手落地素材雷达、DeepSeek 内容规划、Qwen 组图生成、版本修订、人工审核和发布材料准备。",
-        impactTitle: "成果",
+        contribution: "我主导产品方向、双路径设计、移动优先体验、模型分工和验收；AI 协助实现语音与文字共创、照片上传、选题直接制作、草稿恢复和图文编辑。服务端通过 Node.js 与 Python 编排流程，PostgreSQL 保存对话与草稿，R2 存储媒体。",
+        impactTitle: "当前能力",
         impact: [
-          "跑通从真实素材雷达到可发布图文材料的连续内容生产流程。",
-          "支持文案、单图或整组修订，保留生成版本、来源证据和人工审核状态。",
-          "把用户参与收敛为选题、审核和是否发布三次关键决定，同时保持最终账号操作在人手中。"
+          "形成“个人灵感共创”与“精选选题直接制作”两条路径，分别承接表达组织与选题供给。",
+          "把对话、照片、图文成稿、预览编辑与草稿恢复连接起来，让零散想法可以持续完善为作品。",
+          "当前聚焦可编辑的图文与发布准备；账号定位、长期表达偏好、原生 App 和视频创作仍属于后续规划。"
         ],
         metrics: [
-          { value: "3", label: "关键决定" },
-          { value: "4", label: "核心步骤" },
-          { value: "0", label: "自动发布" }
+          {
+            value: "2",
+            label: "创作路径"
+          },
+          {
+            value: "≤5",
+            label: "共创追问轮次"
+          },
+          {
+            value: "116s",
+            label: "最新演示"
+          }
         ],
         workflow: [
-          { label: "素材雷达与证据", icon: "book" },
-          { label: "人工确认选题", icon: "database" },
-          { label: "AI 生成文案与组图", icon: "bot" },
-          { label: "审核后自主发布", icon: "file" }
+          {
+            label: "表达想法或选择主题",
+            icon: "book"
+          },
+          {
+            label: "共创追问或确认方案",
+            icon: "bot"
+          },
+          {
+            label: "生成图文并预览编辑",
+            icon: "file"
+          },
+          {
+            label: "保存草稿与导出",
+            icon: "database"
+          }
         ],
-        tags: ["RedFlow", "AI Agent", "Vibe Coding", "DeepSeek", "Qwen-Image-3.0", "Evidence Workflow", "Human-in-the-loop"],
+        tags: [
+          "RedFlow",
+          "语音共创",
+          "双路径创作",
+          "Qwen Omni",
+          "DeepSeek",
+          "Qwen Image",
+          "Vibe Coding"
+        ],
         liveLabel: "观看视频 Demo",
         detailLabel: "查看详情"
       },
       en: {
-        category: "Vibe Coding / Content Agent",
-        status: "59-sec Video Demo",
-        title: "RedFlow | Xiaohongshu Content Ops Agent",
-        summary: "A content-operations agent that turns sourced material into publish-ready posts: DeepSeek plans copy and visuals, Qwen-Image-3.0 creates image sets, and people retain topic, review and publishing decisions.",
-        cardIntro:
-          "It unifies material discovery, AI copy and images, revision and publish preparation while leaving people just three key decisions.",
-        detailIntro:
-          "RedFlow is a content-operations workbench I have continuously built through vibe coding. It connects primary-source discovery, human topic confirmation, DeepSeek copy and visual planning, Qwen-Image-3.0 image generation, review, revision and publish-material preparation in one traceable workflow. AI handles the middle execution; the user chooses the topic, reviews the result and decides whether to publish. Final publishing always stays in the user's own account.",
+        category: "Vibe Coding / AI Creation",
+        status: "Two creation paths · Video demo",
+        title: "RedFlow | AI Content Creation Assistant",
+        summary: "An AI creation assistant that turns ideas into editable posts through guided voice or text conversations, or creates copy and images directly from curated topics.",
+        cardIntro: "Start with an idea or a few photos and shape them into a post through guided questions, or choose a curated topic to generate copy and images.",
+        detailIntro: "RedFlow helps individual creators turn scattered ideas and photos into editable posts. Guided voice or text conversations clarify the angle and fill in missing details. A second path starts with a curated topic and generates copy and images directly. Both support preview, revision and publishing preparation, with final publishing handled by the creator.",
         audienceTitle: "Designed for",
-        audience: "Independent creators, content operators and AI product practitioners who need consistent output without a full operations team.",
+        audience: "Individual creators with experiences, opinions or photos to share, across everyday life, educational content and practical advice.",
         problemTitle: "Core problem",
-        problem: "Sources, copy, images, feedback and publish materials live in separate tools, forcing creators to rebuild context every time. The real cost is making the whole workflow run continuously and credibly, not generating one isolated asset.",
-        principlesTitle: "Core product decisions",
+        problem: "AI makes production easier, but an idea still needs an angle, specific details and a clear structure. Switching between topic selection, photos and writing can interrupt the process.",
+        principlesTitle: "Two creation paths",
         principles: [
-          "Let AI handle material processing, copy and visual planning, image generation and versioning while people retain topic, review and publishing decisions.",
-          "Start every post from real material and primary sources, keeping evidence, generated versions and review state in one task.",
-          "Allow copy, single-image or full-set revisions with history; every generation requires human review and the system never crosses the publishing boundary automatically."
+          "Guided co-creation: start with voice, text or photos. Up to five rounds of questions clarify the angle and details, with earlier drafting when ready. The result combines a title, copy and hashtags with the creator’s photos.",
+          "Direct generation: select recent or archived material from the inspiration feed, confirm copy and an image plan, then generate, review and revise images. The feed currently focuses on AI news; personal co-creation is not limited to that topic.",
+          "A shared finish: review the post in a Xiaohongshu-style preview, edit, save a draft and return to it later. Export the publishing materials and publish from the creator’s own account."
         ],
-        buildTitle: "What I owned in Vibe Coding",
+        buildTitle: "Product judgment & AI collaboration",
         buildHighlights: [
-          "Defined the four-step state machine: confirm topic, generate content, review preview and confirm publishing.",
-          "Built a material radar and source-verification layer that turns facts, reasons and evidence into selectable content opportunities.",
-          "Connected DeepSeek and Qwen-Image-3.0 into one pipeline for titles, copy, tags, visual plans and coherent image sets.",
-          "Implemented session isolation, usage limits, version history, human review and publishing gates so public use never touches a visitor's account."
+          "I owned the positioning, two creation paths and mobile-first experience, focusing on helping people form an expression. I set the initial scope to image-and-text posts and capped guided questioning at five rounds.",
+          "Mobile testing shaped the voice flow: start talking on entry, show only the current turn, let photo uploads coexist with responses, and keep the session going while muted. AI assisted with implementation, revision and verification.",
+          "Assigned models by task: Qwen Omni for voice understanding and responses, DeepSeek for text questions, drafting and visual planning, and Qwen Image for images in the direct-generation path.",
+          "Connected preview editing, draft recovery and export, with session isolation, revision checks and usage limits. I led product tradeoffs and experience acceptance while AI helped implement the system."
         ],
-        previewTitle: "59-second product demo",
-        previewDescription: "This walkthrough covers the material radar, topic confirmation, content and image generation, review, revision and publishing confirmation. It contains no account credentials and performs no real publishing action.",
+        previewTitle: "1 min 56 sec · Two-path demo",
+        previewDescription: "Latest recording, Sep 23, 2026: voice co-creation from an amusement-park visit, followed by direct generation from the inspiration feed. No audio. The fixed-case demo simulates some production and publishing-preparation states; it does not publish.",
         contextTitle: "Context",
-        context:
-          "Independent creators rarely lack ideas; they lack a content-production chain that can run consistently. RedFlow brings material, copy, images, revisions and publish preparation into one workbench so AI can execute repetitive steps while people retain judgment and account control.",
+        context: "Lower production costs do not close the gap between an idea and a finished post. Creators also need help clarifying what they want to say, adding useful details and moving smoothly through preview and revision.",
         contributionTitle: "Design & Build",
-        contribution:
-          "I owned the positioning, human-agent split, four-step workflow, data and permission boundaries and end-to-end acceptance, then used an AI coding assistant to implement the material radar, DeepSeek planning, Qwen image generation, revision history, human review and publish-material preparation.",
-        impactTitle: "Impact",
+        contribution: "I led positioning, the two workflows, mobile experience, model roles and acceptance. AI helped implement voice and text co-creation, photo uploads, direct generation, draft recovery and editing. Node.js and Python orchestrate the workflows, PostgreSQL stores conversations and drafts, and R2 stores media.",
+        impactTitle: "Current capabilities",
         impact: [
-          "Completed a continuous content-production flow from real-source radar to publish-ready post materials.",
-          "Supports copy, single-image and full-set revisions while preserving generation versions, source evidence and human review state.",
-          "Reduced human involvement to topic choice, review and the publishing decision while keeping final account actions in human hands."
+          "Two paths address different needs: organizing personal ideas through co-creation, and turning curated topics into posts through direct generation.",
+          "Connects conversations, photos, drafting, preview editing and draft recovery so ideas can develop into finished work.",
+          "Currently focused on editable image-and-text posts and publishing materials. Account positioning, long-term style preferences, a native app and video creation remain future plans."
         ],
         metrics: [
-          { value: "3", label: "Key decisions" },
-          { value: "4", label: "Core steps" },
-          { value: "0", label: "Auto publishing" }
+          {
+            value: "2",
+            label: "Creation paths"
+          },
+          {
+            value: "≤5",
+            label: "Question rounds"
+          },
+          {
+            value: "116s",
+            label: "Latest demo"
+          }
         ],
         workflow: [
-          { label: "Material radar & evidence", icon: "book" },
-          { label: "Human confirms topic", icon: "database" },
-          { label: "AI creates copy & images", icon: "bot" },
-          { label: "Review, then self-publish", icon: "file" }
+          {
+            label: "Share an idea or pick a topic",
+            icon: "book"
+          },
+          {
+            label: "Discuss or confirm a plan",
+            icon: "bot"
+          },
+          {
+            label: "Generate, preview and edit",
+            icon: "file"
+          },
+          {
+            label: "Save a draft and export",
+            icon: "database"
+          }
         ],
-        tags: ["RedFlow", "AI Agent", "Vibe Coding", "DeepSeek", "Qwen-Image-3.0", "Evidence Workflow", "Human-in-the-loop"],
+        tags: [
+          "RedFlow",
+          "Voice co-creation",
+          "Two creation paths",
+          "Qwen Omni",
+          "DeepSeek",
+          "Qwen Image",
+          "Vibe Coding"
+        ],
         liveLabel: "Watch video demo",
         detailLabel: "View details"
       }
