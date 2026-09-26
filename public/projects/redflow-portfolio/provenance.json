@@ -1,0 +1,38 @@
+{
+  "source": "RedFlow-产品介绍.html, author portfolio updated 2026-09-23 17:13",
+  "sourceSha256": "79e0f960bb2157b7e989d51067565a34356e6912962256352287e9141eb694b2",
+  "adaptedOn": "2026-09-26",
+  "assets": [
+    {
+      "file": "smiley.woff2",
+      "mime": "font/woff2",
+      "bytes": 1361268,
+      "sha256": "4895e7a5b72753b7d4bf090581fbc4375e0ec53484944f369a584588f1eeaf08"
+    },
+    {
+      "file": "voice-screen.png",
+      "mime": "image/png",
+      "bytes": 94702,
+      "sha256": "fa5a70219ddf77cf3c2a253c692fcb7f0de255151f7d51bc7dd5b91b6853ffac"
+    },
+    {
+      "file": "post-preview.png",
+      "mime": "image/png",
+      "bytes": 210830,
+      "sha256": "ddbbcee7e37a3b679b774f2f17d777084e3ada38b737296aeede0e2943d9404e"
+    },
+    {
+      "file": "everyday-creator.png",
+      "mime": "image/png",
+      "bytes": 2825625,
+      "sha256": "9bc4767e1b77aa51f643d05eed38038da728724546bc3e32ee7334dca76e76bc"
+    },
+    {
+      "file": "knowledge-creator.png",
+      "mime": "image/png",
+      "bytes": 3019838,
+      "sha256": "36138ba95815047b0e2632e401ed164b58100c71ae6fe5b5f3897e6afb1ecd22"
+    }
+  ],
+  "notes": "Images and font extracted byte-for-byte from the author-provided HTML. Two screenshots show example content. Two scenario illustrations are AI generated in the source portfolio. Original video remains the site’s September 23 recording."
+}

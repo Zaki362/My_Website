@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+import { RedflowProjectPage } from "@/components/redflow-project-page";
 import { ProjectDetailPage } from "@/components/project-detail-page";
 import { getProjectBySlug, portfolioProjects } from "@/data/projects";
 import { getSiteUrl } from "@/lib/site-url";
@@ -56,6 +57,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   if (!project) {
     notFound();
+  }
+
+  if (project.slug === "xiaohongshu-creator-workbench") {
+    return <RedflowProjectPage project={project} />;
   }
 
   return (
