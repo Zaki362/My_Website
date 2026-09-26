@@ -1,0 +1,97 @@
+/* Shared website navigation and page gutters; individual project identities remain local. */
+.project-shell {
+  --project-width: 1200px;
+  --project-gutter: 24px;
+  --project-navigation-height: 64px;
+  position: relative;
+}
+
+.project-navigation {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #e5e2dc;
+  background: rgba(251, 250, 247, .96);
+  backdrop-filter: blur(16px);
+  color: #44403c;
+  font: 500 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+}
+
+.project-navigation-inner {
+  width: min(var(--project-width), calc(100% - var(--project-gutter) * 2));
+  min-height: var(--project-navigation-height);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.project-navigation a,
+.project-navigation button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+
+.project-navigation a:hover { color: #0c0a09; }
+.project-navigation button { padding: 0 12px; border: 1px solid #dedbd5; border-radius: 8px; background: transparent; }
+.project-navigation button:hover { background: #efede8; }
+.project-navigation :focus-visible { outline: 2px solid #78716c; outline-offset: 4px; }
+.project-navigation svg { flex-shrink: 0; }
+
+.project-shell .redflow-portfolio .wrap,
+.project-shell .fitlog-portfolio .topbar,
+.project-shell .fitlog-portfolio .hero,
+.project-shell .fitlog-portfolio .principles,
+.project-shell .fitlog-portfolio .section,
+.project-shell .fitlog-portfolio .final-cta,
+.project-shell .fitlog-portfolio footer,
+.project-shell .container-shell {
+  width: min(var(--project-width), calc(100% - var(--project-gutter) * 2));
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.project-shell .scenecart-portfolio,
+.project-shell .quota-portfolio {
+  --page: min(var(--project-width), calc(100vw - var(--project-gutter) * 2));
+}
+.project-shell .fitlog-portfolio { --max: var(--project-width); }
+
+/* Product-specific menus scroll away; the common return control remains available. */
+.project-shell .scenecart-portfolio .site-nav,
+.project-shell .quota-portfolio .site-nav,
+.project-shell .fitlog-portfolio .topbar {
+  position: relative;
+  top: auto;
+}
+.project-shell .redflow-portfolio .masthead,
+.project-shell .scenecart-portfolio .nav-inner,
+.project-shell .quota-portfolio .nav-inner,
+.project-shell .fitlog-portfolio .topbar {
+  min-height: 80px;
+  padding-block: 16px;
+  box-sizing: border-box;
+}
+.project-shell [id] { scroll-margin-top: calc(var(--project-navigation-height) + 24px); }
+.project-shell .quota-portfolio .scroll-progress { top: var(--project-navigation-height); z-index: 101; }
+
+@media (max-width: 680px) {
+  .project-shell { --project-gutter: 20px; --project-navigation-height: 60px; }
+  .project-navigation a, .project-navigation button { min-height: 44px; }
+  .project-shell .redflow-portfolio .masthead,
+  .project-shell .scenecart-portfolio .nav-inner,
+  .project-shell .quota-portfolio .nav-inner,
+  .project-shell .fitlog-portfolio .topbar { min-height: 72px; padding-block: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-navigation a, .project-navigation button { transition: none; }
+}

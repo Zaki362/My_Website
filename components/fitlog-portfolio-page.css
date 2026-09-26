@@ -1017,14 +1017,11 @@
         }
       }
     
-.fitlog-portfolio .portfolio-site-tools {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:8px max(24px, calc((100vw - 1180px)/2));background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line);font:500 12px/1.4 system-ui,sans-serif;}
-.fitlog-portfolio .portfolio-site-tools a {text-decoration:none;min-height:36px;display:inline-flex;align-items:center;}
-.fitlog-portfolio .portfolio-site-tools button {border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:transparent;color:inherit;}
 .fitlog-portfolio [id] {scroll-margin-top:100px;}
 .fitlog-portfolio:lang(en) h1,.fitlog-portfolio:lang(en) h2,.fitlog-portfolio:lang(en) h3 {font-family:Arial,sans-serif;}
 .fitlog-portfolio:lang(en) h1 {font-size:clamp(40px,5vw,68px);}
 .fitlog-portfolio .portfolio-snapshot {font-size:12px;color:var(--muted);margin:18px 0 8px;}
-@media(max-width:600px){.fitlog-portfolio .portfolio-site-tools{padding-inline:20px;} .fitlog-portfolio:lang(en) h1 {font-size:40px;}}
+@media(max-width:600px){.fitlog-portfolio:lang(en) h1 {font-size:40px;}}
 @media(prefers-reduced-motion:reduce){.fitlog-portfolio *,.fitlog-portfolio *::before,.fitlog-portfolio *::after{animation:none !important;transition:none !important;}}
 .fitlog-portfolio .reveal {opacity:1;transform:none;}
 .fitlog-portfolio .hero h1 { max-width: 100%; font-size: clamp(44px, 4.5vw, 64px); line-height: 1.12; }

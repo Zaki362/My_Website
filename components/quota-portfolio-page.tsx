@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- Preserve original portfolio screenshots and their aspect ratios. */
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
-import { PortfolioToolbar, usePortfolioCopy } from "./portfolio-toolbar";
+import { usePortfolioCopy } from "./portfolio-toolbar";
 import "./quota-portfolio-page.css";
 export function QuotaPortfolioPage() {
     const { locale, t } = usePortfolioCopy();
@@ -29,7 +29,7 @@ export function QuotaPortfolioPage() {
         window.addEventListener("scroll", update, { passive: true });
         return () => window.removeEventListener("scroll", update);
     }, []);
-    return <div className="quota-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><PortfolioToolbar /><div className="scroll-progress" aria-hidden="true" ref={progressRef}>
+    return <div className="quota-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><div className="scroll-progress" aria-hidden="true" ref={progressRef}>
     </div>
     <header className="site-nav">
     <div className="nav-inner">

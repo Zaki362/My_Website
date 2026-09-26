@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import { PortfolioToolbar } from "@/components/portfolio-toolbar";
+import "@/components/project-shell.css";
 import { RedflowProjectPage } from "@/components/redflow-project-page";
 import { ScenecartPortfolioPage } from "@/components/scenecart-portfolio-page";
 import { FitlogPortfolioPage } from "@/components/fitlog-portfolio-page";
@@ -62,18 +63,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
-  if (project.slug === "xiaohongshu-creator-workbench") {
-    return <RedflowProjectPage project={project} />;
+  let content;
+  switch (project.slug) {
+    case "xiaohongshu-creator-workbench": content = <RedflowProjectPage project={project} />; break;
+    case "scenecart-ai": content = <ScenecartPortfolioPage />; break;
+    case "fitlog-minimal": content = <FitlogPortfolioPage />; break;
+    case "codex-widget": content = <QuotaPortfolioPage />; break;
+    default: content = <><main className="relative min-h-screen overflow-hidden"><ProjectDetailPage project={project} /></main><Footer /></>;
   }
-  if (project.slug === "scenecart-ai") return <ScenecartPortfolioPage />;
-  if (project.slug === "fitlog-minimal") return <FitlogPortfolioPage />;
-  if (project.slug === "codex-widget") return <QuotaPortfolioPage />;
 
-  return (
-    <main className="relative min-h-screen overflow-hidden">
-      <Navbar />
-      <ProjectDetailPage project={project} />
-      <Footer />
-    </main>
-  );
+  return <div className="project-shell"><PortfolioToolbar />{content}</div>;
 }

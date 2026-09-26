@@ -1768,10 +1768,6 @@
 .redflow-portfolio h3, .redflow-portfolio h4 { font-weight: 700; }
 .redflow-portfolio .masthead { flex-wrap: wrap; gap: 16px 24px; padding-block: 20px; }
 .redflow-portfolio .mast-author { margin-left: auto; }
-.redflow-portfolio .portfolio-tools { display: flex; align-items: center; gap: 18px; font-size: 12px; }
-.redflow-portfolio .portfolio-tools a, .redflow-portfolio .portfolio-tools button { display: inline-flex; align-items: center; min-height: 44px; }
-.redflow-portfolio .portfolio-tools button { cursor: pointer; background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; }
-.redflow-portfolio .portfolio-tools a:hover { color: var(--deep); }
 .redflow-portfolio .brand-name { display: block; }
 .redflow-portfolio .hero-statement { text-wrap: balance; }
 .redflow-portfolio [id] { scroll-margin-top: 24px; }
@@ -1781,11 +1777,9 @@
 .redflow-portfolio:lang(en) .path-heading { min-height: 270px; }
 @media (max-width: 900px) {
   .redflow-portfolio .mast-author { display: none; }
-  .redflow-portfolio .portfolio-tools { margin-left: auto; }
 }
 @media (max-width: 680px) {
   .redflow-portfolio .masthead { align-items: center; }
-  .redflow-portfolio .portfolio-tools { width: 100%; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; }
   .redflow-portfolio:lang(en) .path-heading { min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) {

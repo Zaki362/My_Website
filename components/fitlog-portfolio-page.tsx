@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- Preserve original portfolio screenshots and their aspect ratios. */
 import type React from "react";
 import { useState } from "react";
-import { PortfolioToolbar, usePortfolioCopy } from "./portfolio-toolbar";
+import { usePortfolioCopy } from "./portfolio-toolbar";
 import "./fitlog-portfolio-page.css";
 const views = { "dashboard": { "index": "VIEW 01 / HOME", "title": "打开就知道今天怎么开始", "description": "首页把训练统计、今日建议、最近记录与部位状态放在一起，但最醒目的动作始终只有一个：开始训练。", "image": "/projects/fitlog-portfolio/asset-2.png", "alt": "练一下首页真实界面" }, "start": { "index": "VIEW 02 / START", "title": "按建议开始，也保留自己的计划", "description": "选择训练部位后直接预览动作数量与清单。用户可以接受建议，也可以自由组合，不被预设计划绑住。", "image": "/projects/fitlog-portfolio/asset-3.png", "alt": "练一下开练选择页真实界面" }, "active": { "index": "VIEW 03 / ACTIVE", "title": "组间记录，手指不用多走一步", "description": "重量、组次、难度与备注都在同一条训练上下文里。每个变化只服务于正在进行的动作。", "image": "/projects/fitlog-portfolio/asset-4.png", "alt": "练一下训练中记录页真实界面" }, "history": { "index": "VIEW 04 / HISTORY", "title": "结束后，记录自动成为复盘材料", "description": "按月份与部位查看训练历史，再进入单次训练或动作详情，不需要重新整理一份训练日志。", "image": "/projects/fitlog-portfolio/asset-5.png", "alt": "练一下训练历史页真实界面" } };
 export function FitlogPortfolioPage() {
@@ -19,7 +19,7 @@ export function FitlogPortfolioPage() {
         setViewKey(keys[next]);
         event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(".view-tab")[next]?.focus();
     };
-    return <div className="fitlog-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><PortfolioToolbar /><a className="skip-link" href="#main">
+    return <div className="fitlog-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><a className="skip-link" href="#main">
     {t("跳到主要内容")}
     </a>
     <div className="page-shell">

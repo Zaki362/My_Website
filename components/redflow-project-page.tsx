@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import type { PortfolioProject } from "@/data/projects";
 import "./redflow-project-page.css";
@@ -9,7 +8,7 @@ import "./redflow-project-page.css";
 export function RedflowProjectPage({ project }: {
     project: PortfolioProject;
 }) {
-    const { locale, toggleLocale } = useLanguage();
+    const { locale } = useLanguage();
     const t = (zh: string, en: string) => locale === "zh" ? zh : en;
     return (<main className="redflow-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}>
     <a className="skip" href="#redflow-content">
@@ -31,14 +30,6 @@ export function RedflowProjectPage({ project }: {
     </a>
     <div className="mast-author">
     {t("郑国华 · 北京大学 ｜ AI 产品作品集", "Guohua Zheng · Peking University | AI Product Portfolio")}
-    </div>
-    <div className="portfolio-tools">
-    <Link href="/#projects">
-    {t("返回项目列表", "Back to projects")}
-    </Link>
-    <button type="button" onClick={toggleLocale} aria-label={t("切换为英文", "Switch to Chinese")}>
-    {t("English", "中文")}
-    </button>
     </div>
     </header>
     <div id="redflow-content">

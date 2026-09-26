@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- Preserve original portfolio screenshots and their aspect ratios. */
 import type React from "react";
 import { useState, useRef } from "react";
-import { PortfolioToolbar, usePortfolioCopy } from "./portfolio-toolbar";
+import { usePortfolioCopy } from "./portfolio-toolbar";
 import "./scenecart-portfolio-page.css";
 export function ScenecartPortfolioPage() {
     const { locale, t } = usePortfolioCopy();
@@ -26,7 +26,7 @@ export function ScenecartPortfolioPage() {
         seek(times[next]);
         event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
     };
-    return <div className="scenecart-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><PortfolioToolbar /><a className="skip-link" href="#main">
+    return <div className="scenecart-portfolio" lang={locale === "zh" ? "zh-CN" : "en"}><a className="skip-link" href="#main">
     {t("跳到主要内容")}
     </a>
     <nav className="site-nav" aria-label={t("页面导航")}>

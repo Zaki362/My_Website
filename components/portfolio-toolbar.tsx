@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft, Languages } from "lucide-react";
 import { useLanguage } from "./language-provider";
 import translations from "./portfolio-translations.json";
 
@@ -19,11 +20,14 @@ export function usePortfolioCopy() {
 export function PortfolioToolbar() {
   const { locale, toggleLocale } = useLanguage();
   return (
-    <div className="portfolio-site-tools">
-      <Link href="/#projects">{locale === "zh" ? "← 返回项目列表" : "← Back to projects"}</Link>
+    <nav className="project-navigation" aria-label={locale === "zh" ? "项目导航" : "Project navigation"}>
+      <div className="project-navigation-inner">
+      <Link href="/#projects"><ArrowLeft size={16} aria-hidden="true" />{locale === "zh" ? "返回项目列表" : "Back to projects"}</Link>
       <button type="button" onClick={toggleLocale} aria-label={locale === "zh" ? "切换为英文" : "Switch to Chinese"}>
+        <Languages size={16} aria-hidden="true" />
         {locale === "zh" ? "English" : "中文"}
       </button>
-    </div>
+      </div>
+    </nav>
   );
 }
