@@ -1,0 +1,1285 @@
+/* Native adaptation of the author's HTML portfolio, scoped to this route. */
+.quota-portfolio { position: relative; z-index: 1; min-height:100vh; font-size:16px; line-height:normal; font-weight:400; }
+.quota-portfolio :where(h1,h2,h3,h4,strong,b) {font-weight:700;}
+.quota-portfolio :where(svg) {display:inline-block;vertical-align:middle;}
+.quota-portfolio :where(ul,ol) {list-style:revert;}
+.quota-portfolio :where(button) {cursor:pointer;}
+.quota-portfolio :where(img) {height:auto;}
+
+      .quota-portfolio {
+        color-scheme: light;
+        --ink: #101512;
+        --ink-soft: #3f4a43;
+        --muted: #667169;
+        --paper: #f3f6f1;
+        --surface: #fbfdf9;
+        --surface-strong: #ffffff;
+        --line: #ccd5cd;
+        --line-strong: #aeb9b0;
+        --green: #35d58a;
+        --green-dark: #126f45;
+        --green-deep: #0c4f32;
+        --cyan: #70d9e3;
+        --graphite: #101512;
+        --graphite-soft: #19201c;
+        --focus: #0969da;
+        --page: min(1180px, calc(100vw - 48px));
+        --display: "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+        --body: "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+      }
+
+      .quota-portfolio * {
+        box-sizing: border-box;
+      }
+
+      .quota-portfolio {
+        scroll-behavior: smooth;
+        scroll-padding-top: 96px;
+      }
+
+      .quota-portfolio {
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .quota-portfolio ::selection {
+        background: var(--green);
+        color: #07140d;
+      }
+
+      .quota-portfolio ::-webkit-scrollbar {
+        width: 11px;
+      }
+
+      .quota-portfolio ::-webkit-scrollbar-track {
+        background: #e4e9e3;
+      }
+
+      .quota-portfolio ::-webkit-scrollbar-thumb {
+        border: 3px solid #e4e9e3;
+        border-radius: 999px;
+        background: #78847b;
+      }
+
+      .quota-portfolio a,.quota-portfolio 
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .quota-portfolio a:focus-visible,.quota-portfolio 
+      button:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 4px;
+      }
+
+      .quota-portfolio a {
+        color: inherit;
+      }
+
+      .quota-portfolio img,.quota-portfolio 
+      svg {
+        display: block;
+      }
+
+      .quota-portfolio .scroll-progress {
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        transform: scaleX(0);
+        transform-origin: left;
+        background: var(--green);
+      }
+
+      .quota-portfolio .site-nav {
+        position: sticky;
+        z-index: 90;
+        top: 0;
+        border-bottom: 1px solid rgba(16, 21, 18, 0.12);
+        background: rgba(243, 246, 241, 0.88);
+        backdrop-filter: blur(18px) saturate(140%);
+      }
+
+      .quota-portfolio .nav-inner {
+        width: var(--page);
+        min-height: 74px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+      }
+
+      .quota-portfolio .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        flex: 0 0 auto;
+        text-decoration: none;
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .quota-portfolio .brand-mark {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 10px;
+        background: var(--graphite);
+        box-shadow: 0 7px 17px rgba(16, 21, 18, 0.18);
+      }
+
+      .quota-portfolio .brand-mark::before,.quota-portfolio 
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+      }
+
+      .quota-portfolio .brand-mark::before {
+        inset: 8px;
+        border: 3px solid var(--green);
+        border-left-color: rgba(53, 213, 138, 0.18);
+        transform: rotate(38deg);
+      }
+
+      .quota-portfolio .brand-mark::after {
+        right: 5px;
+        bottom: 5px;
+        width: 6px;
+        height: 6px;
+        background: var(--cyan);
+      }
+
+      .quota-portfolio .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        margin-left: auto;
+      }
+
+      .quota-portfolio .nav-links a {
+        position: relative;
+        color: var(--ink-soft);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .quota-portfolio .nav-links a::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -9px;
+        left: 0;
+        height: 2px;
+        transform: scaleX(0);
+        background: var(--green-dark);
+        transition: transform 180ms ease-out;
+      }
+
+      .quota-portfolio .nav-links a:hover::after,.quota-portfolio 
+      .nav-links a[aria-current="true"]::after {
+        transform: scaleX(1);
+      }
+
+      .quota-portfolio .nav-github,.quota-portfolio 
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        padding: 0 17px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        transition:
+          transform 180ms ease-out,
+          box-shadow 180ms ease-out,
+          border-color 180ms ease-out,
+          background 180ms ease-out;
+      }
+
+      .quota-portfolio .nav-github,.quota-portfolio 
+      .button-primary {
+        background: var(--graphite);
+        color: #f8fff9;
+        box-shadow: 0 8px 22px rgba(16, 21, 18, 0.18);
+      }
+
+      .quota-portfolio .nav-github:hover,.quota-portfolio 
+      .button-primary:hover {
+        transform: translateY(-2px);
+        background: #1b251f;
+        box-shadow: 0 13px 28px rgba(16, 21, 18, 0.22);
+      }
+
+      .quota-portfolio .button-secondary {
+        border-color: var(--line-strong);
+        background: rgba(255, 255, 255, 0.66);
+        color: var(--ink);
+      }
+
+      .quota-portfolio .button-secondary:hover {
+        transform: translateY(-2px);
+        border-color: #7c897f;
+        background: var(--surface-strong);
+        box-shadow: 0 10px 24px rgba(16, 21, 18, 0.1);
+      }
+
+      .quota-portfolio .icon {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 auto;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .quota-portfolio main {
+        overflow: hidden;
+      }
+
+      .quota-portfolio .hero {
+        width: var(--page);
+        margin: 0 auto;
+        padding: 86px 0 100px;
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
+        align-items: center;
+        gap: clamp(46px, 7vw, 92px);
+      }
+
+      .quota-portfolio .hero-copy h1 {
+        max-width: 740px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(3.35rem, 5vw, 4.5rem);
+        font-weight: 720;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .quota-portfolio .hero-copy h1 .accent {
+        color: var(--green-dark);
+      }
+
+      .quota-portfolio .hero-line {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .quota-portfolio .hero-copy > p {
+        max-width: 610px;
+        margin: 29px 0 0;
+        color: var(--ink-soft);
+        font-size: 18px;
+        line-height: 1.75;
+      }
+
+      .quota-portfolio .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .quota-portfolio .hero-proof {
+        margin-top: 38px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 26px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+
+      .quota-portfolio .hero-proof span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .quota-portfolio .hero-proof i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green-dark);
+      }
+
+      .quota-portfolio .desktop-stage {
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 42%),
+          radial-gradient(circle at 72% 31%, rgba(53, 213, 138, 0.18), transparent 35%),
+          radial-gradient(circle at 20% 75%, rgba(112, 217, 227, 0.11), transparent 32%),
+          #101512;
+        box-shadow: 0 34px 70px rgba(16, 21, 18, 0.25);
+        clip-path: inset(0 0 100% 0 round 30px);
+        animation: quota-portfolio-stage-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) 160ms forwards;
+      }
+
+      @keyframes quota-portfolio-stage-reveal {
+        to {
+          clip-path: inset(0 0 0 0 round 30px);
+        }
+      }
+
+      .quota-portfolio .stage-menu {
+        height: 38px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 10px;
+      }
+
+      .quota-portfolio .stage-menu-left,.quota-portfolio 
+      .stage-menu-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .quota-portfolio .stage-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      .quota-portfolio .quota-widget {
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        background: rgba(249, 252, 248, 0.9);
+        color: var(--ink);
+        backdrop-filter: blur(24px) saturate(130%);
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .quota-portfolio .widget-medium {
+        top: 108px;
+        left: 50%;
+        width: min(480px, calc(100% - 54px));
+        min-height: 242px;
+        transform: translateX(-50%) rotate(-1deg);
+        border-radius: 28px;
+        padding: 23px 24px;
+      }
+
+      .quota-portfolio .widget-small {
+        right: 27px;
+        bottom: 28px;
+        width: 206px;
+        min-height: 216px;
+        transform: rotate(2.4deg);
+        border-radius: 26px;
+        padding: 19px;
+      }
+
+      .quota-portfolio .widget-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .quota-portfolio .widget-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--display);
+        font-size: 16px;
+        font-weight: 730;
+        letter-spacing: -0.02em;
+      }
+
+      .quota-portfolio .status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 5px rgba(53, 213, 138, 0.13);
+      }
+
+      .quota-portfolio .widget-time {
+        color: #657168;
+        font-size: 10px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .quota-row {
+        margin-top: 18px;
+      }
+
+      .quota-portfolio .quota-row + .quota-row {
+        margin-top: 13px;
+      }
+
+      .quota-portfolio .quota-line {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .quota-portfolio .quota-label {
+        color: #414c44;
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .quota-portfolio .quota-value {
+        font-family: var(--display);
+        font-size: 19px;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #dce4dc;
+      }
+
+      .quota-portfolio .track > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--green-dark);
+      }
+
+      .quota-portfolio .quota-progress-line {
+        margin-top: 7px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .quota-portfolio .reset-label {
+        min-width: 45px;
+        color: #758078;
+        font-size: 9px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .medium-body {
+        min-height: 194px;
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        gap: 22px;
+      }
+
+      .quota-portfolio .medium-limits {
+        min-width: 0;
+      }
+
+      .quota-portfolio .medium-trend {
+        min-width: 0;
+        border-left: 1px solid #d4ddd5;
+        padding-left: 20px;
+      }
+
+      .quota-portfolio .trend-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .quota-portfolio .trend-title {
+        font-size: 12px;
+        font-weight: 720;
+      }
+
+      .quota-portfolio .trend-average {
+        color: #6b766e;
+        font-size: 9px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .trend {
+        position: relative;
+        height: 78px;
+        margin-top: 21px;
+        border-top: 1px solid #d7dfd8;
+        padding-top: 12px;
+      }
+
+      .quota-portfolio .medium-trend .trend {
+        height: 145px;
+        margin-top: 14px;
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .quota-portfolio .medium-trend .trend svg {
+        height: 120px;
+      }
+
+      .quota-portfolio .trend svg {
+        width: 100%;
+        height: 46px;
+        overflow: visible;
+      }
+
+      .quota-portfolio .small-percentage {
+        margin-top: 21px;
+        font-family: var(--display);
+        font-size: 42px;
+        font-weight: 760;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .small-label {
+        margin-top: 8px;
+        color: #566259;
+        font-size: 11px;
+      }
+
+      .quota-portfolio .stage-caption {
+        position: absolute;
+        bottom: 33px;
+        left: 30px;
+        max-width: 230px;
+        color: rgba(239, 250, 241, 0.64);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .quota-portfolio .section {
+        padding: 112px 0;
+      }
+
+      .quota-portfolio .section-inner {
+        width: var(--page);
+        margin: 0 auto;
+      }
+
+      .quota-portfolio .section-heading {
+        max-width: 790px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(2.5rem, 5vw, 4.6rem);
+        font-weight: 720;
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .quota-portfolio .section-lead {
+        max-width: 70ch;
+        margin: 26px 0 0;
+        color: var(--ink-soft);
+        font-size: 17px;
+        line-height: 1.8;
+      }
+
+      .quota-portfolio .problem-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(250px, 0.58fr) minmax(0, 1.42fr);
+        gap: 72px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .problem-note {
+        position: sticky;
+        top: 118px;
+        align-self: start;
+        padding-top: 28px;
+      }
+
+      .quota-portfolio .problem-note strong {
+        display: block;
+        max-width: 13ch;
+        font-family: var(--display);
+        font-size: 27px;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+      }
+
+      .quota-portfolio .problem-note p {
+        max-width: 33ch;
+        margin: 17px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .quota-portfolio .benefit-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .quota-portfolio .benefit-list li {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 20px;
+        padding: 27px 0 30px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .quota-portfolio .benefit-icon {
+        width: 42px;
+        height: 42px;
+        border: 1px solid #b5c1b7;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        color: var(--green-deep);
+        background: rgba(255, 255, 255, 0.48);
+      }
+
+      .quota-portfolio .benefit-list h3 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: 22px;
+        letter-spacing: -0.025em;
+      }
+
+      .quota-portfolio .benefit-list p {
+        max-width: 62ch;
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .quota-portfolio .product-section {
+        border-block: 1px solid var(--line);
+        background: #e8ede7;
+      }
+
+      .quota-portfolio .product-layout {
+        margin-top: 64px;
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 62px;
+        align-items: center;
+      }
+
+      .quota-portfolio .product-canvas {
+        position: relative;
+        min-height: 560px;
+        overflow: hidden;
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 18% 16%, rgba(112, 217, 227, 0.19), transparent 28%),
+          radial-gradient(circle at 80% 78%, rgba(53, 213, 138, 0.16), transparent 32%),
+          #d8e0d9;
+        box-shadow: 0 27px 58px rgba(16, 21, 18, 0.14);
+      }
+
+      .quota-portfolio .product-canvas .quota-widget {
+        box-shadow: 0 24px 56px rgba(37, 48, 40, 0.18);
+      }
+
+      .quota-portfolio .product-canvas .widget-medium {
+        top: 66px;
+      }
+
+      .quota-portfolio .product-canvas .widget-small {
+        bottom: 45px;
+      }
+
+      .quota-portfolio .product-facts {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .product-fact {
+        padding: 25px 0;
+        border-bottom: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .product-fact h3 {
+        margin: 0;
+        font-family: var(--display);
+        font-size: 21px;
+        letter-spacing: -0.025em;
+      }
+
+      .quota-portfolio .product-fact p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .quota-portfolio .usage-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
+        gap: 72px;
+      }
+
+      .quota-portfolio .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: usage;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .steps li {
+        counter-increment: usage;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 18px;
+        padding: 25px 0 28px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .quota-portfolio .steps li::before {
+        content: "0" counter(usage);
+        color: var(--green-dark);
+        font-size: 12px;
+        font-weight: 750;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .steps h3 {
+        margin: -4px 0 0;
+        font-family: var(--display);
+        font-size: 21px;
+        letter-spacing: -0.025em;
+      }
+
+      .quota-portfolio .steps p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .quota-portfolio .install-panel {
+        position: sticky;
+        top: 112px;
+        align-self: start;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        background: var(--graphite);
+        color: #f3f8f4;
+        box-shadow: 0 24px 50px rgba(16, 21, 18, 0.18);
+      }
+
+      .quota-portfolio .install-titlebar {
+        min-height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: #aab8ae;
+        font-size: 11px;
+      }
+
+      .quota-portfolio .window-controls {
+        display: flex;
+        gap: 6px;
+      }
+
+      .quota-portfolio .window-controls i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #718077;
+      }
+
+      .quota-portfolio .install-code {
+        min-height: 220px;
+        padding: 26px;
+        overflow-x: auto;
+        color: #d9e8dc;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+      }
+
+      .quota-portfolio .install-code .prompt {
+        color: var(--green);
+      }
+
+      .quota-portfolio .copy-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 15px 16px;
+      }
+
+      .quota-portfolio .copy-status {
+        color: #9ead9f;
+        font-size: 11px;
+      }
+
+      .quota-portfolio .copy-button {
+        min-height: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 0 12px;
+        background: rgba(255, 255, 255, 0.07);
+        color: white;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .quota-portfolio .copy-button:hover {
+        border-color: rgba(255, 255, 255, 0.36);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .quota-portfolio .requirements {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.75;
+      }
+
+      .quota-portfolio .evidence-section {
+        border-top: 1px solid var(--line);
+        background: #e8ede7;
+      }
+
+      .quota-portfolio .evidence-layout {
+        margin-top: 66px;
+        display: grid;
+        grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+        align-items: center;
+        gap: 82px;
+      }
+
+      .quota-portfolio .poster-frame {
+        position: relative;
+        padding: 15px;
+        border-radius: 28px;
+        background: #fafcf9;
+        box-shadow: 0 30px 70px rgba(16, 21, 18, 0.2);
+        transform: rotate(-1.2deg);
+      }
+
+      .quota-portfolio .poster-frame img {
+        width: 100%;
+        height: auto;
+        border-radius: 17px;
+      }
+
+      .quota-portfolio .poster-frame figcaption {
+        padding: 14px 7px 2px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .quota-portfolio .evidence-copy > p {
+        max-width: 59ch;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .quota-portfolio .evidence-metrics {
+        margin-top: 42px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .evidence-metric {
+        display: grid;
+        grid-template-columns: 135px minmax(0, 1fr);
+        gap: 28px;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--line-strong);
+        align-items: baseline;
+      }
+
+      .quota-portfolio .evidence-metric strong {
+        font-family: var(--display);
+        color: var(--green-deep);
+        font-size: 28px;
+        letter-spacing: -0.035em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .quota-portfolio .evidence-metric span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .quota-portfolio .final-cta {
+        padding: 118px 0;
+        background: var(--surface);
+      }
+
+      .quota-portfolio .final-panel {
+        width: var(--page);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 50px;
+        padding-top: 48px;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .quota-portfolio .final-panel h2 {
+        max-width: 800px;
+        margin: 0;
+        font-family: var(--display);
+        font-size: clamp(2.7rem, 5.5vw, 5.3rem);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+      }
+
+      .quota-portfolio .final-panel p {
+        max-width: 60ch;
+        margin: 23px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .quota-portfolio .final-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 11px;
+        min-width: 190px;
+      }
+
+      .quota-portfolio footer {
+        border-top: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .quota-portfolio .footer-inner {
+        width: var(--page);
+        min-height: 84px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .quota-portfolio .footer-inner a {
+        color: var(--ink-soft);
+        text-underline-offset: 4px;
+      }
+
+      @media (max-width: 980px) {
+        .quota-portfolio .nav-links {
+          display: none;
+        }
+
+        .quota-portfolio .hero {
+          grid-template-columns: 1fr;
+          padding-top: 64px;
+        }
+
+        .quota-portfolio .hero-copy {
+          max-width: 760px;
+        }
+
+        .quota-portfolio .desktop-stage {
+          min-height: 520px;
+        }
+
+        .quota-portfolio .problem-layout,.quota-portfolio 
+        .product-layout,.quota-portfolio 
+        .usage-layout,.quota-portfolio 
+        .evidence-layout {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+
+        .quota-portfolio .problem-note,.quota-portfolio 
+        .install-panel {
+          position: static;
+        }
+
+        .quota-portfolio .problem-note strong {
+          max-width: 20ch;
+        }
+
+        .quota-portfolio .evidence-layout {
+          grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+          gap: 46px;
+        }
+
+        .quota-portfolio .final-panel {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .quota-portfolio .final-actions {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .quota-portfolio {
+          --page: min(100% - 30px, 1180px);
+        }
+
+        .quota-portfolio {
+          scroll-padding-top: 78px;
+        }
+
+        .quota-portfolio .nav-inner {
+          min-height: 64px;
+        }
+
+        .quota-portfolio .brand {
+          font-size: 14px;
+        }
+
+        .quota-portfolio .brand-mark {
+          width: 31px;
+          height: 31px;
+          border-radius: 9px;
+        }
+
+        .quota-portfolio .nav-github {
+          min-height: 39px;
+          padding: 0 13px;
+          font-size: 12px;
+        }
+
+        .quota-portfolio .hero {
+          padding: 36px 0 58px;
+          gap: 28px;
+        }
+
+        .quota-portfolio .hero-copy h1 {
+          font-size: clamp(2.55rem, 11.5vw, 3.35rem);
+        }
+
+        .quota-portfolio .hero-copy > p {
+          margin-top: 23px;
+          font-size: 15px;
+          line-height: 1.62;
+        }
+
+        .quota-portfolio .hero-actions {
+          margin-top: 25px;
+        }
+
+        .quota-portfolio .button {
+          min-height: 46px;
+        }
+
+        .quota-portfolio .hero-proof {
+          margin-top: 26px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px 16px;
+        }
+
+        .quota-portfolio .desktop-stage {
+          min-height: 352px;
+          border-radius: 22px;
+        }
+
+        .quota-portfolio .widget-medium {
+          top: 54px;
+          width: calc(100% - 30px);
+          min-height: 205px;
+          border-radius: 22px;
+          padding: 17px;
+        }
+
+        .quota-portfolio .desktop-stage .widget-small {
+          display: none;
+        }
+
+        .quota-portfolio .medium-body {
+          min-height: 170px;
+          grid-template-columns: 0.94fr 1.06fr;
+          gap: 13px;
+        }
+
+        .quota-portfolio .medium-trend {
+          padding-left: 12px;
+        }
+
+        .quota-portfolio .widget-medium .widget-name {
+          font-size: 13px;
+        }
+
+        .quota-portfolio .widget-medium .widget-time,.quota-portfolio 
+        .widget-medium .reset-label,.quota-portfolio 
+        .widget-medium .trend-average {
+          display: none;
+        }
+
+        .quota-portfolio .widget-medium .quota-row {
+          margin-top: 14px;
+        }
+
+        .quota-portfolio .widget-medium .quota-row + .quota-row {
+          margin-top: 11px;
+        }
+
+        .quota-portfolio .widget-medium .quota-label,.quota-portfolio 
+        .widget-medium .trend-title {
+          font-size: 10px;
+        }
+
+        .quota-portfolio .widget-medium .quota-value {
+          font-size: 16px;
+        }
+
+        .quota-portfolio .medium-trend .trend {
+          height: 125px;
+          margin-top: 8px;
+        }
+
+        .quota-portfolio .medium-trend .trend svg {
+          height: 104px;
+        }
+
+        .quota-portfolio .stage-caption {
+          right: 20px;
+          bottom: 19px;
+          left: 20px;
+          max-width: none;
+        }
+
+        .quota-portfolio .section {
+          padding: 70px 0;
+        }
+
+        .quota-portfolio .section-heading {
+          font-size: clamp(2.1rem, 9.8vw, 3rem);
+        }
+
+        .quota-portfolio .section-lead {
+          margin-top: 21px;
+          font-size: 15px;
+        }
+
+        .quota-portfolio .problem-layout,.quota-portfolio 
+        .product-layout,.quota-portfolio 
+        .usage-layout,.quota-portfolio 
+        .evidence-layout {
+          margin-top: 45px;
+        }
+
+        .quota-portfolio .product-canvas {
+          min-height: 470px;
+        }
+
+        .quota-portfolio .product-canvas .widget-medium {
+          top: 52px;
+        }
+
+        .quota-portfolio .evidence-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .quota-portfolio .poster-frame {
+          width: min(88%, 430px);
+          margin: 0 auto;
+        }
+
+        .quota-portfolio .evidence-metric {
+          grid-template-columns: 105px minmax(0, 1fr);
+        }
+
+        .quota-portfolio .final-cta {
+          padding: 74px 0;
+        }
+
+        .quota-portfolio .final-panel {
+          gap: 38px;
+          padding-top: 36px;
+        }
+
+        .quota-portfolio .final-actions {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .quota-portfolio .footer-inner {
+          min-height: 104px;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 9px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .quota-portfolio {
+          scroll-behavior: auto;
+        }
+
+        .quota-portfolio *,.quota-portfolio 
+        *::before,.quota-portfolio 
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        .quota-portfolio .desktop-stage {
+          clip-path: none;
+        }
+      }
+    
+.quota-portfolio .portfolio-site-tools {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:8px max(24px, calc((100vw - 1180px)/2));background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line);font:500 12px/1.4 system-ui,sans-serif;}
+.quota-portfolio .portfolio-site-tools a {text-decoration:none;min-height:36px;display:inline-flex;align-items:center;}
+.quota-portfolio .portfolio-site-tools button {border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:transparent;color:inherit;}
+.quota-portfolio [id] {scroll-margin-top:100px;}
+.quota-portfolio:lang(en) h1,.quota-portfolio:lang(en) h2,.quota-portfolio:lang(en) h3 {font-family:Arial,sans-serif;}
+.quota-portfolio:lang(en) h1 {font-size:clamp(40px,5vw,68px);}
+.quota-portfolio .portfolio-snapshot {font-size:12px;color:var(--muted);margin:18px 0 8px;}
+@media(max-width:600px){.quota-portfolio .portfolio-site-tools{padding-inline:20px;} .quota-portfolio:lang(en) h1 {font-size:40px;}}
+@media(prefers-reduced-motion:reduce){.quota-portfolio *,.quota-portfolio *::before,.quota-portfolio *::after{animation:none !important;transition:none !important;}}
+.quota-portfolio .hero-copy { min-width: 0; }
+.quota-portfolio:lang(en) .hero-line { white-space: normal; }

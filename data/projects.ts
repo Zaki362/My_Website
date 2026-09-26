@@ -225,8 +225,8 @@ export const portfolioProjects: PortfolioProject[] = [
     year: "2026",
     cover: "/projects/scenecart-ai-cover.png",
     liveUrl: "https://scenecart-public-demo.vercel.app/",
-    video: "/projects/scenecart-full-demo-hq-v3-bgm.mp4",
-    videoDurationSeconds: 101,
+    video: "/projects/scenecart-portfolio/asset-3.mp4",
+    videoDurationSeconds: 104,
     previewMode: "video",
     locales: {
       zh: {
@@ -255,7 +255,7 @@ export const portfolioProjects: PortfolioProject[] = [
           "实现持久 Session、任务队列、SSE 续传、断线恢复和幂等回填，让长流程在页面关闭后仍可继续。",
           "设计正式产品与公开 Demo 的隔离边界：共享 UI 与稳定逻辑，但冻结数据绝不连接正式数据库、模型、淘宝账号或真实购物车。"
         ],
-        previewTitle: "101 秒完整视频 Demo",
+        previewTitle: "104 秒完整视频 Demo",
         previewDescription: "视频展示从需求澄清、规划确认、分模块推荐到演示清单的完整流程；也可打开公开 Demo 手动体验同一套流程。Demo 使用冻结数据，不连接正式账号或淘宝。",
         contextTitle: "背景",
         context:
@@ -311,7 +311,7 @@ export const portfolioProjects: PortfolioProject[] = [
           "Implemented persistent sessions, a job queue, SSE continuation, recovery and idempotent callbacks so long-running workflows survive page closure.",
           "Designed the formal-product/public-demo boundary: shared UI and stable logic, but frozen demo data can never reach the production database, model, Taobao account or real cart."
         ],
-        previewTitle: "101-second product demo",
+        previewTitle: "104-second product demo",
         previewDescription: "The video covers scenario clarification, plan confirmation, module recommendations and the demo checklist. You can also open the public demo to explore the same flow. It uses frozen data and never connects to a production account or Taobao.",
         contextTitle: "Context",
         context:

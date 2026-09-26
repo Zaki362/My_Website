@@ -1,0 +1,1034 @@
+/* Native adaptation of the author's HTML portfolio, scoped to this route. */
+.fitlog-portfolio { position: relative; z-index: 1; min-height:100vh; font-size:16px; line-height:normal; font-weight:400; }
+.fitlog-portfolio :where(h1,h2,h3,h4,strong,b) {font-weight:700;}
+.fitlog-portfolio :where(svg) {display:inline-block;vertical-align:middle;}
+.fitlog-portfolio :where(ul,ol) {list-style:revert;}
+.fitlog-portfolio :where(button) {cursor:pointer;}
+.fitlog-portfolio :where(img) {height:auto;}
+
+      .fitlog-portfolio {
+        --ink: #11130f;
+        --ink-soft: #30342b;
+        --paper: #f5f6ef;
+        --paper-strong: #ffffff;
+        --paper-muted: #e8eadf;
+        --line: #c8ccbe;
+        --acid: #b8ff3c;
+        --acid-deep: #6eb500;
+        --danger: #b83822;
+        --max: 1240px;
+        --radius: 10px;
+        color-scheme: light;
+        font-synthesis: none;
+      }
+
+      .fitlog-portfolio * {
+        box-sizing: border-box;
+      }
+
+      .fitlog-portfolio {
+        scroll-behavior: smooth;
+      }
+
+      .fitlog-portfolio {
+        margin: 0;
+        min-width: 320px;
+        background:
+          repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent calc(25% - 1px),
+            rgba(17, 19, 15, 0.045) calc(25% - 1px),
+            rgba(17, 19, 15, 0.045) 25%
+          ),
+          var(--paper);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .fitlog-portfolio ::selection {
+        background: var(--ink);
+        color: var(--acid);
+      }
+
+      .fitlog-portfolio :focus-visible {
+        outline: 3px solid var(--ink);
+        outline-offset: 4px;
+      }
+
+      .fitlog-portfolio ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      .fitlog-portfolio ::-webkit-scrollbar-track {
+        background: var(--paper);
+      }
+
+      .fitlog-portfolio ::-webkit-scrollbar-thumb {
+        border: 3px solid var(--paper);
+        border-radius: 999px;
+        background: var(--ink);
+      }
+
+      .fitlog-portfolio a {
+        color: inherit;
+        text-underline-offset: 0.28em;
+        text-decoration-thickness: 1px;
+      }
+
+      .fitlog-portfolio button,.fitlog-portfolio 
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .fitlog-portfolio img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .fitlog-portfolio .skip-link {
+        position: fixed;
+        z-index: 100;
+        top: 12px;
+        left: 12px;
+        padding: 10px 14px;
+        transform: translateY(-160%);
+        background: var(--ink);
+        color: white;
+      }
+
+      .fitlog-portfolio .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .fitlog-portfolio .page-shell {
+        overflow: hidden;
+      }
+
+      .fitlog-portfolio .topbar {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(calc(100% - 40px), var(--max));
+        min-height: 82px;
+        margin: 0 auto;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        font-weight: 900;
+      }
+
+      .fitlog-portfolio .brand img {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+      }
+
+      .fitlog-portfolio .brand-copy {
+        display: grid;
+        line-height: 1.1;
+      }
+
+      .fitlog-portfolio .brand-copy small {
+        margin-top: 4px;
+        color: var(--ink-soft);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+      }
+
+      .fitlog-portfolio .topbar nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .fitlog-portfolio .topbar nav a {
+        text-decoration: none;
+      }
+
+      .fitlog-portfolio .topbar nav a:hover {
+        text-decoration: underline;
+      }
+
+      .fitlog-portfolio .topbar .live-link {
+        padding: 10px 16px;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--acid);
+        box-shadow: 0 8px 22px rgba(17, 19, 15, 0.12);
+      }
+
+      .fitlog-portfolio main {
+        display: block;
+      }
+
+      .fitlog-portfolio .hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.75fr);
+        min-height: calc(100vh - 82px);
+        width: min(calc(100% - 40px), var(--max));
+        margin: 0 auto;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .hero-copy {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 72px 6vw 72px 0;
+      }
+
+      .fitlog-portfolio .project-type {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        width: fit-content;
+        margin-bottom: 26px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .fitlog-portfolio .project-type::before {
+        width: 36px;
+        height: 8px;
+        content: "";
+        background: var(--acid);
+        border: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .hero h1 {
+        max-width: 10ch;
+        margin: 0;
+        font-size: clamp(3.1rem, 5.5vw, 5.5rem);
+        font-weight: 900;
+        letter-spacing: -0.055em;
+        line-height: 0.96;
+      }
+
+      .fitlog-portfolio .hero h1 .action-mark {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      .fitlog-portfolio .hero h1 .action-mark::after {
+        position: absolute;
+        z-index: -1;
+        right: -0.02em;
+        bottom: 0.02em;
+        left: -0.02em;
+        height: 0.28em;
+        content: "";
+        background: var(--acid);
+        transform: skewX(-8deg);
+      }
+
+      .fitlog-portfolio .hero-lede {
+        max-width: 36ch;
+        margin: 30px 0 0;
+        color: var(--ink-soft);
+        font-size: clamp(1rem, 1.4vw, 1.24rem);
+        font-weight: 500;
+      }
+
+      .fitlog-portfolio .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .fitlog-portfolio .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 50px;
+        padding: 0 22px;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: var(--paper-strong);
+        color: var(--ink);
+        font-weight: 800;
+        text-decoration: none;
+        transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease;
+      }
+
+      .fitlog-portfolio .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 22px rgba(17, 19, 15, 0.13);
+      }
+
+      .fitlog-portfolio .button.primary {
+        background: var(--ink);
+        color: white;
+      }
+
+      .fitlog-portfolio .button svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .fitlog-portfolio .hero-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 680px;
+        border-left: 1px solid var(--ink);
+        background: var(--acid);
+      }
+
+      .fitlog-portfolio .hero-stage::before,.fitlog-portfolio 
+      .hero-stage::after {
+        position: absolute;
+        content: "";
+        background: var(--ink);
+      }
+
+      .fitlog-portfolio .hero-stage::before {
+        top: 40px;
+        left: -1px;
+        width: 54%;
+        height: 1px;
+      }
+
+      .fitlog-portfolio .hero-stage::after {
+        right: 26px;
+        bottom: 48px;
+        width: 1px;
+        height: 82px;
+      }
+
+      .fitlog-portfolio .hero-vertical {
+        position: absolute;
+        top: 28px;
+        right: 22px;
+        writing-mode: vertical-rl;
+        font-family: "Arial Black", "Arial Narrow", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+      }
+
+      .fitlog-portfolio .phone {
+        position: relative;
+        width: min(322px, 74%);
+        padding: 9px;
+        border: 2px solid var(--ink);
+        border-radius: 36px;
+        background: var(--ink);
+        box-shadow: 20px 30px 60px rgba(17, 19, 15, 0.26);
+        transform: rotate(2.6deg);
+        transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .fitlog-portfolio .hero-stage:hover .phone {
+        transform: rotate(0deg) translateY(-6px);
+      }
+
+      .fitlog-portfolio .phone::before {
+        position: absolute;
+        z-index: 2;
+        top: 14px;
+        left: 50%;
+        width: 72px;
+        height: 18px;
+        content: "";
+        border-radius: 999px;
+        background: var(--ink);
+        transform: translateX(-50%);
+      }
+
+      .fitlog-portfolio .phone img {
+        width: 100%;
+        border-radius: 27px;
+        background: var(--paper);
+      }
+
+      .fitlog-portfolio .hero-sticker {
+        position: absolute;
+        z-index: 3;
+        right: 2%;
+        bottom: 17%;
+        width: 122px;
+        padding: 14px 12px;
+        border: 1px solid var(--ink);
+        background: white;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.35;
+        transform: rotate(-4deg);
+      }
+
+      .fitlog-portfolio .hero-sticker strong {
+        display: block;
+        font-family: "Arial Black", "Arial Narrow", sans-serif;
+        font-size: 24px;
+      }
+
+      .fitlog-portfolio .principles {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        width: min(calc(100% - 40px), var(--max));
+        margin: 0 auto;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .principle {
+        min-height: 142px;
+        padding: 28px 26px;
+        border-right: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .principle:last-child {
+        border-right: 0;
+      }
+
+      .fitlog-portfolio .principle strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 17px;
+      }
+
+      .fitlog-portfolio .principle span {
+        display: block;
+        color: var(--ink-soft);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .fitlog-portfolio .section {
+        width: min(calc(100% - 40px), var(--max));
+        margin: 0 auto;
+        padding: clamp(80px, 10vw, 140px) 0;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .section-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+        gap: 8vw;
+        align-items: end;
+        margin-bottom: clamp(54px, 7vw, 88px);
+      }
+
+      .fitlog-portfolio .section-heading h2 {
+        max-width: 10ch;
+        margin: 0;
+        font-size: clamp(2.1rem, 3.8vw, 3.8rem);
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        line-height: 1.02;
+      }
+
+      .fitlog-portfolio .section-heading p {
+        max-width: 42ch;
+        margin: 0 0 8px;
+        color: var(--ink-soft);
+        font-size: 1.04rem;
+      }
+
+      .fitlog-portfolio .problem-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+        border: 1px solid var(--ink);
+        background: white;
+      }
+
+      .fitlog-portfolio .problem-statement {
+        padding: clamp(34px, 5vw, 72px);
+        border-right: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .problem-statement blockquote {
+        max-width: 20ch;
+        margin: 0;
+        font-size: clamp(1.7rem, 2.9vw, 2.9rem);
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        line-height: 1.18;
+      }
+
+      .fitlog-portfolio .problem-statement p {
+        max-width: 54ch;
+        margin: 30px 0 0;
+        color: var(--ink-soft);
+      }
+
+      .fitlog-portfolio .problem-ledger {
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+      }
+
+      .fitlog-portfolio .problem-row {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+        gap: 12px;
+        align-content: center;
+        padding: 24px;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .fitlog-portfolio .problem-row:last-child {
+        border-bottom: 0;
+      }
+
+      .fitlog-portfolio .problem-row .mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--acid);
+        font-weight: 900;
+      }
+
+      .fitlog-portfolio .problem-row strong,.fitlog-portfolio 
+      .problem-row span {
+        display: block;
+      }
+
+      .fitlog-portfolio .problem-row span {
+        margin-top: 4px;
+        color: var(--ink-soft);
+        font-size: 13px;
+      }
+
+      .fitlog-portfolio .workflow {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        counter-reset: steps;
+      }
+
+      .fitlog-portfolio .workflow-step {
+        position: relative;
+        display: flex;
+        min-width: 0;
+        min-height: 700px;
+        padding: 38px clamp(22px, 2.6vw, 38px) 42px;
+        flex-direction: column;
+        border-right: 1px solid var(--ink);
+        counter-increment: steps;
+      }
+
+      .fitlog-portfolio .workflow-step:last-child {
+        border-right: 0;
+      }
+
+      .fitlog-portfolio .workflow-step::before {
+        content: "0" counter(steps);
+        color: var(--acid-deep);
+        font-family: "Arial Black", "Arial Narrow", sans-serif;
+        font-size: clamp(4rem, 6.2vw, 6.8rem);
+        line-height: 0.85;
+      }
+
+      .fitlog-portfolio .workflow-copy {
+        margin-top: 32px;
+      }
+
+      .fitlog-portfolio .workflow-copy h3 {
+        margin: 0;
+        font-size: clamp(1.55rem, 2.35vw, 2.45rem);
+        letter-spacing: -0.045em;
+        line-height: 1.06;
+      }
+
+      .fitlog-portfolio .workflow-copy p {
+        max-width: 36ch;
+        margin: 16px 0 0;
+        color: var(--ink-soft);
+        font-size: 14px;
+      }
+
+      .fitlog-portfolio .workflow-copy ul {
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .fitlog-portfolio .workflow-copy li {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .fitlog-portfolio .workflow-copy li::before {
+        content: "—";
+        color: var(--acid-deep);
+      }
+
+      .fitlog-portfolio .workflow-visual {
+        width: min(206px, 78%);
+        margin-top: auto;
+        align-self: center;
+        padding: 7px;
+        border: 1px solid var(--ink);
+        border-radius: 28px;
+        background: var(--ink);
+        box-shadow: 14px 20px 44px rgba(17, 19, 15, 0.17);
+      }
+
+      .fitlog-portfolio .workflow-visual img {
+        border-radius: 21px;
+      }
+
+      .fitlog-portfolio .product-view {
+        display: grid;
+        grid-template-columns: minmax(250px, 0.45fr) minmax(0, 1fr);
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: white;
+      }
+
+      .fitlog-portfolio .view-tabs {
+        display: grid;
+        align-content: start;
+        border-right: 1px solid rgba(255, 255, 255, 0.28);
+      }
+
+      .fitlog-portfolio .view-tabs h3 {
+        margin: 0;
+        padding: 32px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+        font-size: 22px;
+      }
+
+      .fitlog-portfolio .view-tab {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 12px;
+        width: 100%;
+        padding: 22px 28px;
+        border: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+        background: transparent;
+        color: rgba(255, 255, 255, 0.7);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .fitlog-portfolio .view-tab:hover,.fitlog-portfolio 
+      .view-tab[aria-selected="true"] {
+        background: var(--acid);
+        color: var(--ink);
+      }
+
+      .fitlog-portfolio .view-tab strong,.fitlog-portfolio 
+      .view-tab span {
+        display: block;
+      }
+
+      .fitlog-portfolio .view-tab span {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .fitlog-portfolio .view-stage {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(250px, 0.7fr) minmax(220px, 0.5fr);
+        min-height: 690px;
+        overflow: hidden;
+        background: var(--paper-muted);
+        color: var(--ink);
+      }
+
+      .fitlog-portfolio .view-stage-copy {
+        align-self: center;
+        padding: clamp(38px, 5vw, 72px);
+      }
+
+      .fitlog-portfolio .view-stage-copy .view-index {
+        font-family: "Arial Black", "Arial Narrow", sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+      }
+
+      .fitlog-portfolio .view-stage-copy h3 {
+        max-width: 10ch;
+        margin: 22px 0 0;
+        font-size: clamp(1.8rem, 2.9vw, 3rem);
+        letter-spacing: -0.05em;
+        line-height: 1.03;
+      }
+
+      .fitlog-portfolio .view-stage-copy p {
+        max-width: 34ch;
+        color: var(--ink-soft);
+      }
+
+      .fitlog-portfolio .view-stage-phone {
+        align-self: end;
+        width: 300px;
+        max-width: 86%;
+        margin: 62px 30px -78px 0;
+        padding: 8px;
+        border-radius: 34px 34px 0 0;
+        background: var(--ink);
+        box-shadow: 0 26px 66px rgba(17, 19, 15, 0.24);
+      }
+
+      .fitlog-portfolio .view-stage-phone img {
+        width: 100%;
+        border-radius: 27px 27px 0 0;
+      }
+
+      .fitlog-portfolio .final-cta {
+        position: relative;
+        width: min(calc(100% - 40px), var(--max));
+        margin: 0 auto;
+        padding: clamp(90px, 13vw, 170px) 0;
+        text-align: center;
+      }
+
+      .fitlog-portfolio .final-cta h2 {
+        max-width: 11ch;
+        margin: 0 auto;
+        font-size: clamp(2.6rem, 5.4vw, 5.4rem);
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        line-height: 0.98;
+      }
+
+      .fitlog-portfolio .final-cta p {
+        max-width: 42ch;
+        margin: 30px auto;
+        color: var(--ink-soft);
+      }
+
+      .fitlog-portfolio .final-cta .button {
+        min-width: 190px;
+        background: var(--acid);
+      }
+
+      .fitlog-portfolio footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(calc(100% - 40px), var(--max));
+        min-height: 92px;
+        margin: 0 auto;
+        border-top: 1px solid var(--ink);
+        color: var(--ink-soft);
+        font-size: 12px;
+      }
+
+      .fitlog-portfolio .reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fitlog-portfolio .js .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .fitlog-portfolio .js .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 900px) {
+        .fitlog-portfolio .topbar nav a:not(.live-link) {
+          display: none;
+        }
+
+        .fitlog-portfolio .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .fitlog-portfolio .hero-copy {
+          min-height: 600px;
+          padding-right: 0;
+        }
+
+        .fitlog-portfolio .hero-stage {
+          min-height: 660px;
+          border-top: 1px solid var(--ink);
+          border-left: 0;
+        }
+
+        .fitlog-portfolio .principles {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .fitlog-portfolio .principle:nth-child(2) {
+          border-right: 0;
+        }
+
+        .fitlog-portfolio .principle:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--ink);
+        }
+
+        .fitlog-portfolio .section-heading,.fitlog-portfolio 
+        .problem-layout,.fitlog-portfolio 
+        .product-view {
+          grid-template-columns: 1fr;
+        }
+
+        .fitlog-portfolio .section-heading {
+          gap: 28px;
+        }
+
+        .fitlog-portfolio .problem-statement,.fitlog-portfolio 
+        .view-tabs {
+          border-right: 0;
+        }
+
+        .fitlog-portfolio .problem-statement {
+          border-bottom: 1px solid var(--ink);
+        }
+
+        .fitlog-portfolio .workflow {
+          grid-template-columns: 1fr;
+          border-bottom: 0;
+        }
+
+        .fitlog-portfolio .workflow-step {
+          display: grid;
+          grid-template-columns: minmax(110px, 0.3fr) minmax(0, 0.75fr) minmax(220px, 0.45fr);
+          gap: 4vw;
+          min-height: 510px;
+          padding: 48px 0;
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+
+        .fitlog-portfolio .workflow-copy {
+          align-self: center;
+          margin-top: 0;
+        }
+
+        .fitlog-portfolio .workflow-visual {
+          width: min(240px, 100%);
+          margin-top: 0;
+          align-self: center;
+          justify-self: center;
+        }
+
+        .fitlog-portfolio .view-tabs {
+          grid-template-columns: repeat(4, 1fr);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+        }
+
+        .fitlog-portfolio .view-tabs h3 {
+          grid-column: 1 / -1;
+        }
+
+        .fitlog-portfolio .view-tab {
+          grid-template-columns: 1fr;
+          padding: 16px;
+          border-right: 1px solid rgba(255, 255, 255, 0.28);
+          border-bottom: 0;
+        }
+
+        .fitlog-portfolio .view-tab:last-child {
+          border-right: 0;
+        }
+
+        .fitlog-portfolio .view-tab span {
+          display: none;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .fitlog-portfolio {
+          background: var(--paper);
+        }
+
+        .fitlog-portfolio .topbar,.fitlog-portfolio 
+        .hero,.fitlog-portfolio 
+        .principles,.fitlog-portfolio 
+        .section,.fitlog-portfolio 
+        .final-cta,.fitlog-portfolio 
+        footer {
+          width: min(calc(100% - 28px), var(--max));
+        }
+
+        .fitlog-portfolio .topbar {
+          min-height: 70px;
+        }
+
+        .fitlog-portfolio .brand-copy small {
+          display: none;
+        }
+
+        .fitlog-portfolio .topbar .live-link {
+          padding: 9px 12px;
+          font-size: 12px;
+        }
+
+        .fitlog-portfolio .hero-copy {
+          min-height: 520px;
+          padding: 52px 0;
+        }
+
+        .fitlog-portfolio .hero h1 {
+          max-width: 8ch;
+          font-size: clamp(2.8rem, 13vw, 3.9rem);
+        }
+
+        .fitlog-portfolio .hero h1 .action-mark {
+          display: inline;
+          white-space: normal;
+          background: linear-gradient(to top, var(--acid) 0 28%, transparent 28% 100%);
+        }
+
+        .fitlog-portfolio .hero h1 .action-mark::after {
+          display: none;
+        }
+
+        .fitlog-portfolio .hero-stage {
+          min-height: 590px;
+        }
+
+        .fitlog-portfolio .phone {
+          width: 270px;
+          max-width: 76%;
+        }
+
+        .fitlog-portfolio .hero-sticker {
+          right: 0;
+          bottom: 11%;
+        }
+
+        .fitlog-portfolio .principles {
+          grid-template-columns: 1fr;
+        }
+
+        .fitlog-portfolio .principle {
+          min-height: auto;
+          padding: 22px 0;
+          border-right: 0;
+          border-bottom: 1px solid var(--ink);
+        }
+
+        .fitlog-portfolio .principle:last-child {
+          border-bottom: 0;
+        }
+
+        .fitlog-portfolio .section {
+          padding: 78px 0;
+        }
+
+        .fitlog-portfolio .section-heading h2 {
+          font-size: clamp(2.1rem, 9.6vw, 3.15rem);
+        }
+
+        .fitlog-portfolio .problem-statement {
+          padding: 30px 24px;
+        }
+
+        .fitlog-portfolio .problem-ledger {
+          grid-template-rows: auto;
+        }
+
+        .fitlog-portfolio .workflow-step {
+          grid-template-columns: 62px 1fr;
+          min-height: auto;
+          gap: 22px;
+          padding: 44px 0;
+        }
+
+        .fitlog-portfolio .workflow-step::before {
+          font-size: 3.2rem;
+        }
+
+        .fitlog-portfolio .workflow-visual {
+          grid-column: 2;
+          justify-self: start;
+          width: min(248px, 100%);
+          margin-top: 24px;
+        }
+
+        .fitlog-portfolio .view-tabs {
+          overflow-x: auto;
+          grid-template-columns: repeat(4, minmax(110px, 1fr));
+        }
+
+        .fitlog-portfolio .view-stage {
+          grid-template-columns: 1fr;
+          min-height: 780px;
+        }
+
+        .fitlog-portfolio .view-stage-copy {
+          align-self: start;
+          padding: 34px 26px 0;
+        }
+
+        .fitlog-portfolio .view-stage-phone {
+          align-self: end;
+          justify-self: center;
+          width: 276px;
+          margin: 20px auto -88px;
+        }
+
+        .fitlog-portfolio .final-cta h2 {
+          font-size: clamp(2.5rem, 13vw, 4rem);
+        }
+
+        .fitlog-portfolio footer {
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          gap: 4px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fitlog-portfolio {
+          scroll-behavior: auto;
+        }
+
+        .fitlog-portfolio *,.fitlog-portfolio 
+        *::before,.fitlog-portfolio 
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+    
+.fitlog-portfolio .portfolio-site-tools {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:8px max(24px, calc((100vw - 1180px)/2));background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line);font:500 12px/1.4 system-ui,sans-serif;}
+.fitlog-portfolio .portfolio-site-tools a {text-decoration:none;min-height:36px;display:inline-flex;align-items:center;}
+.fitlog-portfolio .portfolio-site-tools button {border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:transparent;color:inherit;}
+.fitlog-portfolio [id] {scroll-margin-top:100px;}
+.fitlog-portfolio:lang(en) h1,.fitlog-portfolio:lang(en) h2,.fitlog-portfolio:lang(en) h3 {font-family:Arial,sans-serif;}
+.fitlog-portfolio:lang(en) h1 {font-size:clamp(40px,5vw,68px);}
+.fitlog-portfolio .portfolio-snapshot {font-size:12px;color:var(--muted);margin:18px 0 8px;}
+@media(max-width:600px){.fitlog-portfolio .portfolio-site-tools{padding-inline:20px;} .fitlog-portfolio:lang(en) h1 {font-size:40px;}}
+@media(prefers-reduced-motion:reduce){.fitlog-portfolio *,.fitlog-portfolio *::before,.fitlog-portfolio *::after{animation:none !important;transition:none !important;}}
+.fitlog-portfolio .reveal {opacity:1;transform:none;}
+.fitlog-portfolio .hero h1 { max-width: 100%; font-size: clamp(44px, 4.5vw, 64px); line-height: 1.12; }
+.fitlog-portfolio:lang(en) .hero h1 .action-mark { white-space: normal; }
+@media (max-width: 600px) {
+  .fitlog-portfolio .hero h1 { font-size: 42px; }
+}

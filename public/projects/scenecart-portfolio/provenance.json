@@ -1,0 +1,26 @@
+{
+  "source": "场景购 产品介绍+体验入口.html",
+  "sourceSha256": "52a0ba13f0cf4b13356a3e05e3b8a016ac7a6fbef27b86f425c7b324b46e047b",
+  "adaptedOn": "2026-09-26",
+  "assets": [
+    {
+      "file": "asset-1.ttf",
+      "mime": "font/ttf",
+      "bytes": 20688,
+      "sha256": "273766438f6680a449366926f5cea60b1bbf9aafc446a138c6078ef9713308de"
+    },
+    {
+      "file": "asset-2.png",
+      "mime": "image/png",
+      "bytes": 290727,
+      "sha256": "c5da6e30749f4c0543fb7132a44b33ad5e13fc89f0efbd7176bcf7c81eb43d39"
+    },
+    {
+      "file": "asset-3.mp4",
+      "mime": "video/mp4",
+      "bytes": 5583164,
+      "sha256": "f372bb26eae3796a35765a9d21db169f6150564e56884fd099756eb7d818b7cd"
+    }
+  ],
+  "notes": "Original portfolio media extracted without edits. Native page preserves content and layout; author name corrected to 郑国华."
+}

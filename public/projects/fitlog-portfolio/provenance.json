@@ -1,0 +1,38 @@
+{
+  "source": "练一下 产品介绍+使用入口.html",
+  "sourceSha256": "23a4330e11b2f600a75b756f2b8797460724e5d85456d9fa2fcecc05b7616842",
+  "adaptedOn": "2026-09-26",
+  "assets": [
+    {
+      "file": "asset-1.svg",
+      "mime": "image/svg+xml",
+      "bytes": 393,
+      "sha256": "ca178c11799288464207c7f55fe1ae5860c4bc14b047f9e4d7f857d45e4eac82"
+    },
+    {
+      "file": "asset-2.png",
+      "mime": "image/png",
+      "bytes": 84069,
+      "sha256": "3a3c982d9a25e1b31a48614216ea372db7c1376efb4f97c6726ac83eb8d5280e"
+    },
+    {
+      "file": "asset-3.png",
+      "mime": "image/png",
+      "bytes": 56063,
+      "sha256": "ac51fe2c199493e0cde950f60cd834f94279f8be249d4f8a3ab34e2c215272cb"
+    },
+    {
+      "file": "asset-4.png",
+      "mime": "image/png",
+      "bytes": 59855,
+      "sha256": "5ab9cf6dc52ca84d346b1eea969e6d62be6b36547387d425c5bb0b95b6198c27"
+    },
+    {
+      "file": "asset-5.png",
+      "mime": "image/png",
+      "bytes": 63053,
+      "sha256": "f92f182fbfa19aa6f222874b48c87528b17907567df15eee6353cf70cf1d5a3c"
+    }
+  ],
+  "notes": "Original portfolio media extracted without edits. Native page preserves content and layout; author name corrected to 郑国华."
+}

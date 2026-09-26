@@ -1,0 +1,14 @@
+{
+  "source": "Codex- widget 产品介绍+入口.html",
+  "sourceSha256": "75d42a8c6d727ad9d27e595ccf0d31b79a3c5e6bcc9200bf960783bdd1d4875e",
+  "adaptedOn": "2026-09-26",
+  "assets": [
+    {
+      "file": "asset-1.png",
+      "mime": "image/png",
+      "bytes": 1619104,
+      "sha256": "35569a0e23a4c83515c0ec42b753918cc85a17e76a0a9b936a4fc6d7396aade7"
+    }
+  ],
+  "notes": "Original portfolio media extracted without edits. Native page preserves content and layout; author name corrected to 郑国华."
+}
